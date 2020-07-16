@@ -10,12 +10,10 @@ import org.springframework.web.client.RestTemplate;
  * @date 2020-02-23 14:45
  */
 @Configuration
-public class ApplicationContextConfig
-{
+public class ApplicationContextConfig {
     @Bean
     @LoadBalanced
-    public RestTemplate getRestTemplate()
-    {
+    public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 }

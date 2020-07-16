@@ -10,11 +10,9 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020-02-21 11:42
  */
 @Configuration
-public class GateWayConfig
-{
+public class GateWayConfig {
     @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder routeLocatorBuilder)
-    {
+    public RouteLocator customRouteLocator(RouteLocatorBuilder routeLocatorBuilder) {
         RouteLocatorBuilder.Builder routes = routeLocatorBuilder.routes();
 
         routes.route("path_route_geoxus",

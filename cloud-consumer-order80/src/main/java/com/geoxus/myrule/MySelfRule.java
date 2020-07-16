@@ -10,11 +10,9 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020-02-19 19:00
  */
 @Configuration
-public class MySelfRule
-{
+public class MySelfRule {
     @Bean
-    public IRule myRule()
-    {
+    public IRule myRule() {
         return new RandomRule();//定义为随机
     }
 }

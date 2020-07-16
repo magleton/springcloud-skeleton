@@ -20,8 +20,10 @@ import javax.annotation.Resource;
 public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderDao orderDao;
+
     @Resource
     private StorageService storageService;
+
     @Resource
     private AccountService accountService;
 

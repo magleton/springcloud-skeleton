@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
 import javax.sql.DataSource;
 
 /**
@@ -19,13 +20,12 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class DataSourceProxyConfig {
-
     @Value("${mybatis.mapperLocations}")
     private String mapperLocations;
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource druidDataSource(){
+    public DataSource druidDataSource() {
         return new DruidDataSource();
     }
 
@@ -42,5 +42,4 @@ public class DataSourceProxyConfig {
         sqlSessionFactoryBean.setTransactionFactory(new SpringManagedTransactionFactory());
         return sqlSessionFactoryBean.getObject();
     }
-
 }

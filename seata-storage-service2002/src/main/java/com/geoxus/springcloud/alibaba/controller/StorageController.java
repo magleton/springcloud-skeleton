@@ -1,15 +1,13 @@
 package com.geoxus.springcloud.alibaba.controller;
 
-
-import com.geoxus.springcloud.alibaba.domain.CommonResult ;
-import com.geoxus.springcloud.alibaba.service.StorageService ;
+import com.geoxus.springcloud.alibaba.domain.CommonResult;
+import com.geoxus.springcloud.alibaba.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StorageController {
-
     @Autowired
     private StorageService storageService;
 
@@ -17,8 +15,8 @@ public class StorageController {
      * 扣减库存
      */
     @RequestMapping("/storage/decrease")
-    public CommonResult decrease(Long productId, Integer count) {
+    public CommonResult<Object> decrease(Long productId, Integer count) {
         storageService.decrease(productId, count);
-        return new CommonResult(200,"扣减库存成功！");
+        return new CommonResult<>(200, "扣减库存成功！");
     }
 }

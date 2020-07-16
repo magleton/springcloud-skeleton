@@ -13,16 +13,13 @@ import javax.annotation.Resource;
  * @date 2020-02-26 15:24
  */
 @RestController
-public class OrderController
-{
+public class OrderController {
     @Resource
     private OrderService orderService;
 
-
     @GetMapping("/order/create")
-    public CommonResult create(Order order)
-    {
+    public CommonResult<Object> create(Order order) {
         orderService.create(order);
-        return new CommonResult(200,"订单创建成功");
+        return new CommonResult<>(200, "订单创建成功");
     }
 }

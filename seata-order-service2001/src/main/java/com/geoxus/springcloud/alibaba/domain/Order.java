@@ -13,8 +13,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order
-{
+public class Order {
     private Long id;
 
     private Long userId;
