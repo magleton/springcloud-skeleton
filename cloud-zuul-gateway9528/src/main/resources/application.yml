@@ -1,0 +1,29 @@
+server:
+  port: 9528
+
+spring:
+  application:
+    name: cloud-zuul-gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka,http://127.0.0.1.com:7002/eureka
+  instance:
+    instance-id: cloud-zuul-gateway
+    prefer-ip-address: true
+
+zuul:
+  #ignored-services: geoxus-payment
+  prefix: /geoxus
+  ignored-services: "*"
+  routes:
+    payment.serviceId: cloud-payment-service
+    payment.path: /payment/**
+
+info:
+  app.name: geoxus-zuul-gateway
+  company.name: www.geoxus.top
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$
+
