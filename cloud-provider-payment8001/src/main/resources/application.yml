@@ -4,18 +4,56 @@ server:
 spring:
   application:
     name: cloud-payment-service
-  zipkin:
-      base-url: http://localhost:9411
-  sleuth:
-    sampler:
+  #zipkin:
+  #  base-url: http://localhost:9411
+  #sleuth:
+  #  sampler:
     #采样率值介于 0 到 1 之间，1 则表示全部采集
-    probability: 1
+  #  probability: 1
+  #datasource:
+  #  type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
+  #  driver-class-name: org.gjt.mm.mysql.Driver              # mysql驱动包
+  #  url: jdbc:mysql://localhost:3306/db2019?useUnicode=true&characterEncoding=utf-8&useSSL=false
+  #  username: root
+  #  password: 123456
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
-    driver-class-name: org.gjt.mm.mysql.Driver              # mysql驱动包
-    url: jdbc:mysql://localhost:3306/db2019?useUnicode=true&characterEncoding=utf-8&useSSL=false
-    username: root
-    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+      url: jdbc:p6spy:mysql://192.168.56.101:3306/geoxus?useSSL=false&useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false
+      #driver-class-name: com.mysql.jdbc.Driver
+      #url: jdbc:mysql://xx.xx.xx.xx:3306/xx?useSSL=false&useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false
+      username: britton
+      password: britton
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 800000
+      #Oracle需要打开注释
+      #validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: britton
+        login-password: britton
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+  redis:
+    redisson:
+      config: classpath:redisson.yml
 
 
 eureka:
@@ -30,17 +68,41 @@ eureka:
       # 集群版
       #defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
   instance:
-      instance-id: payment8001
-      #访问路径可以显示IP地址
-      prefer-ip-address: true
-      #Eureka客户端向服务端发送心跳的时间间隔，单位为秒(默认是30秒)
-      #lease-renewal-interval-in-seconds: 1
-      #Eureka服务端在收到最后一次心跳后等待时间上限，单位为秒(默认是90秒)，超时将剔除服务
-      #lease-expiration-duration-in-seconds: 2
+    instance-id: payment8001
+    #访问路径可以显示IP地址
+    prefer-ip-address: true
+    #Eureka客户端向服务端发送心跳的时间间隔，单位为秒(默认是30秒)
+    #lease-renewal-interval-in-seconds: 1
+    #Eureka服务端在收到最后一次心跳后等待时间上限，单位为秒(默认是90秒)，超时将剔除服务
+    #lease-expiration-duration-in-seconds: 2
 
 
-mybatis:
-  mapperLocations: classpath:mapper/*.xml
-  type-aliases-package: com.geoxus.springcloud.entities    # 所有Entity别名类所在包
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/mappers/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.geoxus.core.framework.entity;com.geoxus.modules.*.entity
+  typeEnumsPackage: com.geoxus.core.framework.entity.enums;com.geoxus.modules.*.entity.enums
+  typeHandlersPackage: com.geoxus.core.framework.handlers
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      #数据库大写下划线转换
+      capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      column-format: "%s"
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      insert-strategy: not_empty
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    aggressive-lazy-loading: false
+    lazy-loading-enabled: true
 
 
