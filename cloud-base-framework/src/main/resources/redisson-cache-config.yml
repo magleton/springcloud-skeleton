@@ -7,3 +7,8 @@ brtCache:
   ttl: 600000
   maxIdleTime: 1000
   maxSize: 1000
+
+__DEFAULT__:
+  ttl: 600000
+  maxIdleTime: 1000
+  maxSize: 1000

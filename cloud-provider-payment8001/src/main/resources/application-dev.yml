@@ -9,57 +9,7 @@ spring:
     #sleuth:
     #  sampler:
     #采样率值介于 0 到 1 之间，1 则表示全部采集
-  #  probability: 1
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-      url: jdbc:p6spy:mysql://192.168.56.101:3306/geoxus?useSSL=false&useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false
-      #driver-class-name: com.mysql.jdbc.Driver
-      #url: jdbc:mysql://xx.xx.xx.xx:3306/xx?useSSL=false&useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false
-      username: britton
-      password: britton
-      initial-size: 10
-      max-active: 100
-      min-idle: 10
-      max-wait: 60000
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 20
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 800000
-      #Oracle需要打开注释
-      #validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        login-username: britton
-        login-password: britton
-      filter:
-        stat:
-          log-slow-sql: true
-          slow-sql-millis: 1000
-          merge-sql: false
-        wall:
-          config:
-            multi-statement-allow: true
-  redis:
-    redisson:
-      config: classpath:redisson.yml
-  cache:
-    type: redis
-  rabbitmq:
-    host: 192.168.56.101
-    port: 5672
-    username: britton
-    password: britton
-    publisher-returns: true
-    template:
-      mandatory: true
-    publisher-confirm-type: simple
-
+    # probability: 1
 
 eureka:
   client:
@@ -84,7 +34,7 @@ eureka:
 
 #mybatis
 mybatis-plus:
-  mapper-locations: classpath:/mappers/*Mapper.xml
+  mapper-locations: classpath:mappers/*Mapper.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.geoxus.core.framework.entity;com.geoxus.*.entity
   typeEnumsPackage: com.geoxus.core.framework.entity.enums;com.geoxus.*.entity.enums

@@ -35,7 +35,11 @@ public class GXShiroServiceImpl implements GXShiroService {
 
     @Override
     public Dict getAdminById(Long adminId) {
-        final Dict dict = GXSpringContextUtils.getBean(GXSAdminService.class).getStatus(adminId);
+        GXSAdminService adminService = GXSpringContextUtils.getBean(GXSAdminService.class);
+        if (adminService == null) {
+            return Dict.create().set("admin_id", adminId).set("status", 0).set("is_super_admin", 0);
+        }
+        final Dict dict = adminService.getStatus(adminId);
         if (null == dict) {
             return Dict.create();
         }

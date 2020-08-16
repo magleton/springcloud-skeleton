@@ -63,7 +63,7 @@ spring:
         max-idle: 10      # 连接池中的最大空闲连接
         min-idle: 5       # 连接池中的最小空闲连接
   cache:
-    type: redis
+    type: ehcache
     ehcache:
       config: classpath:ehcache.xml
     redis:
