@@ -7,6 +7,7 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
+import com.geoxus.core.common.annotation.GXMergeSingleFieldToJSONFieldAnnotation;
 import com.geoxus.core.common.annotation.GXRequestBodyToEntityAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.exception.GXException;
@@ -27,11 +28,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static cn.hutool.core.map.MapUtil.filter;
 
@@ -65,6 +64,36 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         if (null == dict.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME) && validateCoreModelId) {
             throw new GXException(StrUtil.format("请传递{}参数", GXCommonConstants.CORE_MODEL_PRIMARY_NAME));
         }
+
+        Map<String, Map<String, Object>> jsonMergeFieldMap = new HashMap<>();
+
+        for (Field field : parameterType.getDeclaredFields()) {
+            GXMergeSingleFieldToJSONFieldAnnotation annotation = field.getAnnotation(GXMergeSingleFieldToJSONFieldAnnotation.class);
+            if (annotation == null) {
+                continue;
+            }
+            String dbJSONFieldName = annotation.dbJSONFieldName();
+            String dbFieldName = annotation.dbFieldName();
+            String currentFieldName = field.getName();
+            Object fieldValue = dict.get(currentFieldName);
+            if (Objects.isNull(fieldValue)) {
+                fieldValue = GXCommonUtils.getClassDefaultValue(field.getType());
+            }
+            Map<String, Object> tmpMap = new HashMap<>();
+
+            if (!CollUtil.contains(jsonMergeFieldMap.keySet(), dbJSONFieldName)) {
+                tmpMap.put(dbFieldName, fieldValue);
+            } else {
+                tmpMap = jsonMergeFieldMap.get(dbJSONFieldName);
+                tmpMap.put(dbFieldName, fieldValue);
+            }
+            jsonMergeFieldMap.put(dbJSONFieldName, tmpMap);
+        }
+
+        for (String jsonField : jsonFields) {
+            dict.set(jsonField , JSONUtil.toJsonStr(jsonMergeFieldMap.get(jsonField)));
+        }
+
         final Integer coreModelId = dict.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME);
         if (validateCoreModelId && null != coreModelId) {
             for (String jsonField : jsonFields) {

@@ -32,5 +32,4 @@ public class GXFilterConfig {
         registration.setOrder(Integer.MAX_VALUE);
         return registration;
     }
-
 }

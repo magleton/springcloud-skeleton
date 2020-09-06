@@ -28,7 +28,9 @@ import java.io.IOException;
  * 通用配置类
  */
 @Configuration
-@PropertySource(value = "classpath:/ymls/${spring.profiles.active}/common.yml", factory = GXYamlPropertySourceFactory.class)
+@PropertySource(value = "classpath:/ymls/${spring.profiles.active}/common.yml",
+        factory = GXYamlPropertySourceFactory.class,
+        ignoreResourceNotFound = true)
 public class GXCommonConfig {
     @Bean
     public GXValidateDBUniqueValidator validateDBUniqueOrExistsValidator() {
