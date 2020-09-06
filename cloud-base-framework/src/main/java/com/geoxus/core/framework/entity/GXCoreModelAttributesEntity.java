@@ -15,7 +15,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 public class GXCoreModelAttributesEntity extends GXBaseEntity implements Serializable {
     @TableId("model_attributes_id")
-    private int modelAttributesId;
+    private Integer modelAttributesId;
 
     private String dbFieldName;
 

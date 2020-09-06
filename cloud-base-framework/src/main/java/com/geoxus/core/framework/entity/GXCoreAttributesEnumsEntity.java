@@ -13,11 +13,11 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 public class GXCoreAttributesEnumsEntity extends GXBaseEntity implements Serializable {
     @TableId
-    private int attributeEnumId;
+    private Integer attributeEnumId;
 
-    private int attributeId;
+    private Integer attributeId;
 
-    private int coreModelId;
+    private Integer coreModelId;
 
     private String valueEnum;
 

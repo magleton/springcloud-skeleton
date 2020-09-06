@@ -5,6 +5,7 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 
 @Configuration
+@ConditionalOnClass(name = {"org.redisson.Redisson"})
 public class GXRedissonSpringDataConfig {
     @Bean(destroyMethod = "shutdown")
     @Profile("local")

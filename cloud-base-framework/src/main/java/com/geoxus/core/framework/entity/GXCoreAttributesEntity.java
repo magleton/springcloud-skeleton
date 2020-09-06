@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Data
 public class GXCoreAttributesEntity extends GXBaseEntity implements Serializable {
     @TableId
-    private int attributeId;
+    private Integer attributeId;
 
     private String category;
 

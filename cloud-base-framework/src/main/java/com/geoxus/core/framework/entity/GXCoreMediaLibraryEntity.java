@@ -18,7 +18,7 @@ public class GXCoreMediaLibraryEntity extends GXBaseEntity implements Serializab
 
     @TableId
     @GXFieldCommentAnnotation(zh = "主键ID")
-    private int id;
+    private Integer id;
 
     @GXFieldCommentAnnotation(zh = "模型类型")
     private String modelType;

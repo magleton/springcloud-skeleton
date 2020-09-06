@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.geoxus.core.common.factory.GXYamlPropertySourceFactory;
 import com.geoxus.core.common.interceptor.GXCustomMultipartResolver;
 import com.geoxus.core.common.validator.impl.GXValidateDBUniqueValidator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
@@ -68,6 +69,9 @@ public class GXCommonConfig {
 
     @Bean("ehCacheCacheManager")
     @ConditionalOnExpression("'${spring.cache.type}'.equals('ehcache')")
+    @ConditionalOnClass(name = {
+            "net.sf.ehcache.CacheManager"
+    })
     public EhCacheCacheManager ehCacheCacheManager() {
         EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
         ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));

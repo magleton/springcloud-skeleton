@@ -114,7 +114,9 @@ public class GXShiRoConfig {
 
     @Data
     @Component
-    @PropertySource(value = {"classpath:/ymls/${spring.profiles.active}/shiro-config.yml"}, factory = GXYamlPropertySourceFactory.class)
+    @PropertySource(value = {"classpath:/ymls/${spring.profiles.active}/shiro-config.yml"},
+            factory = GXYamlPropertySourceFactory.class,
+            ignoreResourceNotFound = true)
     @ConfigurationProperties(prefix = "shiro")
     static class ShiroCustomerConfig {
         private List<Map<String, String>> config = new ArrayList<>();

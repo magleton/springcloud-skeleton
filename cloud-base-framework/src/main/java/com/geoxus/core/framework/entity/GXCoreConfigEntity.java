@@ -15,10 +15,10 @@ import javax.validation.constraints.Pattern;
 @EqualsAndHashCode(callSuper = false)
 public class GXCoreConfigEntity extends GXBaseEntity {
     @TableId
-    private int configId;
+    private Integer configId;
 
     @GXValidateDBExistsAnnotation
-    private int coreModelId;
+    private Integer coreModelId;
 
     @NotBlank()
     @Pattern(regexp = "^[a-zA-Z0-9]+$")
@@ -27,7 +27,7 @@ public class GXCoreConfigEntity extends GXBaseEntity {
     @NotBlank()
     private String paramValue;
 
-    private int status;
+    private Integer status;
 
     private String remark;
 }

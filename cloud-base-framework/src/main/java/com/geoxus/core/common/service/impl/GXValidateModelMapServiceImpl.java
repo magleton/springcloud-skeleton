@@ -34,6 +34,6 @@ public class GXValidateModelMapServiceImpl implements GXValidateModelMap {
                 throw new GXException(GXResultCode.PARAMETER_VALIDATION_ERROR);
             }
         }
-        return false;
+        return true;
     }
 }
