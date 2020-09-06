@@ -11,6 +11,7 @@ import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.util.GXCacheKeysUtils;
+import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.entity.GXCoreModelAttributesEntity;
 import com.geoxus.core.framework.mapper.GXCoreModelAttributesMapper;
 import com.geoxus.core.framework.service.GXCoreModelAttributesService;
@@ -30,6 +31,7 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @Slf4j
+@GXDataSourceAnnotation("framework")
 public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAttributesMapper, GXCoreModelAttributesEntity> implements GXCoreModelAttributesService {
     @GXFieldCommentAnnotation(zh = "Guava缓存组件")
     private static final Cache<String, List<Dict>> LIST_DICT_CACHE;

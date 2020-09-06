@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.vo.GXBusinessStatusCode;
 import com.geoxus.core.common.vo.response.GXPagination;
+import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.constant.GXCoreConfigConstants;
 import com.geoxus.core.framework.entity.GXCoreConfigEntity;
 import com.geoxus.core.framework.mapper.GXCoreConfigMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
+@GXDataSourceAnnotation("framework")
 public class GXCoreConfigServiceImpl extends ServiceImpl<GXCoreConfigMapper, GXCoreConfigEntity> implements GXCoreConfigService {
     public long create(GXCoreConfigEntity target, Dict param) {
         save(target);

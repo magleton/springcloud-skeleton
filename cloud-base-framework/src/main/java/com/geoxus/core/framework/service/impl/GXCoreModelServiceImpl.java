@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.core.common.constant.GXBaseBuilderConstants;
 import com.geoxus.core.common.constant.GXCommonConstants;
+import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.entity.GXCoreModelEntity;
 import com.geoxus.core.framework.mapper.GXCoreModelMapper;
 import com.geoxus.core.framework.service.GXCoreModelAttributesService;
@@ -24,6 +25,7 @@ import java.util.*;
 
 @Service
 @Slf4j
+@GXDataSourceAnnotation("framework")
 public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCoreModelEntity> implements GXCoreModelService {
     @Autowired
     private GXCoreModelAttributesService coreModelAttributeService;

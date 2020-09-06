@@ -7,6 +7,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.validator.GXValidateExtDataService;
+import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.entity.GXCoreAttributesEntity;
 import com.geoxus.core.framework.entity.GXCoreModelEntity;
 import com.geoxus.core.framework.service.GXCoreAttributeEnumsService;
@@ -23,6 +24,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 @Service
+@GXDataSourceAnnotation("framework")
 public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
     private static final int VERIFY_VALUE = 1;
 

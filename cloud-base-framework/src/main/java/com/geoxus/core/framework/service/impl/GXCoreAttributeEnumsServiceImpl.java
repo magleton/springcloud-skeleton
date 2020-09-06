@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
+import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.entity.GXCoreAttributesEntity;
 import com.geoxus.core.framework.entity.GXCoreAttributesEnumsEntity;
 import com.geoxus.core.framework.mapper.GXCoreAttributeEnumsMapper;
@@ -20,6 +21,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
 @Service
+@GXDataSourceAnnotation("framework")
 public class GXCoreAttributeEnumsServiceImpl extends ServiceImpl<GXCoreAttributeEnumsMapper, GXCoreAttributesEnumsEntity> implements GXCoreAttributeEnumsService {
     @GXFieldCommentAnnotation(zh = "字段不存在的提示")
     private static final String FIELD_VALUE_NOT_EXISTS = "{}属性不存在值{}";

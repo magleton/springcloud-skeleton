@@ -9,6 +9,7 @@ import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.service.GXSAdminHasRolesService;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXSpringContextUtils;
+import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.entity.GXCoreModelAttributesPermissionEntity;
 import com.geoxus.core.framework.mapper.GXCoreModelAttributesPermissionMapper;
 import com.geoxus.core.framework.service.GXCoreModelAttributePermissionService;
@@ -21,6 +22,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@GXDataSourceAnnotation("framework")
 public class GXCoreModelAttributePermissionServiceImpl extends ServiceImpl<GXCoreModelAttributesPermissionMapper, GXCoreModelAttributesPermissionEntity> implements GXCoreModelAttributePermissionService {
     @Override
     @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #coreModelId")

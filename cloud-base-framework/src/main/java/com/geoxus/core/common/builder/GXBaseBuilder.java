@@ -9,12 +9,14 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.geoxus.core.common.constant.GXBaseBuilderConstants;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.entity.GXBaseEntity;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXSpringContextUtils;
+import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.service.GXCoreModelService;
 import com.geoxus.core.framework.service.GXDBSchemaService;
 import com.google.common.collect.Table;
@@ -206,6 +208,16 @@ public interface GXBaseBuilder {
     String listOrSearch(Dict param);
 
     /**
+     * 分页列表
+     *
+     * @param param 参数
+     * @return String
+     */
+    default String listOrSearchPage(IPage<Dict> page, Dict param) {
+        return "";
+    }
+
+    /**
      * 详情
      *
      * @param param 参数
@@ -264,6 +276,7 @@ public interface GXBaseBuilder {
      * @param aliasPrefix  别名
      * @return Dict
      */
+    @GXDataSourceAnnotation("framework")
     default Dict mergeSearchConditionToSQL(SQL sql, Dict requestParam, String aliasPrefix) {
         final String modelIdentificationValue = getModelIdentificationValue();
         if (StrUtil.isBlank(modelIdentificationValue)) {
@@ -327,6 +340,7 @@ public interface GXBaseBuilder {
      * @param requestParam 请求参数
      * @return Dict
      */
+    @GXDataSourceAnnotation("framework")
     default Dict mergeSearchConditionToSQL(SQL sql, Dict requestParam) {
         return mergeSearchConditionToSQL(sql, requestParam, "");
     }
@@ -416,7 +430,9 @@ public interface GXBaseBuilder {
      *
      * @return Dict
      */
-    Dict getDefaultSearchField();
+    default Dict getDefaultSearchField() {
+        return Dict.create();
+    }
 
     /**
      * 数据配置的模型标识

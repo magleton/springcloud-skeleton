@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.core.common.vo.response.GXPagination;
+import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.entity.GXCoreAttributesEntity;
 import com.geoxus.core.framework.mapper.GXCoreAttributesMapper;
 import com.geoxus.core.framework.service.GXCoreAttributesService;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@GXDataSourceAnnotation("framework")
 public class GXCoreAttributesServiceImpl extends ServiceImpl<GXCoreAttributesMapper, GXCoreAttributesEntity> implements GXCoreAttributesService {
     @Override
     @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #p0")

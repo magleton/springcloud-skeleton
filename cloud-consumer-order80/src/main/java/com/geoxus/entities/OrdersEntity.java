@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.geoxus.constant.OrdersConstant;
 import com.geoxus.core.common.annotation.GXMergeSingleFieldToJSONFieldAnnotation;
 import com.geoxus.core.common.entity.GXBaseEntity;
 import lombok.Data;
@@ -15,7 +16,7 @@ import lombok.experimental.Accessors;
  * @version 1.0
  * @since 1.0
  */
-@TableName("orders")
+@TableName(OrdersConstant.TABLE_NAME)
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)

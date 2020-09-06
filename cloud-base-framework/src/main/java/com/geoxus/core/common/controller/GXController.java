@@ -8,6 +8,7 @@ import com.geoxus.core.common.util.GXHttpContextUtils;
 import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.validator.group.GXCreateGroup;
 import com.geoxus.core.common.validator.group.GXUpdateGroup;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
@@ -32,21 +33,21 @@ public interface GXController<T extends GXBaseEntity> {
     /**
      * 删除数据
      */
-    default GXResultUtils delete(Dict param) {
+    default GXResultUtils delete(@RequestBody Dict param) {
         return GXResultUtils.ok(GXCommonConstants.DEFAULT_DATA);
     }
 
     /**
      * 列表或者搜索
      */
-    default GXResultUtils listOrSearch(Dict param) {
+    default GXResultUtils listOrSearch(@RequestBody Dict param) {
         return GXResultUtils.ok(GXCommonConstants.DEFAULT_DATA);
     }
 
     /**
      * 内容详情
      */
-    default GXResultUtils detail(Dict param) {
+    default GXResultUtils detail(@RequestBody Dict param) {
         return GXResultUtils.ok(GXCommonConstants.DEFAULT_DATA);
     }
 
