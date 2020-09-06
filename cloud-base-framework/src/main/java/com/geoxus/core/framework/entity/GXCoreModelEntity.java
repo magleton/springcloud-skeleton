@@ -17,9 +17,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class GXCoreModelEntity extends Model implements Serializable {
     @TableId
-    private int modelId;
+    private Integer modelId;
 
-    private int moduleId;
+    private Integer moduleId;
 
     private String tableName;
 

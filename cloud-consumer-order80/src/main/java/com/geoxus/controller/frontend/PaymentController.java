@@ -1,4 +1,4 @@
-package com.geoxus.controller;
+package com.geoxus.controller.frontend;
 
 import com.geoxus.entities.CommonResult;
 import com.geoxus.entities.Payment;
@@ -17,12 +17,13 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * @auther britton
- * @date 2020-02-18 17:23
+ * @author zj chen <britton@126.com>
+ * @version 1.0
+ * @since 1.0
  */
-@RestController
 @Slf4j
-public class OrderController {
+@RestController
+public class PaymentController {
     //public static final String PAYMENT_URL = "http://localhost:8001";
 
     public static final String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVICE";
@@ -32,6 +33,7 @@ public class OrderController {
 
     @Resource
     private LoadBalancer loadBalancer;
+
     @Resource
     private DiscoveryClient discoveryClient;
 

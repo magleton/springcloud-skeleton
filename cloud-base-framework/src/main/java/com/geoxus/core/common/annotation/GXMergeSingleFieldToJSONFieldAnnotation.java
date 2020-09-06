@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GXMergeSingleFieldToJSONFieldAnnotation {
-    String dbJSONFieldName() default "";
+    String dbJSONFieldName() default "ext";
 
     String dbFieldName() default "";
 }

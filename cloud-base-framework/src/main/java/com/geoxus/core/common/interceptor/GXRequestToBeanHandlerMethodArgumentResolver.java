@@ -77,7 +77,10 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
             String currentFieldName = field.getName();
             Object fieldValue = dict.get(currentFieldName);
             if (Objects.isNull(fieldValue)) {
-                fieldValue = GXCommonUtils.getClassDefaultValue(field.getType());
+                fieldValue = dict.getObj(StrUtil.toSymbolCase(dbFieldName , '_'));
+                if(Objects.isNull(fieldValue)) {
+                    fieldValue = GXCommonUtils.getClassDefaultValue(field.getType());
+                }
             }
             Map<String, Object> tmpMap = new HashMap<>();
 
