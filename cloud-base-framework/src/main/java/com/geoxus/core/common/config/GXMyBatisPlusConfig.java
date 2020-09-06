@@ -7,9 +7,7 @@ import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.handlers.MybatisMapWrapper;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapper;
@@ -54,10 +52,16 @@ public class GXMyBatisPlusConfig {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 分页插件
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
-        //攻击 SQL 阻断解析器,防止全表更新与删除
+        // 防止全表更新与删除插件
         interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
-        // 乐观锁
+        // 乐观锁插件
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+        // sql性能规范插件
+        // interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
+        // 多租户插件
+        interceptor.addInnerInterceptor(new TenantLineInnerInterceptor());
+        // 动态表名插件
+        interceptor.addInnerInterceptor(new DynamicTableNameInnerInterceptor());
         return interceptor;
     }
 
