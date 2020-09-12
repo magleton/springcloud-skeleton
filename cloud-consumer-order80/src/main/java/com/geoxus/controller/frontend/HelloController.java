@@ -1,4 +1,4 @@
-package com.geoxus.controller;
+package com.geoxus.controller.frontend;
 
 import com.geoxus.service.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;

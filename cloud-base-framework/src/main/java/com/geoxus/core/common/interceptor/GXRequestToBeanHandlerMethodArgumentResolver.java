@@ -66,7 +66,6 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         }
 
         Map<String, Map<String, Object>> jsonMergeFieldMap = new HashMap<>();
-
         for (Field field : parameterType.getDeclaredFields()) {
             GXMergeSingleFieldToJSONFieldAnnotation annotation = field.getAnnotation(GXMergeSingleFieldToJSONFieldAnnotation.class);
             if (annotation == null) {
@@ -83,7 +82,6 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
                 }
             }
             Map<String, Object> tmpMap = new HashMap<>();
-
             if (!CollUtil.contains(jsonMergeFieldMap.keySet(), dbJSONFieldName)) {
                 tmpMap.put(dbFieldName, fieldValue);
             } else {

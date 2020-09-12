@@ -5,8 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * @auther britton
- * @date 2020-02-18 17:27
+ * @author zj chen <britton@126.com>
+ * @version 0.1
+ * @since 2020-02-18 17:27
  */
 @Configuration
 public class ApplicationContextConfig {
@@ -16,4 +17,3 @@ public class ApplicationContextConfig {
         return new RestTemplate();
     }
 }
-//applicationContext.xml <bean id="" class="">

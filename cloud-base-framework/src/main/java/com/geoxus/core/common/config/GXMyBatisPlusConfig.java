@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.handlers.MybatisMapWrapper;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.handler.TableNameHandler;
 import com.baomidou.mybatisplus.extension.plugins.inner.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -57,11 +59,15 @@ public class GXMyBatisPlusConfig {
         // 乐观锁插件
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         // sql性能规范插件
-        // interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
-        // 多租户插件
-        interceptor.addInnerInterceptor(new TenantLineInnerInterceptor());
+        interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
+        // 多租户插件(请在相应的表中新增tenant_id字段)
+        // interceptor.addInnerInterceptor(new TenantLineInnerInterceptor());
         // 动态表名插件
-        interceptor.addInnerInterceptor(new DynamicTableNameInnerInterceptor());
+        DynamicTableNameInnerInterceptor dynamicTableNameInnerInterceptor = new DynamicTableNameInnerInterceptor();
+        Map<String, TableNameHandler> tableNameHandlerMap = new HashMap<>();
+        tableNameHandlerMap.put("tableName", (sql, tableName) -> tableName);
+        dynamicTableNameInnerInterceptor.setTableNameHandlerMap(tableNameHandlerMap);
+        interceptor.addInnerInterceptor(dynamicTableNameInnerInterceptor);
         return interceptor;
     }
 

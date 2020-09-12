@@ -11,6 +11,7 @@ import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.util.GXCacheKeysUtils;
+import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.entity.GXCoreModelAttributesEntity;
 import com.geoxus.core.framework.mapper.GXCoreModelAttributesMapper;
@@ -139,9 +140,9 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
                 Object value = dict.getStr("fixed_value");
                 if (StrUtil.isBlankIfStr(value)) {
                     value = sourceDict.getObj(attributeName);
-                    if (StrUtil.isBlankIfStr(value)) {
+                    if (StrUtil.isBlankIfStr(value) || GXCommonUtils.getClassDefaultValue(sourceDict.getObj(attributeName).getClass()).equals(value)) {
                         value = dict.getObj("default_value");
-                        if (StrUtil.isBlankIfStr(value)) {
+                        if (StrUtil.isBlankIfStr(value) || GXCommonUtils.getClassDefaultValue(sourceDict.getObj(attributeName).getClass()).equals(value)) {
                             value = RandomUtil.randomString(5);
                         }
                     }

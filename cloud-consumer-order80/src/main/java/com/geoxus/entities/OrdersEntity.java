@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 /**
  * @author zj chen <britton@126.com>
  * @version 1.0
- * @since 1.0
+ * @since 2020-09-12
  */
 @TableName(OrdersConstant.TABLE_NAME)
 @Data
@@ -30,11 +30,21 @@ public class OrdersEntity extends GXBaseEntity {
 
     private String ext;
 
+    private String other;
+
     @TableField(exist = false)
     @GXMergeSingleFieldToJSONFieldAnnotation(dbFieldName = "price", dbJSONFieldName = "ext")
-    private float price;
+    private Float price;
 
     @TableField(exist = false)
     @GXMergeSingleFieldToJSONFieldAnnotation(dbFieldName = "total_price", dbJSONFieldName = "ext")
-    private float totalPrice;
+    private Float totalPrice;
+
+    @TableField(exist = false)
+    @GXMergeSingleFieldToJSONFieldAnnotation(dbFieldName = "province", dbJSONFieldName = "other")
+    private Integer province;
+
+    @TableField(exist = false)
+    @GXMergeSingleFieldToJSONFieldAnnotation(dbFieldName = "city", dbJSONFieldName = "other")
+    private Integer city;
 }

@@ -109,6 +109,7 @@ mybatis-plus:
     call-setters-on-nulls: true
     aggressive-lazy-loading: false
     lazy-loading-enabled: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 debug: false
 
@@ -123,5 +124,3 @@ eureka:
       #defaultZone: http://localhost:7001/eureka
       # 集群
       defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  # 集群版
-
-

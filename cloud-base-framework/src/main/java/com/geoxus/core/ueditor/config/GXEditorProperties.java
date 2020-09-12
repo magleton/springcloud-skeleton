@@ -12,7 +12,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 @ConfigurationProperties(prefix = "ue")
-@PropertySource(value = {"classpath:/ymls/${spring.profiles.active}/ueditor.yml"}, factory = GXYamlPropertySourceFactory.class, encoding = "utf-8")
+@PropertySource(value = {"classpath:/ymls/${spring.profiles.active}/ueditor.yml"},
+        factory = GXYamlPropertySourceFactory.class,
+        encoding = "utf-8",
+        ignoreResourceNotFound = true)
 public class GXEditorProperties {
     /**
      * config.json 路径

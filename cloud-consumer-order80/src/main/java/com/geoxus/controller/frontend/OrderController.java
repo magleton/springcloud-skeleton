@@ -3,7 +3,6 @@ package com.geoxus.controller.frontend;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.HttpStatus;
-import com.geoxus.core.common.annotation.GXLoginAnnotation;
 import com.geoxus.core.common.annotation.GXRequestBodyToEntityAnnotation;
 import com.geoxus.core.common.controller.GXController;
 import com.geoxus.core.common.util.GXResultUtils;
@@ -21,7 +20,7 @@ import javax.validation.Valid;
 /**
  * @author zj chen <britton@126.com>
  * @version 1.0
- * @since 1.0
+ * @since 2020-09-12
  */
 @Slf4j
 @RestController("orderFrontend")
@@ -32,8 +31,8 @@ public class OrderController implements GXController<OrdersEntity> {
 
     @Override
     @PostMapping("/create")
-    @GXLoginAnnotation
-    public GXResultUtils create(@Valid @GXRequestBodyToEntityAnnotation() OrdersEntity order) {
+    //@GXLoginAnnotation
+    public GXResultUtils create(@Valid @GXRequestBodyToEntityAnnotation(jsonFields = {"ext", "other"}) OrdersEntity order) {
         long orderNo = IdUtil.getSnowflake(1, 1).nextId();
         order.setOrderNo(orderNo);
         orderService.create(order, Dict.create().set("author", "枫叶思源"));
