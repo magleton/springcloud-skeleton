@@ -7,12 +7,24 @@ import lombok.Data;
  */
 @Data
 public class GXDataSourceProperties {
-    private String driverClassName;
+    /**
+     * 默认的数据库驱动
+     */
+    private String driverClassName = "com.p6spy.engine.spy.P6SpyDriver";
 
+    /**
+     * 连接的URL
+     */
     private String url;
 
+    /**
+     * 数据库用户名
+     */
     private String username;
 
+    /**
+     * 数据库密码
+     */
     private String password;
     /**
      * Druid默认参数

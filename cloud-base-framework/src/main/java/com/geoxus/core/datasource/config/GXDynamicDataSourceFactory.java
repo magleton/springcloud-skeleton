@@ -11,6 +11,9 @@ import java.sql.SQLException;
  */
 @Slf4j
 public class GXDynamicDataSourceFactory {
+    private GXDynamicDataSourceFactory() {
+    }
+
     public static DruidDataSource buildDruidDataSource(GXDataSourceProperties properties) {
         DruidDataSource druidDataSource = new DruidDataSource();
         druidDataSource.setDbType(properties.getDbType());

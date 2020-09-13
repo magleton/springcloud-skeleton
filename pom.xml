@@ -43,6 +43,7 @@
         <module>seata-account-service2003</module>
         <module>cloud-zuul-gateway9528</module>
         <module>cloud-base-framework</module>
+        <module>cloud-alibaba-canal</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->

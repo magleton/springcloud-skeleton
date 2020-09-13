@@ -1,5 +1,6 @@
 package com.geoxus.core.datasource.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.geoxus.core.datasource.properties.GXDataSourceProperties;
 import com.geoxus.core.datasource.properties.GXDynamicDataSourceProperties;
@@ -22,7 +23,11 @@ public class GXDynamicDataSourceConfig {
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.druid")
     public GXDataSourceProperties dataSourceProperties() {
-        return new GXDataSourceProperties();
+        GXDataSourceProperties gxDataSourceProperties = new GXDataSourceProperties();
+        if (!StrUtil.isEmpty(gxDataSourceProperties.getUrl())) {
+            return gxDataSourceProperties;
+        }
+        return dynamicDataSourceProperties.getDatasource().get("framework");
     }
 
     @Bean
@@ -34,7 +39,7 @@ public class GXDynamicDataSourceConfig {
         dynamicDataSource.setDefaultTargetDataSource(defaultDataSource);
         return dynamicDataSource;
     }
-    
+
     private Map<Object, Object> getDynamicDataSource() {
         Map<String, GXDataSourceProperties> dataSourcePropertiesMap = dynamicDataSourceProperties.getDatasource();
         Map<Object, Object> targetDataSources = new HashMap<>(dataSourcePropertiesMap.size());
