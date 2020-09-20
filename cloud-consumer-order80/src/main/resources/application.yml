@@ -78,6 +78,8 @@ spring:
     template:
       mandatory: true
     publisher-confirm-type: simple
+  profiles:
+    active: dev
 
 mybatis-plus:
   mapper-locations: classpath:/mappers/*Mapper.xml

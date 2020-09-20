@@ -1,11 +1,9 @@
 package com.geoxus.entities;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.geoxus.constant.OrdersConstant;
-import com.geoxus.core.common.annotation.GXMergeSingleFieldToJSONFieldAnnotation;
 import com.geoxus.core.common.entity.GXBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,20 +29,4 @@ public class OrdersEntity extends GXBaseEntity {
     private String ext;
 
     private String other;
-
-    @TableField(exist = false)
-    @GXMergeSingleFieldToJSONFieldAnnotation(dbFieldName = "price", dbJSONFieldName = "ext")
-    private Float price;
-
-    @TableField(exist = false)
-    @GXMergeSingleFieldToJSONFieldAnnotation(dbFieldName = "total_price", dbJSONFieldName = "ext")
-    private Float totalPrice;
-
-    @TableField(exist = false)
-    @GXMergeSingleFieldToJSONFieldAnnotation(dbFieldName = "province", dbJSONFieldName = "other")
-    private Integer province;
-
-    @TableField(exist = false)
-    @GXMergeSingleFieldToJSONFieldAnnotation(dbFieldName = "city", dbJSONFieldName = "other")
-    private Integer city;
 }
