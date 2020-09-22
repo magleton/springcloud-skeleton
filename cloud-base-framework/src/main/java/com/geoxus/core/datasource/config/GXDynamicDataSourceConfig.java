@@ -43,6 +43,7 @@ public class GXDynamicDataSourceConfig {
     private Map<Object, Object> getDynamicDataSource() {
         Map<String, GXDataSourceProperties> dataSourcePropertiesMap = dynamicDataSourceProperties.getDatasource();
         Map<Object, Object> targetDataSources = new HashMap<>(dataSourcePropertiesMap.size());
+        // TODO 此处可以通过在其他地方获取连接信息来新建连接池,比如从另外的数据库读取信息
         dataSourcePropertiesMap.forEach((k, v) -> {
             DruidDataSource druidDataSource = GXDynamicDataSourceFactory.buildDruidDataSource(v);
             targetDataSources.put(k, druidDataSource);

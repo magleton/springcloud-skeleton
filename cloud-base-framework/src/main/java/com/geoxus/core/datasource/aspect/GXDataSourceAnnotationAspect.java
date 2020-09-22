@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 /**
- * 多数据源，切面处理类
+ * 线程数据源切换处理类
  */
 @Aspect
 @Component
@@ -41,13 +41,13 @@ public class GXDataSourceAnnotationAspect {
                 value = targetDataSourceAnnotation.value();
             }
             GXDynamicContextHolder.push(value);
-            log.debug("set datasource is {}", value);
+            log.debug("{}线程设置的数据源是{}", Thread.currentThread().getName(), value);
         }
         try {
             return point.proceed();
         } finally {
             GXDynamicContextHolder.poll();
-            log.debug("clean datasource");
+            log.debug("{}线程清除数据源", Thread.currentThread().getName());
         }
     }
 }

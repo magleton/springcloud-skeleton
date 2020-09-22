@@ -4,11 +4,14 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * 多数据源上下文
+ * 多数据源线程上下文
  */
 public class GXDynamicContextHolder {
-    @SuppressWarnings("unchecked")
     private static final ThreadLocal<Deque<String>> CONTEXT_HOLDER = ThreadLocal.withInitial(ArrayDeque::new);
+
+    private GXDynamicContextHolder() {
+
+    }
 
     /**
      * 获得当前线程数据源
@@ -22,10 +25,10 @@ public class GXDynamicContextHolder {
     /**
      * 设置当前线程数据源
      *
-     * @param dataSource 数据源名称
+     * @param dataSourceName 数据源名称
      */
-    public static void push(String dataSource) {
-        CONTEXT_HOLDER.get().push(dataSource);
+    public static void push(String dataSourceName) {
+        CONTEXT_HOLDER.get().push(dataSourceName);
     }
 
     /**
