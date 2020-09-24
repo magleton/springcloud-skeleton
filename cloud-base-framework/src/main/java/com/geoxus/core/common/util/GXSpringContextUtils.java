@@ -11,11 +11,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Component
-public class GXSpringContextUtils implements ApplicationContextAware {
+public class GXSpringContextUtils {
     private static final Logger log = GXCommonUtils.getLogger(GXSpringContextUtils.class);
 
-    private static ApplicationContext applicationContext;
+    private static final ApplicationContext applicationContext = GXApplicationContextAware.getApplicationContext();
+
+    private GXSpringContextUtils() {
+    }
 
     public static Object getBean(String name) {
         try {
@@ -70,12 +72,17 @@ public class GXSpringContextUtils implements ApplicationContextAware {
         }
     }
 
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
+    @Component
+    private static class GXApplicationContextAware implements ApplicationContextAware {
+        private static ApplicationContext applicationContext;
 
-    @Override
-    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-        GXSpringContextUtils.applicationContext = applicationContext;
+        public static ApplicationContext getApplicationContext() {
+            return applicationContext;
+        }
+
+        @Override
+        public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+            GXApplicationContextAware.applicationContext = applicationContext;
+        }
     }
 }
