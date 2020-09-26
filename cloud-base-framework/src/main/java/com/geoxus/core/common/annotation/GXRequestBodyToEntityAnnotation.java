@@ -27,4 +27,6 @@ public @interface GXRequestBodyToEntityAnnotation {
     boolean validateCoreModelId() default true;
 
     String primaryKey() default "id";
+
+    Class<?> mapstructClazz() default Void.class;
 }

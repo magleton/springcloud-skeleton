@@ -4,17 +4,23 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.annotation.GXMergeSingleFieldToJSONFieldAnnotation;
 import com.geoxus.core.common.annotation.GXRequestBodyToEntityAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
+import com.geoxus.core.common.dto.GXBaseDTO;
+import com.geoxus.core.common.entity.GXBaseEntity;
 import com.geoxus.core.common.exception.GXException;
+import com.geoxus.core.common.mapstruct.GXBaseMapStruct;
 import com.geoxus.core.common.util.GXCommonUtils;
+import com.geoxus.core.common.util.GXSpringContextUtils;
 import com.geoxus.core.common.validator.impl.GXValidatorUtils;
 import com.geoxus.core.common.vo.GXResultCode;
 import com.geoxus.core.framework.service.GXCoreModelAttributesService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;
@@ -29,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -36,6 +43,9 @@ import static cn.hutool.core.map.MapUtil.filter;
 
 @Component
 public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+    @GXFieldCommentAnnotation("日志对象")
+    private static final Logger LOGGER = GXCommonUtils.getLogger(GXRequestToBeanHandlerMethodArgumentResolver.class);
+
     @GXFieldCommentAnnotation(zh = "请求中的参数名字")
     public static final String JSON_REQUEST_BODY = "JSON_REQUEST_BODY";
 
@@ -144,6 +154,18 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
                 GXValidatorUtils.validateEntity(bean, value, groups);
             }
         }
+
+        Class<?> mapstructClazz = gxRequestBodyToEntityAnnotation.mapstructClazz();
+        if(mapstructClazz != Void.class ) {
+            GXBaseMapStruct<GXBaseDTO, GXBaseEntity> convert = Convert.convert(new TypeReference<GXBaseMapStruct<GXBaseDTO, GXBaseEntity>>() {
+            }, GXSpringContextUtils.getBean(mapstructClazz));
+            if(null == convert) {
+                LOGGER.error("DTO转换为Entity失败!请提供正确的MapStruct转换Class");
+                return null;
+            }
+            return convert.dtoToEntity(Convert.convert((Type) parameterType, bean));
+        }
+
         return bean;
     }
 

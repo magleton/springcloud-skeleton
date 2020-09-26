@@ -72,6 +72,10 @@ public class GXSpringContextUtils {
         }
     }
 
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
     @Component
     private static class GXApplicationContextAware implements ApplicationContextAware {
         private static ApplicationContext applicationContext;

@@ -3,7 +3,7 @@ package com.geoxus.core.common.controller;
 import cn.hutool.core.lang.Dict;
 import com.geoxus.core.common.annotation.GXRequestBodyToEntityAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
-import com.geoxus.core.common.entity.GXBaseEntity;
+import com.geoxus.core.common.dto.GXBaseDTO;
 import com.geoxus.core.common.util.GXHttpContextUtils;
 import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.validator.group.GXCreateGroup;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
-public interface GXController<T extends GXBaseEntity> {
+public interface GXControllerDTO<T extends GXBaseDTO> {
     /**
      * 创建数据
      */
