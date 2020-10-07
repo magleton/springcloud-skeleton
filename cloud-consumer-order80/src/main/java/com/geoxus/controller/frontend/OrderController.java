@@ -40,7 +40,7 @@ public class OrderController implements GXControllerDTO<OrdersDTO> {
     public GXResultUtils create(@Valid @GXRequestBodyToEntityAnnotation(mapstructClazz = OrdersMapStruct.class, jsonFields = {"ext", "other"}) OrdersDTO ordersDTO) {
         long orderNo = IdUtil.getSnowflake(1, 1).nextId();
         ordersDTO.setOrderNo(orderNo);
-        OrdersEntity ordersEntity = ordersMapStruct.ordersDTOToOrdersEntity(ordersDTO);
+        OrdersEntity ordersEntity = ordersMapStruct.dtoToEntity(ordersDTO);
         orderService.create(ordersEntity, Dict.create().set("author", "枫叶思源"));
         return GXResultUtils.ok(HttpStatus.HTTP_OK).addKeyValue("order_no", orderNo);
     }

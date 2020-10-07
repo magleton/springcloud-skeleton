@@ -7,5 +7,4 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface OrdersMapStruct extends GXBaseMapStruct<OrdersDTO, OrdersEntity> {
-    OrdersEntity ordersDTOToOrdersEntity(OrdersDTO dto);
 }

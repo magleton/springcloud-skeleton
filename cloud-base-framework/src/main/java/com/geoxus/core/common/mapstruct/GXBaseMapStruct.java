@@ -8,6 +8,8 @@ import com.geoxus.core.common.entity.GXBaseEntity;
  * @version 1.0
  * @since 2020-09-26
  */
-public interface GXBaseMapStruct<T extends GXBaseDTO, E extends GXBaseEntity> {
-    E dtoToEntity(T t);
+public interface GXBaseMapStruct<D extends GXBaseDTO, E extends GXBaseEntity> {
+    E dtoToEntity(D dto);
+
+    D entityToDto(E entity);
 }
