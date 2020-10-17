@@ -1,10 +1,12 @@
 server:
   tomcat:
     uri-encoding: UTF-8
-    max-threads: 1000
-    min-spare-threads: 30
-    remote-ip-header: X-Real-IP
-    protocol-header: X-Forwarded-Proto
+    threads:
+      min-spare: 30
+      max: 1000
+    remoteip:
+      remote-ip-header: X-Real-IP
+      protocol-header: X-Forwarded-Proto
   servlet:
     context-path: /
   port: 80
