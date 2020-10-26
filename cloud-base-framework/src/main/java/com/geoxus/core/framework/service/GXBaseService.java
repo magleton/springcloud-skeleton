@@ -317,6 +317,16 @@ public interface GXBaseService<T> extends IService<T> {
 
     /**
      * 处理用户上传的资源文件
+     * <p>
+     * {@code
+     * "media_info":[
+     * {
+     * "id":1,
+     * "resource_type":"AAAAA",
+     * "oss_url":"http://www.geoxus.io/"
+     * }
+     * ]
+     * }
      *
      * @param target   目标对象
      * @param objectId 模型ID
