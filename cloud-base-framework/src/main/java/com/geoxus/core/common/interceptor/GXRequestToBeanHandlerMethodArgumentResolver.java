@@ -156,7 +156,8 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         }
 
         Class<?> mapstructClazz = gxRequestBodyToEntityAnnotation.mapstructClazz();
-        if(mapstructClazz != Void.class ) {
+        boolean isConvertToEntity = gxRequestBodyToEntityAnnotation.isConvertToEntity();
+        if(mapstructClazz != Void.class && isConvertToEntity) {
             GXBaseMapStruct<GXBaseDTO, GXBaseEntity> convert = Convert.convert(new TypeReference<GXBaseMapStruct<GXBaseDTO, GXBaseEntity>>() {
             }, GXSpringContextUtils.getBean(mapstructClazz));
             if(null == convert) {

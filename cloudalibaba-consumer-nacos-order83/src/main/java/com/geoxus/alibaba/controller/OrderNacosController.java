@@ -10,8 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.Resource;
 
 /**
- * @auther britton
- * @date 2020-02-23 15:01
+ * @author britton
+ * @version 1.0
+ * @since 2020-02-23 15:01
  */
 @RestController
 @Slf4j

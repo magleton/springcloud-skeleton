@@ -29,4 +29,6 @@ public @interface GXRequestBodyToEntityAnnotation {
     String primaryKey() default "id";
 
     Class<?> mapstructClazz() default Void.class;
+
+    boolean isConvertToEntity() default false;
 }
