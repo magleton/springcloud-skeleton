@@ -21,6 +21,7 @@ public class GXShiroServiceImpl implements GXShiroService {
      *
      * @param adminId 管理员ID
      */
+    @SuppressWarnings(value = {"unchecked"})
     public Set<String> getAdminAllPermissions(Long adminId) {
         return Objects.requireNonNull(GXSpringContextUtils.getBean(GXSPermissionsService.class)).getAdminAllPermissions(adminId);
     }
