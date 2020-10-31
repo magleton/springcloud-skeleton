@@ -290,6 +290,11 @@ public interface GXBaseBuilder {
         Set<String> keySet = requestSearchCondition.keySet();
         for (String key : keySet) {
             Object value = requestSearchCondition.getObj(key);
+            if (key.equals(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION)
+                    && searchField.getStr(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION) != null) {
+                sql.WHERE(StrUtil.indexedFormat(searchField.getStr(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION), "'" + value + "%'"));
+                continue;
+            }
             String lastKey = ReUtil.replaceAll(key, "[!<>*^$@#%&]", "");
             if (null == value) {
                 continue;

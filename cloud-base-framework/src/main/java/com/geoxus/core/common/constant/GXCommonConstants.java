@@ -36,6 +36,12 @@ public class GXCommonConstants {
     @GXFieldCommentAnnotation(zh = "状态字段的名字")
     public static final String STATUS_FIELD_NAME = "status";
 
+    @GXFieldCommentAnnotation("请求参数中的多媒体字段名字")
+    public static final String MEDIA_INFO_FIELD_NAME = "media_info";
+
+    @GXFieldCommentAnnotation("自定义搜索条件的字段名字")
+    public static final String CUSTOMER_SEARCH_MIXED_FIELD_CONDITION = "mixed";
+
     private GXCommonConstants() {
     }
 }

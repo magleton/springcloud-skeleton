@@ -18,6 +18,7 @@ import com.geoxus.core.common.mapper.GXBaseMapper;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXSpringContextUtils;
 import com.geoxus.core.framework.entity.GXCoreMediaLibraryEntity;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,8 @@ import java.util.*;
  * @author britton chen <britton@126.com>
  */
 public interface GXBaseService<T> extends IService<T> {
+    Logger logger = GXCommonUtils.getLogger(GXBaseService.class);
+
     /**
      * 获取当前接口的常量字段信息
      *
@@ -339,7 +342,9 @@ public interface GXBaseService<T> extends IService<T> {
         final String mediaFieldName = "media_info";
         Object mediaObj = param.getObj(mediaFieldName);
         if (null == mediaObj) {
-            throw new GXException(StrUtil.format("请求参数param中不存在{}字段", mediaFieldName));
+            //throw new GXException(StrUtil.format("请求参数param中不存在{}字段", mediaFieldName));
+            logger.error(StrUtil.format("请求参数param中不存在{}字段", mediaFieldName));
+            return;
         }
         final List<JSONObject> media = Convert.convert(new TypeReference<List<JSONObject>>() {
         }, mediaObj);
