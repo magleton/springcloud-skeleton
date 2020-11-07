@@ -133,16 +133,6 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
                     dict.set(jsonField, JSONUtil.toJsonStr(filter));
                 }
             }
-            if (isValidatePhone && dict.containsKey(phoneFieldName)) {
-                String phoneNumber = dict.getStr(phoneFieldName);
-                if (GXCommonUtils.checkPhone(phoneNumber)) {
-                    throw new GXException(GXResultCode.WRONG_PHONE.getMsg(), GXResultCode.WRONG_PHONE.getCode());
-                }
-                if (encryptedPhoneFlag) {
-                    phoneNumber = GXCommonUtils.encryptedPhoneNumber(phoneNumber);
-                }
-                dict.set(phoneFieldName, phoneNumber);
-            }
         }
         Object bean = Convert.convert(parameterType, dict);
         Class<?>[] groups = gxRequestBodyToEntityAnnotation.groups();
