@@ -13,6 +13,7 @@ import com.geoxus.core.common.annotation.GXRequestBodyToEntityAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.dto.GXBaseDTO;
 import com.geoxus.core.common.entity.GXBaseEntity;
+import com.geoxus.core.common.event.GXMethodArgumentResolverEvent;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.mapstruct.GXBaseMapStruct;
 import com.geoxus.core.common.util.GXCommonUtils;
@@ -67,9 +68,6 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         final String[] jsonFields = gxRequestBodyToEntityAnnotation.jsonFields();
         boolean fillJSONField = gxRequestBodyToEntityAnnotation.fillJSONField();
         boolean validateEntity = gxRequestBodyToEntityAnnotation.validateEntity();
-        final boolean isValidatePhone = gxRequestBodyToEntityAnnotation.isValidatePhone();
-        final String phoneFieldName = gxRequestBodyToEntityAnnotation.phoneFieldName();
-        final boolean encryptedPhoneFlag = gxRequestBodyToEntityAnnotation.encryptedPhone();
         boolean validateCoreModelId = gxRequestBodyToEntityAnnotation.validateCoreModelId();
         if (null == dict.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME) && validateCoreModelId) {
             throw new GXException(StrUtil.format("请传递{}参数", GXCommonConstants.CORE_MODEL_PRIMARY_NAME));
@@ -109,26 +107,16 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         if (validateCoreModelId && null != coreModelId) {
             for (String jsonField : jsonFields) {
                 final String json = Optional.ofNullable(dict.getStr(jsonField)).orElse("{}");
-                final Dict targetDict = gxCoreModelAttributesService.getModelAttributesDefaultValue(coreModelId, jsonField, json);
+                final Dict dbFieldDict = gxCoreModelAttributesService.getModelAttributesDefaultValue(coreModelId, jsonField, json);
                 Dict tmpDict = JSONUtil.toBean(json, Dict.class);
-                if (isValidatePhone && tmpDict.containsKey(phoneFieldName)) {
-                    String phoneNumber = tmpDict.getStr(phoneFieldName);
-                    if (GXCommonUtils.checkPhone(phoneNumber)) {
-                        throw new GXException(GXResultCode.WRONG_PHONE.getMsg(), GXResultCode.WRONG_PHONE.getCode());
-                    }
-                    if (encryptedPhoneFlag) {
-                        phoneNumber = GXCommonUtils.encryptedPhoneNumber(phoneNumber);
-                    }
-                    tmpDict.set(phoneFieldName, phoneNumber);
-                    targetDict.set(phoneFieldName, phoneNumber);
-                }
+                GXCommonUtils.publishEvent(new GXMethodArgumentResolverEvent<Dict>(tmpDict , dbFieldDict , "" , Dict.create() , ""));
                 final Set<String> tmpDictKey = tmpDict.keySet();
-                if (!tmpDict.isEmpty() && !CollUtil.containsAll(targetDict.keySet(), tmpDictKey)) {
-                    throw new GXException(StrUtil.format("{}字段参数不匹配(系统预置: {} , 实际请求: {})", jsonField, targetDict.keySet(), tmpDictKey), GXResultCode.PARSE_REQUEST_JSON_ERROR.getCode());
+                if (!tmpDict.isEmpty() && !CollUtil.containsAll(dbFieldDict.keySet(), tmpDictKey)) {
+                    throw new GXException(StrUtil.format("{}字段参数不匹配(系统预置: {} , 实际请求: {})", jsonField, dbFieldDict.keySet(), tmpDictKey), GXResultCode.PARSE_REQUEST_JSON_ERROR.getCode());
                 }
-                Map<String, Object> filter = filter(targetDict, (Map.Entry<String, Object> t) -> null != tmpDict.getStr(t.getKey()));
-                if (fillJSONField && !targetDict.isEmpty()) {
-                    dict.set(jsonField, JSONUtil.toJsonStr(targetDict));
+                Map<String, Object> filter = filter(dbFieldDict, (Map.Entry<String, Object> t) -> null != tmpDict.getStr(t.getKey()));
+                if (fillJSONField && !dbFieldDict.isEmpty()) {
+                    dict.set(jsonField, JSONUtil.toJsonStr(dbFieldDict));
                 } else if (!filter.isEmpty()) {
                     dict.set(jsonField, JSONUtil.toJsonStr(filter));
                 }

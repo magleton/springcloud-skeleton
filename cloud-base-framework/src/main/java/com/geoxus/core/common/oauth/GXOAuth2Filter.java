@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 @Slf4j
+@SuppressWarnings("all")
 public class GXOAuth2Filter extends AuthenticatingFilter {
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {

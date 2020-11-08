@@ -3,6 +3,7 @@ package com.geoxus.core.framework.handler;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -71,6 +72,7 @@ public class GXJsonToListTypeHandler extends BaseTypeHandler<List<Map<String, Ob
     }
 
     private List<Map<String, Object>> jsonToList(String from, int coreModelId) {
+        from = StrUtil.isEmpty(from) ? "[]" : from;
         final GXCoreModelAttributePermissionService coreModelAttributePermissionService = GXSpringContextUtils.getBean(GXCoreModelAttributePermissionService.class);
         if (!JSONUtil.isJson(from) || (JSONUtil.isJsonObj(from) && JSONUtil.parseObj(from).isEmpty())) {
             return Collections.emptyList();

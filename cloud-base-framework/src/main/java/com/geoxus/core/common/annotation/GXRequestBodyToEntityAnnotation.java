@@ -18,12 +18,6 @@ public @interface GXRequestBodyToEntityAnnotation {
 
     boolean validateEntity() default true;
 
-    String phoneFieldName() default "phone";
-
-    boolean isValidatePhone() default false;
-
-    boolean encryptedPhone() default true;
-
     boolean validateCoreModelId() default true;
 
     String primaryKey() default "id";

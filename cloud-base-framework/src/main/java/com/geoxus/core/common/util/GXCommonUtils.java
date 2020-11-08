@@ -2,6 +2,7 @@ package com.geoxus.core.common.util;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.convert.ConvertException;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.*;
@@ -897,5 +898,21 @@ public class GXCommonUtils {
     public static boolean checkTelephone(String telephone) {
         String regex = "^(0\\d{2}-\\d{8}(-\\d{1,4})?)|(0\\d{3}-\\d{7,8}(-\\d{1,4})?)$";
         return !ReUtil.isMatch(regex, telephone);
+    }
+
+    /**
+     * 将任意对象转换成Dict
+     *
+     * @param obj
+     * @return
+     */
+    public static Dict convertAnyObjectToDict(Object obj) {
+        try {
+            return Convert.convert(new cn.hutool.core.lang.TypeReference<Dict>() {
+            }, obj);
+        } catch (ConvertException e) {
+            LOG.error("转换出错了", e);
+        }
+        return Dict.create();
     }
 }

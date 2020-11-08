@@ -2,6 +2,7 @@ package com.geoxus.core.framework.handler;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
@@ -76,7 +77,7 @@ public class GXJsonToMapTypeHandler extends BaseTypeHandler<Map<String, Object>>
     }
 
     private Map<String, Object> jsonToMap(String from, int coreModelId) {
-        from = from.isEmpty() ? "{}" : from;
+        from = StrUtil.isEmpty(from) ? "{}" : from;
         if (coreModelId == 0) {
             if (JSONUtil.isJson(from)) {
                 return JSONUtil.toBean(from, Dict.class);
