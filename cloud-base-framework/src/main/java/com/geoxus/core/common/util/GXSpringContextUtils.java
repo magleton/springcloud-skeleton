@@ -14,7 +14,7 @@ import java.util.Map;
 public class GXSpringContextUtils {
     private static final Logger log = GXCommonUtils.getLogger(GXSpringContextUtils.class);
 
-    private static final ApplicationContext applicationContext = GXApplicationContextAware.getApplicationContext();
+    private static final ApplicationContext applicationContext = GXApplicationContextSingleton.INSTANCE.getApplicationContext();
 
     private GXSpringContextUtils() {
     }
@@ -76,17 +76,29 @@ public class GXSpringContextUtils {
         return applicationContext;
     }
 
-    @Component
-    private static class GXApplicationContextAware implements ApplicationContextAware {
-        private static ApplicationContext applicationContext;
+    private enum GXApplicationContextSingleton {
+        INSTANCE;
 
-        public static ApplicationContext getApplicationContext() {
+        ApplicationContext applicationContext;
+
+        GXApplicationContextSingleton() {
+        }
+
+        public ApplicationContext getApplicationContext() {
             return applicationContext;
         }
 
+        private void setApplicationContext(ApplicationContext applicationContext) {
+            this.applicationContext = applicationContext;
+        }
+    }
+
+    @Component
+    @SuppressWarnings("all")
+    private static class GXApplicationContextAware implements ApplicationContextAware {
         @Override
         public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-            GXApplicationContextAware.applicationContext = applicationContext;
+            GXApplicationContextSingleton.INSTANCE.setApplicationContext(applicationContext);
         }
     }
 }

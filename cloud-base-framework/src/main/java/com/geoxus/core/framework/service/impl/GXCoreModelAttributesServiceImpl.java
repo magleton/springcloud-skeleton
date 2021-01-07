@@ -129,11 +129,11 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
                     // 根据属性的特定元数据处理不同的情况
                 }
                 Integer required = dict.getInt("required");
+                String errorTips = dict.getStr("error_tips");
+                if (StrUtil.isBlank(errorTips)) {
+                    errorTips = StrUtil.format("{}.{}为必填字段", modelAttributeField, attributeName);
+                }
                 if (required == 1 && null == sourceDict.getObj(attributeName) && null == dict.getObj("default_value")) {
-                    String errorTips = dict.getStr("error_tips");
-                    if (StrUtil.isBlank(errorTips)) {
-                        errorTips = StrUtil.format("{}.{}为必填字段", modelAttributeField, attributeName);
-                    }
                     errorsDict.set(attributeName, errorTips);
                     continue;
                 }
@@ -143,7 +143,12 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
                     if (StrUtil.isBlankIfStr(value) || GXCommonUtils.getClassDefaultValue(sourceDict.getObj(attributeName).getClass()).equals(value)) {
                         value = dict.getObj("default_value");
                         if (StrUtil.isBlankIfStr(value) || GXCommonUtils.getClassDefaultValue(sourceDict.getObj(attributeName).getClass()).equals(value)) {
-                            value = RandomUtil.randomString(5);
+                           if(null != dict.getObj("is_auto_generation") && dict.getInt("is_auto_generation") == 1) {
+                               value = RandomUtil.randomString(5);
+                           }else{
+                               errorsDict.set(attributeName, errorTips);
+                               continue;
+                           }
                         }
                     }
                 }
