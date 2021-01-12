@@ -20,6 +20,8 @@ shiro:
       value: anon
     - key: /swagger-ui.html/**
       value: anon
+    - key: /doc.html/**
+      value: anon
     - key: /webjars/**
       value: anon
     - key: /swagger-resources/**
