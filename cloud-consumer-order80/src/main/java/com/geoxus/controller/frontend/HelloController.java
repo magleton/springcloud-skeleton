@@ -1,5 +1,7 @@
 package com.geoxus.controller.frontend;
 
+import cn.hutool.core.lang.Dict;
+import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.service.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,7 @@ public class HelloController {
     private HelloService helloService;
 
     @GetMapping("/index")
-    public String index(@RequestParam("name") String name) {
-        return helloService.test() + " : 枫叶思源 : " + name;
+    public GXResultUtils index(@RequestParam("name") String name) {
+        return GXResultUtils.ok(Dict.create().set("name", name).set("age", 23).set("address" , "四春生"));
     }
 }

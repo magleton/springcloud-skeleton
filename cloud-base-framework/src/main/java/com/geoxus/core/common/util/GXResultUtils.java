@@ -76,7 +76,7 @@ public class GXResultUtils extends HashMap<String, Object> {
 
     public static GXResultUtils ok(Map<String, Object> map) {
         GXResultUtils r = new GXResultUtils();
-        r.putAll(map);
+        r.putData(map);
         return r;
     }
 
@@ -84,6 +84,7 @@ public class GXResultUtils extends HashMap<String, Object> {
         return new GXResultUtils();
     }
 
+    @Override
     public GXResultUtils put(String key, Object value) {
         super.put(key, value);
         return this;
