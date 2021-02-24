@@ -20,7 +20,6 @@ import com.geoxus.core.common.validator.GXValidateDBUnique;
 import com.geoxus.core.common.vo.GXBusinessStatusCode;
 import com.geoxus.core.common.vo.response.GXPagination;
 import com.geoxus.core.framework.service.GXBaseService;
-import com.geoxus.core.framework.service.GXCoreMediaLibraryService;
 
 import javax.validation.ConstraintValidatorContext;
 import java.util.*;
@@ -172,52 +171,6 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
             throw new GXException(StrUtil.format("请指定数据库表的名字 , 验证的字段 {} , 验证的值 : {}", fieldName, value));
         }
         return checkRecordIsUnique(tableName, Dict.create().set(fieldName, value)) > 1;
-    }
-
-    /**
-     * 合并分页数据中的每条数据的资源文件
-     * <pre>
-     *     {@code
-     *     mergePaginationCoreMediaLibrary(pagination,"bannerId")
-     *     }
-     * </pre>
-     *
-     * @param pagination 分页数据
-     * @param modelIdKey 分页数据中模型的key,一般为数据表主键名字的驼峰名字
-     * @return GXPagination
-     */
-    default GXPagination<Dict> mergePaginationCoreMediaLibrary(GXPagination<Dict> pagination, String modelIdKey) {
-        final GXCoreMediaLibraryService coreMediaLibraryService = GXSpringContextUtils.getBean(GXCoreMediaLibraryService.class);
-        final List<?> records = pagination.getRecords();
-        for (Object record : records) {
-            final Dict o = (Dict) record;
-            assert coreMediaLibraryService != null;
-            o.set("media", coreMediaLibraryService.getMediaByCondition(Dict.create().set("object_id", o.getLong(modelIdKey)).set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, o.getLong("coreModelId"))));
-        }
-        return pagination;
-    }
-
-    /**
-     * 合并分页数据中的每条数据的资源文件
-     * <pre>
-     *     {@code
-     *     mergePaginationCoreMediaLibrary(pagination)
-     *     }
-     * </pre>
-     *
-     * @param pagination 分页数据
-     * @return GXPagination
-     */
-    default GXPagination<Dict> mergePaginationCoreMediaLibrary(GXPagination<Dict> pagination) {
-        String modelIdKey = getPrimaryKey();
-        final GXCoreMediaLibraryService coreMediaLibraryService = GXSpringContextUtils.getBean(GXCoreMediaLibraryService.class);
-        final List<?> records = pagination.getRecords();
-        for (Object record : records) {
-            final Dict o = (Dict) record;
-            assert coreMediaLibraryService != null;
-            o.set("media", coreMediaLibraryService.getMediaByCondition(Dict.create().set("object_id", o.getLong(modelIdKey)).set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, o.getLong("coreModelId"))));
-        }
-        return pagination;
     }
 
     /**

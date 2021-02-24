@@ -12,12 +12,10 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.event.GXBaseEvent;
-import com.geoxus.core.common.event.GXMediaLibraryEvent;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.mapper.GXBaseMapper;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXSpringContextUtils;
-import com.geoxus.core.framework.entity.GXCoreMediaLibraryEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -262,20 +260,6 @@ public interface GXBaseService<T> extends IService<T> {
     }
 
     /**
-     * 获取实体对象的媒体文件
-     *
-     * @param objectId    实体对象模型ID
-     * @param coreModelId 实体模型ID
-     * @param param       其他参数
-     * @return Collection
-     */
-    default Collection<GXCoreMediaLibraryEntity> getMedia(int objectId, int coreModelId, Dict param) {
-        final GXCoreMediaLibraryService mediaLibraryService = GXSpringContextUtils.getBean(GXCoreMediaLibraryService.class);
-        assert mediaLibraryService != null;
-        return mediaLibraryService.listByMap(param.set("object_id", objectId).set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId));
-    }
-
-    /**
      * 更新JSON字段中的某一个值
      *
      * @param clazz     Class对象
@@ -316,46 +300,6 @@ public interface GXBaseService<T> extends IService<T> {
      */
     default Cache getSpringCache(String cacheName) {
         return GXCommonUtils.getSpringCache(cacheName);
-    }
-
-    /**
-     * 处理用户上传的资源文件
-     * <p>
-     * {@code
-     * "media_info":[
-     * {
-     * "id":1,
-     * "resource_type":"AAAAA",
-     * "oss_url":"http://www.geoxus.io/"
-     * }
-     * ]
-     * }
-     *
-     * @param target   目标对象
-     * @param objectId 模型ID
-     * @param param    参数
-     */
-    default void handleMedia(T target, @NotNull long objectId, @NotNull Dict param) {
-        if (param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME) == null) {
-            throw new GXException(StrUtil.format("请在param参数中传递{}字段", GXCommonConstants.CORE_MODEL_PRIMARY_NAME));
-        }
-        final String mediaFieldName = "media_info";
-        Object mediaObj = param.getObj(mediaFieldName);
-        if (null == mediaObj) {
-            //throw new GXException(StrUtil.format("请求参数param中不存在{}字段", mediaFieldName));
-            logger.error(StrUtil.format("请求参数param中不存在{}字段", mediaFieldName));
-            return;
-        }
-        final List<JSONObject> media = Convert.convert(new TypeReference<List<JSONObject>>() {
-        }, mediaObj);
-        if (null != media) {
-            Dict data = Dict.create()
-                    .set("media", media)
-                    .set("object_id", objectId)
-                    .set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME));
-            final GXMediaLibraryEvent<T> event = new GXMediaLibraryEvent<>(target, data);
-            publishEvent(event);
-        }
     }
 
     /**

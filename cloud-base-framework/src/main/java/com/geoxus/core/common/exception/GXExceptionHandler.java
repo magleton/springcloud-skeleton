@@ -1,6 +1,7 @@
 package com.geoxus.core.common.exception;
 
 import cn.hutool.http.HttpStatus;
+import com.geoxus.core.common.exception.GXTokenEmptyException;
 import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.vo.GXResultCode;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;

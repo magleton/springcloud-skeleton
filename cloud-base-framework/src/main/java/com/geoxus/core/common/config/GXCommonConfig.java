@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.geoxus.core.common.factory.GXYamlPropertySourceFactory;
-import com.geoxus.core.common.interceptor.GXCustomMultipartResolver;
 import com.geoxus.core.common.validator.impl.GXValidateDBUniqueValidator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -20,7 +19,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.unit.DataSize;
-import org.springframework.web.multipart.MultipartResolver;
 
 import javax.servlet.MultipartConfigElement;
 import java.io.IOException;
@@ -45,12 +43,6 @@ public class GXCommonConfig {
         factory.setMaxFileSize(DataSize.ofMegabytes(10L));
         factory.setMaxRequestSize(DataSize.ofMegabytes(20L));
         return factory.createMultipartConfig();
-    }
-
-    @Bean
-    @ConditionalOnExpression("'${enable-fileupload-progress}'.equals('true')")
-    public MultipartResolver multipartResolver() {
-        return new GXCustomMultipartResolver();
     }
 
     @Bean

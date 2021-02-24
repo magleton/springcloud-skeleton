@@ -6,7 +6,6 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.core.common.constant.GXCommonConstants;
-import com.geoxus.core.common.service.GXSAdminHasRolesService;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXSpringContextUtils;
 import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
@@ -40,7 +39,9 @@ public class GXCoreModelAttributePermissionServiceImpl extends ServiceImpl<GXCor
         }
         if (currentAdminId > 0) {
             users.add(currentAdminId.toString());
-            final Dict adminRoles = Objects.requireNonNull(GXSpringContextUtils.getBean(GXSAdminHasRolesService.class)).getAdminRoles(currentAdminId);
+            // TODO 通过currentAdminId获取当前用户的角色列表
+            // Objects.requireNonNull(GXSpringContextUtils.getBean(GXSAdminHasRolesService.class)).getAdminRoles(currentAdminId);
+            final Dict adminRoles = Dict.create();
             roles = adminRoles.keySet().stream().map(r -> Convert.toStr(r, "0")).collect(Collectors.toList());
         }
         for (Dict dict : attributes) {

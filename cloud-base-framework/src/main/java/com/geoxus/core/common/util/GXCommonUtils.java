@@ -727,22 +727,6 @@ public class GXCommonUtils {
     }
 
     /**
-     * 获取当前登录用户的ID
-     * 0  : 表示普通用户
-     * >0 : 确定管理员
-     *
-     * @return Long
-     */
-    public static long getCurrentSessionUserId() {
-        try {
-            return GXShiroUtils.getAdminId();
-        } catch (Exception e) {
-            GXCommonUtils.getLogger(GXCommonUtils.class).error(e.getMessage(), e);
-        }
-        return 0;
-    }
-
-    /**
      * 获取实体的表名字
      *
      * @param clazz Class
@@ -914,5 +898,16 @@ public class GXCommonUtils {
             LOG.error("转换出错了", e);
         }
         return Dict.create();
+    }
+
+    /**
+     * 获取当前登录用户的ID
+     * 0  : 表示普通用户
+     * >0 : 确定管理员
+     *
+     * @return Long
+     */
+    public static long getCurrentSessionUserId() {
+        return 0L;
     }
 }
