@@ -1,6 +1,7 @@
 package com.geoxus.shiro.services;
 
-import com.geoxus.core.common.entity.GXSPermissionsEntity;
+import com.geoxus.core.common.service.GXBusinessService;
+import com.geoxus.shiro.entities.GXSPermissionsEntity;
 
 import java.util.Collections;
 import java.util.HashSet;

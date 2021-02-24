@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cloud-geoxus-shiro</artifactId>
+    <artifactId>cloud-base-shiro</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -18,7 +18,7 @@
 <dependencies>
     <dependency>
         <groupId>com.geoxus.springcloud</groupId>
-        <artifactId>cloud-geoxus-commons</artifactId>
+        <artifactId>cloud-base-commons</artifactId>
         <version>${project.version}</version>
     </dependency>
     <dependency>

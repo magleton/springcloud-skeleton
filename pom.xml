@@ -46,8 +46,8 @@
         <module>cloud-alibaba-canal</module>
         <module>cloud-dynamic-datasource</module>
         <module>cloud-seata-dynamic-datasource</module>
-        <module>cloud-geoxus-shiro</module>
-        <module>cloud-geoxus-commons</module>
+        <module>cloud-base-shiro</module>
+        <module>cloud-base-commons</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->
