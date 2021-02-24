@@ -1,10 +1,10 @@
 package com.geoxus.alibaba.service.impl;
 
 
-import com.geoxus.alibaba.dao.AccountDao;
+import com.geoxus.alibaba.mapper.AccountMapper;
 import com.geoxus.alibaba.service.AccountService;
+import com.geoxus.core.common.util.GXCommonUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,14 +13,15 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 账户业务实现类
- * Created by zzyy on 2019/11/11.
+ *
+ * @author britton
  */
 @Service
 public class AccountServiceImpl implements AccountService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
+    private static final Logger LOGGER = GXCommonUtils.getLogger(AccountServiceImpl.class);
 
     @Resource
-    AccountDao accountDao;
+    AccountMapper accountMapper;
 
     /**
      * 扣减账户余额
@@ -35,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        accountDao.decrease(userId, money);
+        accountMapper.decrease(userId, money);
         LOGGER.info("------->account-service中扣减账户余额结束");
     }
 }

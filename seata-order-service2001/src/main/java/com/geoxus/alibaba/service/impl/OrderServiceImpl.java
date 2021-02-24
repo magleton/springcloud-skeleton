@@ -1,7 +1,7 @@
 package com.geoxus.alibaba.service.impl;
 
-import com.geoxus.alibaba.dao.OrderDao;
-import com.geoxus.alibaba.domain.Order;
+import com.geoxus.alibaba.mapper.OrderMapper;
+import com.geoxus.alibaba.entities.OrderEntity;
 import com.geoxus.alibaba.service.AccountService;
 import com.geoxus.alibaba.service.OrderService;
 import com.geoxus.alibaba.service.StorageService;
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * @auther britton
- * @date 2020-02-26 15:20
+ * @author  britton
+ * @since 2021-02-24
  */
 @Service
 @Slf4j
 public class OrderServiceImpl implements OrderService {
     @Resource
-    private OrderDao orderDao;
+    private OrderMapper orderMapper;
 
     @Resource
     private StorageService storageService;
@@ -33,10 +33,10 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @GlobalTransactional(name = "fsp-create-order", rollbackFor = Exception.class)
-    public void create(Order order) {
+    public void create(OrderEntity order) {
         log.info("----->开始新建订单");
         //1 新建订单
-        orderDao.create(order);
+        orderMapper.create(order);
 
         //2 扣减库存
         log.info("----->订单微服务开始调用库存，做扣减Count");
@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
 
         //4 修改订单状态，从零到1,1代表已经完成
         log.info("----->修改订单状态开始");
-        orderDao.update(order.getUserId(), 0);
+        orderMapper.update(order.getUserId(), 0);
         log.info("----->修改订单状态结束");
 
         log.info("----->下订单结束了，O(∩_∩)O哈哈~");

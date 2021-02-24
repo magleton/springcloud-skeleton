@@ -1,7 +1,7 @@
 package com.geoxus.alibaba.controller;
 
 import com.geoxus.alibaba.service.StorageService;
-import com.geoxus.alibaba.domain.CommonResult;
+import com.geoxus.core.common.util.GXResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +15,8 @@ public class StorageController {
      * 扣减库存
      */
     @RequestMapping("/storage/decrease")
-    public CommonResult<Object> decrease(Long productId, Integer count) {
+    public GXResultUtils decrease(Long productId, Integer count) {
         storageService.decrease(productId, count);
-        return new CommonResult<>(200, "扣减库存成功！");
+        return GXResultUtils.ok(200, "扣减库存成功！");
     }
 }

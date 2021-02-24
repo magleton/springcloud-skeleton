@@ -1,11 +1,11 @@
 package com.geoxus.alibaba.service;
 
-import com.geoxus.alibaba.domain.Order;
+import com.geoxus.alibaba.entities.OrderEntity;
 
 /**
- * @auther britton
- * @date 2020-02-26 15:19
+ * @author britton
+ * @since 2021-02-24
  */
 public interface OrderService {
-    void create(Order order);
+    void create(OrderEntity order);
 }

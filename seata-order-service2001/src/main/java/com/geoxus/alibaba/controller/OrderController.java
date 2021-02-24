@@ -1,16 +1,16 @@
 package com.geoxus.alibaba.controller;
 
-import com.geoxus.alibaba.domain.CommonResult;
-import com.geoxus.alibaba.domain.Order;
+import com.geoxus.alibaba.entities.OrderEntity;
 import com.geoxus.alibaba.service.OrderService;
+import com.geoxus.core.common.util.GXResultUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
 /**
- * @auther britton
- * @date 2020-02-26 15:24
+ * @author  britton
+ * @since 2021-02-24
  */
 @RestController
 public class OrderController {
@@ -18,8 +18,8 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/order/create")
-    public CommonResult<Object> create(Order order) {
-        orderService.create(order);
-        return new CommonResult<>(200, "订单创建成功");
+    public GXResultUtils create(OrderEntity orderEntity) {
+        orderService.create(orderEntity);
+        return GXResultUtils.ok(200, "订单创建成功");
     }
 }

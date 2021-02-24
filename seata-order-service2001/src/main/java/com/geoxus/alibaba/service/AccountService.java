@@ -1,6 +1,6 @@
 package com.geoxus.alibaba.service;
 
-import com.geoxus.alibaba.domain.CommonResult;
+import com.geoxus.core.common.util.GXResultUtils;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 
 /**
- * @auther britton
- * @date 2020-02-26 15:22
+ * @author  britton
+ * @since 2021-02-24
  */
 @FeignClient(value = "seata-account-service")
 public interface AccountService {
     @PostMapping(value = "/account/decrease")
-    CommonResult decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money);
+    GXResultUtils decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money);
 }

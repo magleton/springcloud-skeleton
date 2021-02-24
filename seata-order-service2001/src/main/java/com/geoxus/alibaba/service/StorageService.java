@@ -1,16 +1,16 @@
 package com.geoxus.alibaba.service;
 
-import com.geoxus.alibaba.domain.CommonResult;
+import com.geoxus.core.common.util.GXResultUtils;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * @auther britton
- * @date 2020-02-26 15:22
+ * @author  britton
+ * @since 2021-02-24
  */
 @FeignClient(value = "seata-storage-service")
 public interface StorageService {
     @PostMapping(value = "/storage/decrease")
-    CommonResult decrease(@RequestParam("productId") Long productId, @RequestParam("count") Integer count);
+    GXResultUtils decrease(@RequestParam("productId") Long productId, @RequestParam("count") Integer count);
 }

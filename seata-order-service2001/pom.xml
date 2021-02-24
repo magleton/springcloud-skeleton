@@ -12,26 +12,31 @@
     <artifactId>seata-order-service2001</artifactId>
 
     <dependencies>
-        <!--nacos-->
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!--nacos-->
+        <!--<dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
+        </dependency>-->
         <!--seata-->
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+            <groupId>com.geoxus</groupId>
+            <artifactId>cloud-base-framework</artifactId>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>seata-all</artifactId>
-                    <groupId>io.seata</groupId>
+                    <groupId>com.geoxus.springcloud</groupId>
+                    <artifactId>cloud-dynamic-datasource</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>io.seata</groupId>
-            <artifactId>seata-all</artifactId>
-            <version>1.4.1</version>
+            <groupId>com.geoxus.springcloud</groupId>
+            <artifactId>cloud-seata-dynamic-datasource</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <!--feign-->
         <dependency>
