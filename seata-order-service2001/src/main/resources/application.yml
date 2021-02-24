@@ -2,8 +2,10 @@ server:
   port: 2001
 
 spring:
+  profiles:
+    active: dev
   rabbitmq:
-    host: 192.168.56.101
+    host: 192.168.1.102
     port: 5672
     username: britton
     password: britton
@@ -12,13 +14,14 @@ spring:
       mandatory: true
     publisher-confirm-type: simple
   redis:
-    host: 192.168.56.101
+    host: 192.168.1.102
   application:
     name: seata-order-service
   cloud:
     alibaba:
       seata:
         tx-service-group: fsp_tx_group
+
     nacos:
       discovery:
         server-addr: localhost:8848
@@ -26,7 +29,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-      url: jdbc:p6spy:mysql://192.168.56.101:3306/geoxus?useSSL=false&useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false
+      url: jdbc:p6spy:mysql://192.168.1.102:3306/geoxus?useSSL=false&useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false
       #driver-class-name: com.mysql.jdbc.Driver
       #url: jdbc:mysql://xx.xx.xx.xx:3306/xx?useSSL=false&useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false
       username: britton
@@ -69,3 +72,47 @@ logging:
 
 seata:
   enable-auto-data-source-proxy: false
+
+mybatis-plus:
+  mapper-locations: classpath:/mappers/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.geoxus.core.framework.entity;com.geoxus.modules.*.entity
+  typeEnumsPackage: com.geoxus.core.framework.entity.enums;com.geoxus.modules.*.entity.enums
+  typeHandlersPackage: com.geoxus.core.framework.handlers
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: not_empty
+      #驼峰下划线转换
+      db-column-underline: true
+      #数据库大写下划线转换
+      capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      column-format: "%s"
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    aggressive-lazy-loading: false
+    lazy-loading-enabled: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+eureka:
+  client:
+    #表示是否将自己注册进EurekaServer默认为true。
+    #register-with-eureka: false
+    #是否从EurekaServer抓取已有的注册信息，默认为true。单节点无所谓，集群必须设置为true才能配合ribbon使用负载均衡
+    #fetchRegistry: false
+    service-url:
+      #单机
+      defaultZone: http://192.168.1.100:7001/eureka
+      # 集群
+      #defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  # 集群版

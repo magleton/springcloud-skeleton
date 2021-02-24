@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 @PropertySource(value = {"classpath:/ymls/${spring.profiles.active}/datasource.yml"},
         factory = GXDSYamlPropertySourceFactory.class,
-        ignoreResourceNotFound = true)
+        ignoreResourceNotFound = false)
 @ConfigurationProperties(prefix = "dynamic")
 public class GXDynamicDataSourceProperties {
     private Map<String, GXDataSourceProperties> datasource = new LinkedHashMap<>();

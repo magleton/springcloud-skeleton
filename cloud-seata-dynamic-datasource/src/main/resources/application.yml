@@ -2,6 +2,6 @@ spring:
   cloud:
     alibaba:
       seata:
-        tx-service-group: seata-account-service-seata-service-group
+        tx-service-group: fsp_tx_group
 seata:
   enable-auto-data-source-proxy: false
