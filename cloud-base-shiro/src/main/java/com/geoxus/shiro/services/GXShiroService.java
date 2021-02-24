@@ -1,10 +1,11 @@
 package com.geoxus.shiro.services;
 
 import cn.hutool.core.lang.Dict;
+import com.geoxus.core.common.service.GXSessionService;
 
 import java.util.Set;
 
-public interface GXShiroService {
+public interface GXShiroService extends GXSessionService {
     /**
      * 获取当前登录管理员的所有权限列表
      * 权限包括:

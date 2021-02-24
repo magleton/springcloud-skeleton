@@ -67,7 +67,7 @@ public class GXDynamicDataSourceConfig {
             }
             return (DataSource) o;
         } catch (ClassNotFoundException e) {
-            log.info("类未找到");
+            log.info("未找到Seata的DataSourceProxy类,将使用原始的DataSource对象!!!!");
         }
         return dataSource;
     }

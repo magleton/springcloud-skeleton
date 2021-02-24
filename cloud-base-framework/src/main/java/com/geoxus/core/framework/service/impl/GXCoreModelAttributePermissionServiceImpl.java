@@ -6,6 +6,7 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.core.common.constant.GXCommonConstants;
+import com.geoxus.core.common.service.GXSessionService;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXSpringContextUtils;
 import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
@@ -26,13 +27,14 @@ public class GXCoreModelAttributePermissionServiceImpl extends ServiceImpl<GXCor
     @Override
     @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #coreModelId")
     public Dict getModelAttributePermissionByCoreModelId(int coreModelId, Dict param) {
+        GXSessionService sessionService = GXSpringContextUtils.getBean(GXSessionService.class);
         final List<Dict> attributes = baseMapper.getModelAttributePermissionByModelId(Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId));
         final Dict data = Dict.create();
         final Dict jsonFieldDict = Dict.create();
         final Dict dbFieldDict = Dict.create();
         List<String> roles = CollUtil.newArrayList();
         final List<String> users = CollUtil.newArrayList();
-        final Long currentAdminId = GXCommonUtils.getCurrentSessionUserId();
+        final Long currentAdminId = Objects.requireNonNull(sessionService).currentSessionUserId(); // GXCommonUtils.getCurrentSessionUserId();
         final Long superAdminId = GXCommonUtils.getEnvironmentValue("super.admin.id", Long.class);
         if (superAdminId > 0 && currentAdminId.equals(superAdminId)) {
             return Dict.create();
@@ -41,7 +43,7 @@ public class GXCoreModelAttributePermissionServiceImpl extends ServiceImpl<GXCor
             users.add(currentAdminId.toString());
             // TODO 通过currentAdminId获取当前用户的角色列表
             // Objects.requireNonNull(GXSpringContextUtils.getBean(GXSAdminHasRolesService.class)).getAdminRoles(currentAdminId);
-            final Dict adminRoles = Dict.create();
+            final Dict adminRoles = sessionService.adminRoles(currentAdminId); //Dict.create();
             roles = adminRoles.keySet().stream().map(r -> Convert.toStr(r, "0")).collect(Collectors.toList());
         }
         for (Dict dict : attributes) {

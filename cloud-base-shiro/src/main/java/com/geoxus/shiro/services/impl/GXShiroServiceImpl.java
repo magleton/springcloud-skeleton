@@ -52,4 +52,14 @@ public class GXShiroServiceImpl implements GXShiroService {
         }
         return adminData.getLong("is_super_admin") == 1;
     }
+
+    @Override
+    public Long currentSessionUserId() {
+        return 0L;
+    }
+
+    @Override
+    public Dict adminRoles(Long currentAdminId) {
+        return Dict.create();
+    }
 }
