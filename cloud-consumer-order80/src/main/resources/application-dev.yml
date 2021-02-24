@@ -89,8 +89,16 @@ spring:
     template:
       mandatory: true
     publisher-confirm-type: simple
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: cloud-order-service-seata-service-group
 
 debug: false
+
+
+seata:
+  enable-auto-data-source-proxy: false
 
 eureka:
   client:

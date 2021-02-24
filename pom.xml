@@ -44,6 +44,8 @@
         <module>cloud-zuul-gateway9528</module>
         <module>cloud-base-framework</module>
         <module>cloud-alibaba-canal</module>
+        <module>cloud-dynamic-datasource</module>
+        <module>cloud-seata-dynamic-datasource</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->

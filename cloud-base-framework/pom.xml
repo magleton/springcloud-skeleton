@@ -14,6 +14,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.geoxus.springcloud</groupId>
+            <artifactId>cloud-dynamic-datasource</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
