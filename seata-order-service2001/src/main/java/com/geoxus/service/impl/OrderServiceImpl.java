@@ -6,6 +6,7 @@ import com.geoxus.mappers.OrderMapper;
 import com.geoxus.service.AccountService;
 import com.geoxus.service.OrderService;
 import com.geoxus.service.StorageService;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
      * 简单说：下订单->扣库存->减余额->改状态
      */
     @Override
-    //@GlobalTransactional(name = "fsp-create-order", rollbackFor = Exception.class)
+    @GlobalTransactional(name = "fsp-create-order", rollbackFor = Exception.class)
     public void create(OrderEntity order) {
         log.info("----->开始新建订单");
         //1 新建订单

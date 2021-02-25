@@ -1,5 +1,6 @@
 package com.geoxus.service.impl;
 
+import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.mappers.StorageMapper;
 import com.geoxus.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 
 @Service
 @Slf4j
+@GXDataSourceAnnotation("orders")
 public class StorageServiceImpl implements StorageService {
     @Resource
     private StorageMapper storageMapper;
