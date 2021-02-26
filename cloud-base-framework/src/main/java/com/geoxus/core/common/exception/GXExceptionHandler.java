@@ -1,11 +1,9 @@
 package com.geoxus.core.common.exception;
 
 import cn.hutool.http.HttpStatus;
-import com.geoxus.core.common.exception.GXTokenEmptyException;
 import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.vo.GXResultCode;
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
+import com.mysql.cj.exceptions.CJException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -95,7 +93,7 @@ public class GXExceptionHandler {
      *
      * @param e
      */
-    @ExceptionHandler(value = {MySQLSyntaxErrorException.class, MySQLIntegrityConstraintViolationException.class})
+    @ExceptionHandler(value = {CJException.class})
     public GXResultUtils handleMysqlSyntaxError(Exception e) {
         log.error(e.getMessage(), e);
         return GXResultUtils.error().putData(e.getMessage());
