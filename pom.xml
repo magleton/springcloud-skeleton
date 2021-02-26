@@ -58,21 +58,21 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
-        <lombok.version>1.16.18</lombok.version>
+        <lombok.version>1.18.18</lombok.version>
         <mysql.version>8.0.21</mysql.version>
-        <druid.spring.boot.version>1.2.1</druid.spring.boot.version>
-        <hutool.version>5.4.4</hutool.version>
-        <mybatis.plus.boot.version>3.4.0</mybatis.plus.boot.version>
-        <redisson.spring.boot.version>3.12.0</redisson.spring.boot.version>
-        <aspectjweaver.version>1.9.5</aspectjweaver.version>
-        <shiro.spring.version>1.6.0</shiro.spring.version>
+        <druid.spring.boot.version>1.2.5</druid.spring.boot.version>
+        <hutool.version>5.5.8</hutool.version>
+        <mybatis.plus.boot.version>3.4.2</mybatis.plus.boot.version>
+        <redisson.spring.boot.version>3.15.0</redisson.spring.boot.version>
+        <aspectjweaver.version>1.9.6</aspectjweaver.version>
+        <shiro.spring.version>1.7.1</shiro.spring.version>
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
         <swagger.bootstrap.ui.version>1.9.6</swagger.bootstrap.ui.version>
-        <guava.version>30.0-jre</guava.version>
-        <okhttp.version>3.14.4</okhttp.version>
+        <guava.version>30.1-jre</guava.version>
+        <okhttp.version>4.9.1</okhttp.version>
         <ehcache.version>2.10.6</ehcache.version>
         <commons.fileupload.version>1.4</commons.fileupload.version>
-        <org.mapstruct.version>1.4.0.Final</org.mapstruct.version>
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <p6spy.version>3.9.1</p6spy.version>
     </properties>
 
