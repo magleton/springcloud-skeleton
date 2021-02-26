@@ -9,7 +9,7 @@ server:
       protocol-header: X-Forwarded-Proto
   servlet:
     context-path: /
-  port: 80
+  port: 8000
   forward-headers-strategy: framework
 
 spring:
@@ -96,7 +96,6 @@ spring:
 
 debug: false
 
-
 seata:
   enable-auto-data-source-proxy: false
 
@@ -108,6 +107,21 @@ eureka:
     fetchRegistry: true
     service-url:
       #单机
-      defaultZone: http://192.168.1.100:7001/eureka
+      defaultZone: http://127.0.0.1:7001/eureka
       # 集群
       #defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  # 集群版
+knife4j:
+  setting:
+    language: zh-CN
+    footerCustomContent: AAAAA|BBBB|VVVVV
+    enableGroup: true
+  enable: true
+  documents:
+    -
+      group: 2.X版本
+      name: 我的文档一
+      locations: classpath:markdown/*
+    -
+      group: 默认接口
+      name: 我的文档二
+      locations: classpath:markdown/*

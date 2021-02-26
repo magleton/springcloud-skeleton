@@ -103,6 +103,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!--knife4j-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-dependencies</artifactId>
+                <version>3.0.2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
@@ -153,16 +161,6 @@
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-spring</artifactId>
                 <version>${shiro.spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${springfox.swagger2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>swagger-bootstrap-ui</artifactId>
-                <version>${swagger.bootstrap.ui.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
