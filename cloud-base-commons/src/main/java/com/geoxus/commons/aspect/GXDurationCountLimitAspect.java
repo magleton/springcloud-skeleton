@@ -1,4 +1,4 @@
-package com.geoxus.core.common.aspect;
+package com.geoxus.commons.aspect;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
@@ -30,7 +30,7 @@ public class GXDurationCountLimitAspect {
     @GXFieldCommentAnnotation(zh = "缓存前缀")
     private static final String CACHE_KEY_PFEFIX = "duration:count:limit:";
 
-    @Pointcut("@annotation(com.geoxus.core.common.annotation.GXFrequencyLimitAnnotation)")
+    @Pointcut("@annotation(com.geoxus.commons.annotation.GXFrequencyLimitAnnotation)")
     public void frequencyLimitPointCut() {
     }
 

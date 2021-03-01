@@ -1,4 +1,4 @@
-package com.geoxus.core.common.aspect;
+package com.geoxus.commons.aspect;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
@@ -31,7 +31,7 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class GXCheckCaptchaAspect {
-    @Pointcut("@annotation(com.geoxus.core.common.annotation.GXCheckCaptchaAnnotation)")
+    @Pointcut("@annotation(com.geoxus.commons.annotation.GXCheckCaptchaAnnotation)")
     public void checkCaptchaPointCut() {
     }
 

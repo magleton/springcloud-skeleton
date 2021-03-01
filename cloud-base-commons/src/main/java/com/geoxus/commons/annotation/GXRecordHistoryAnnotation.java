@@ -1,4 +1,4 @@
-package com.geoxus.core.common.annotation;
+package com.geoxus.commons.annotation;
 
 import com.geoxus.core.framework.service.GXBaseService;
 import com.geoxus.core.framework.service.GXCoreModelService;

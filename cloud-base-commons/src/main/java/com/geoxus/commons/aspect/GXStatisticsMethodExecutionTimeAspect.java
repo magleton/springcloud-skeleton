@@ -1,4 +1,4 @@
-package com.geoxus.core.common.aspect;
+package com.geoxus.commons.aspect;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class GXStatisticsMethodExecutionTimeAspect {
-    @Around("@annotation(com.geoxus.core.common.annotation.GXStatisticsMethodExecutionTimeAnnotation)")
+    @Around("@annotation(com.geoxus.commons.annotation.GXStatisticsMethodExecutionTimeAnnotation)")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         long beginTime = System.currentTimeMillis();
         //执行方法

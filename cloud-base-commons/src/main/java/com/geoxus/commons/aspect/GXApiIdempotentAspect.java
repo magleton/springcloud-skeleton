@@ -1,4 +1,4 @@
-package com.geoxus.core.common.aspect;
+package com.geoxus.commons.aspect;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.CharsetUtil;
@@ -24,7 +24,7 @@ public class GXApiIdempotentAspect {
     @Autowired
     private GXApiIdempotentService apiIdempotentService;
 
-    @Pointcut("@annotation(com.geoxus.core.common.annotation.GXApiIdempotentAnnotation)")
+    @Pointcut("@annotation(com.geoxus.commons.annotation.GXApiIdempotentAnnotation)")
     public void apiIdempotentPointCut() {
     }
 

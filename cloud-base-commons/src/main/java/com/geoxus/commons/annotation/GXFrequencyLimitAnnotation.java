@@ -1,5 +1,6 @@
-package com.geoxus.core.common.annotation;
+package com.geoxus.commons.annotation;
 
+import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;

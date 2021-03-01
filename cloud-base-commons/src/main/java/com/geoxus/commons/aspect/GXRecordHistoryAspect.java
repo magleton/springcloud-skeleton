@@ -1,4 +1,4 @@
-package com.geoxus.core.common.aspect;
+package com.geoxus.commons.aspect;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Dict;
@@ -24,7 +24,7 @@ import java.util.Objects;
 @Configuration
 @Slf4j
 public class GXRecordHistoryAspect {
-    @Around("@annotation(com.geoxus.core.common.annotation.GXRecordHistoryAnnotation)")
+    @Around("@annotation(com.geoxus.commons.annotation.GXRecordHistoryAnnotation)")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         Object result;
         try {
