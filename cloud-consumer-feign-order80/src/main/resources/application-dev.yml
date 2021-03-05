@@ -1,6 +1,12 @@
 server:
   port: 80
+
+
 eureka:
+  instance:
+    instance-id: ${spring.application.name}
+    #访问路径可以显示IP地址
+    prefer-ip-address: true
   client:
     register-with-eureka: true
     fetchRegistry: true
@@ -18,5 +24,5 @@ logging:
     # feign日志以什么级别监控哪个接口
     com.geoxus.springcloud.service.PaymentFeignService: debug
 spring:
-  profiles:
-    active: dev
+  application:
+    name: cloud-consumer-feign

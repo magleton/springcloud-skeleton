@@ -28,6 +28,11 @@
             <artifactId>cloud-api-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.geoxus</groupId>
+            <artifactId>cloud-base-framework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

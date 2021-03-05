@@ -1,5 +1,6 @@
 package com.geoxus.controller;
 
+import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.entities.CommonResult;
 import com.geoxus.entities.Payment;
 import com.geoxus.service.PaymentFeignService;
@@ -29,5 +30,10 @@ public class OrderFeignController {
     public String paymentFeignTimeout() {
         // OpenFeign客户端一般默认等待1秒钟
         return paymentFeignService.paymentFeignTimeout();
+    }
+
+    @GetMapping(value = "/feign/hello/index")
+    public GXResultUtils helloIndex() {
+        return paymentFeignService.helloIndex("britton");
     }
 }
