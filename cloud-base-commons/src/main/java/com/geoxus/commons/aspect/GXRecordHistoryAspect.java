@@ -3,7 +3,7 @@ package com.geoxus.commons.aspect;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
-import com.geoxus.core.common.annotation.GXRecordHistoryAnnotation;
+import com.geoxus.commons.annotation.GXRecordHistoryAnnotation;
 import com.geoxus.core.common.entity.GXBaseEntity;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.util.GXSpringContextUtils;

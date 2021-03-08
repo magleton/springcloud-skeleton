@@ -5,7 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.StrUtil;
-import com.geoxus.core.common.annotation.GXCheckCaptchaAnnotation;
+import com.geoxus.commons.annotation.GXCheckCaptchaAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.service.GXCaptchaService;

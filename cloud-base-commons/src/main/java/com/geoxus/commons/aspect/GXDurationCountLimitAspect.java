@@ -6,7 +6,7 @@ import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
-import com.geoxus.core.common.annotation.GXFrequencyLimitAnnotation;
+import com.geoxus.commons.annotation.GXFrequencyLimitAnnotation;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXHttpContextUtils;
