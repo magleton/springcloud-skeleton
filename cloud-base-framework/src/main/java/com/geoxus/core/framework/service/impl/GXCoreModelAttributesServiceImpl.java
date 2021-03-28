@@ -2,6 +2,7 @@ package com.geoxus.core.framework.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpStatus;
@@ -77,7 +78,7 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
         for (Map.Entry<String, Object> entry : paramData.entrySet()) {
             paramSet.add(entry.getKey());
         }
-        final String cacheKey = gxCacheKeysUtils.getCacheKey("", StrUtil.format("{}.{}.{}", coreModelId, modelAttributeField, String.join(".", paramSet)));
+        final String cacheKey = gxCacheKeysUtils.getCacheKey("", CharSequenceUtil.format("{}.{}.{}", coreModelId, modelAttributeField, String.join(".", paramSet)));
         final Dict condition = Dict.create().set("core_model_id", coreModelId).set("model_attribute_field", modelAttributeField);
         try {
             final List<Dict> list = LIST_DICT_CACHE.get(cacheKey, () -> baseMapper.listOrSearch(condition));
@@ -104,7 +105,7 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
             return Dict.create();
         }
         final Dict sourceDict = JSONUtil.toBean(jsonStr, Dict.class);
-        final String cacheKey = gxCacheKeysUtils.getCacheKey("", StrUtil.format("{}.{}", coreModelId, modelAttributeField));
+        final String cacheKey = gxCacheKeysUtils.getCacheKey("", CharSequenceUtil.format("{}.{}", coreModelId, modelAttributeField));
         final Dict condition = Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId).set("db_field_name", modelAttributeField);
         try {
             final Dict retDict = Dict.create();
@@ -130,8 +131,8 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
                 }
                 Integer required = dict.getInt("required");
                 String errorTips = dict.getStr("error_tips");
-                if (StrUtil.isBlank(errorTips)) {
-                    errorTips = StrUtil.format("{}.{}为必填字段", modelAttributeField, attributeName);
+                if (CharSequenceUtil.isBlank(errorTips)) {
+                    errorTips = CharSequenceUtil.format("{}.{}为必填字段", modelAttributeField, attributeName);
                 }
                 if (required == 1 && null == sourceDict.getObj(attributeName) && null == dict.getObj("default_value")) {
                     errorsDict.set(attributeName, errorTips);

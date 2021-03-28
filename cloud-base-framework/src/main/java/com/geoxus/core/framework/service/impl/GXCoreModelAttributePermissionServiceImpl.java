@@ -3,6 +3,7 @@ package com.geoxus.core.framework.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.core.common.constant.GXCommonConstants;
@@ -48,15 +49,15 @@ public class GXCoreModelAttributePermissionServiceImpl extends ServiceImpl<GXCor
         }
         for (Dict dict : attributes) {
             final String dbFieldName = dict.getStr("db_field_name");
-            final String[] tmpRoles = StrUtil.split(dict.getStr("roles"), ",");
-            final String[] tmpUsers = StrUtil.split(dict.getStr("users"), ",");
+            final String[] tmpRoles = CharSequenceUtil.split(dict.getStr("roles"), ",");
+            final String[] tmpUsers = CharSequenceUtil.split(dict.getStr("users"), ",");
             if (!CollUtil.containsAny(Arrays.asList(tmpUsers), users) && !CollUtil.containsAny(Arrays.asList(tmpRoles), roles)) {
                 continue;
             }
-            if (StrUtil.contains(dbFieldName, "::")) {
-                final String[] strings = StrUtil.split(dbFieldName, "::");
+            if (CharSequenceUtil.contains(dbFieldName, "::")) {
+                final String[] strings = CharSequenceUtil.split(dbFieldName, "::");
                 final Dict convertDict = Convert.convert(Dict.class, jsonFieldDict.getOrDefault(strings[0], Dict.create()));
-                convertDict.set(StrUtil.format("{}", strings[1]), StrUtil.format("{}", String.join("::", strings)));
+                convertDict.set(CharSequenceUtil.format("{}", strings[1]), CharSequenceUtil.format("{}", String.join("::", strings)));
                 jsonFieldDict.set(strings[0], convertDict);
             }
             dbFieldDict.set(dbFieldName, dbFieldName);

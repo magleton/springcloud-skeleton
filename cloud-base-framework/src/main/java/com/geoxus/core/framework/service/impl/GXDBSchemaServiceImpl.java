@@ -3,6 +3,7 @@ package com.geoxus.core.framework.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
@@ -105,7 +106,7 @@ public class GXDBSchemaServiceImpl implements GXDBSchemaService {
         try (final Connection connection = dataSource.getConnection();
              final Statement statement = connection.createStatement()) {
             if (checkTableFieldExists(tableName, indexName)) {
-                return statement.execute(StrUtil.format(DROP_INDEX_SQL, indexName, tableName));
+                return statement.execute(CharSequenceUtil.format(DROP_INDEX_SQL, indexName, tableName));
             }
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -126,7 +127,7 @@ public class GXDBSchemaServiceImpl implements GXDBSchemaService {
 
     @Override
     public boolean checkTableIndexExists(String tableName, String indexName) {
-        String checkIndexExistsSQL = StrUtil.format(StrUtil.concat(true, SHOW_INDEX_SQL, " where key_name = '{}'"), tableName, indexName);
+        String checkIndexExistsSQL = CharSequenceUtil.format(CharSequenceUtil.concat(true, SHOW_INDEX_SQL, " where key_name = '{}'"), tableName, indexName);
         try (final Connection connection = dataSource.getConnection();
              final Statement statement = connection.createStatement();
              final ResultSet resultSet = statement.executeQuery(checkIndexExistsSQL)) {
@@ -188,8 +189,8 @@ public class GXDBSchemaServiceImpl implements GXDBSchemaService {
                 }
                 for (Dict dict : attributes) {
                     String attributeValue = dict.getStr(attributeFlag);
-                    String extFieldKey = StrUtil.format("{}::{}", columnName, attributeValue);
-                    String lastAttributeName = StrUtil.format("{}->>'$.{}' as '{}'", columnName, attributeValue, extFieldKey);
+                    String extFieldKey = CharSequenceUtil.format("{}::{}", columnName, attributeValue);
+                    String lastAttributeName = CharSequenceUtil.format("{}->>'$.{}' as '{}'", columnName, attributeValue, extFieldKey);
                     if (allFieldFlag) {
                         tmpResult.set(extFieldKey, lastAttributeName);
                         continue;
@@ -233,10 +234,10 @@ public class GXDBSchemaServiceImpl implements GXDBSchemaService {
             if (CollUtil.contains(permissionsKey, key)) {
                 continue;
             }
-            if (StrUtil.isBlank(tableAlias)) {
-                result.add(StrUtil.format("{}", value));
+            if (CharSequenceUtil.isBlank(tableAlias)) {
+                result.add(CharSequenceUtil.format("{}", value));
             } else {
-                result.add(StrUtil.format("{}.{}", tableAlias, value));
+                result.add(CharSequenceUtil.format("{}.{}", tableAlias, value));
             }
         }
         return String.join(",", result);

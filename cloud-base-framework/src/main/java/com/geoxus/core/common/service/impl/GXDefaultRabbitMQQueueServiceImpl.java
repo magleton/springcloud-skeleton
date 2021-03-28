@@ -1,7 +1,7 @@
 package com.geoxus.core.common.service.impl;
 
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.factory.GXYamlPropertySourceFactory;
 import com.geoxus.core.common.service.GXRabbitMQQueueService;
@@ -29,7 +29,7 @@ public class GXDefaultRabbitMQQueueServiceImpl implements GXRabbitMQQueueService
     @RabbitListener(queues = {"${rabbit.default-queue-name}"})
     public void process(Message data) {
         final String s = new String(data.getBody(), StandardCharsets.UTF_8);
-        if (StrUtil.isNotBlank(s)) {
+        if (CharSequenceUtil.isNotBlank(s)) {
             if (JSONUtil.isJson(s)) {
                 final Dict param = JSONUtil.toBean(s, Dict.class);
                 log.info("param  : " + param);

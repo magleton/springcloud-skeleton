@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -80,7 +81,7 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
         HashSet<String> field = CollUtil.newHashSet("model_type");
         Dict dict = getFieldValueBySQL(GXCoreModelEntity.class, field, condition, false);
         String modelType = dict.getStr("model_type");
-        if (StrUtil.isBlank(modelType)) {
+        if (CharSequenceUtil.isBlank(modelType)) {
             return defaultValue + "Type";
         }
         return modelType;
@@ -99,7 +100,7 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
     @Override
     public Dict getSearchCondition(Dict condition, String aliasPrefix) {
         final Dict searchFields = getSearchCondition(condition);
-        if (StrUtil.isBlank(aliasPrefix)) {
+        if (CharSequenceUtil.isBlank(aliasPrefix)) {
             return searchFields;
         }
         final Set<Map.Entry<String, Object>> entrySet = searchFields.entrySet();
@@ -107,8 +108,8 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
         for (Map.Entry<String, Object> entry : entrySet) {
             String key = entry.getKey();
             final Object value = entry.getValue();
-            if (!StrUtil.contains(key, '.')) {
-                key = StrUtil.format("{}.{}", aliasPrefix, key);
+            if (!CharSequenceUtil.contains(key, '.')) {
+                key = CharSequenceUtil.format("{}.{}", aliasPrefix, key);
             }
             dict.set(key, value);
         }

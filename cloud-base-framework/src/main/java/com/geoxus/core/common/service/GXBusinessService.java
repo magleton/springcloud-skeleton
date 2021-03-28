@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,7 +14,6 @@ import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.mapper.GXBaseMapper;
 import com.geoxus.core.common.util.GXCommonUtils;
-import com.geoxus.core.common.util.GXSpringContextUtils;
 import com.geoxus.core.common.validator.GXValidateDBExists;
 import com.geoxus.core.common.validator.GXValidateDBUnique;
 import com.geoxus.core.common.vo.GXBusinessStatusCode;
@@ -90,12 +89,12 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      */
     default Dict detail(Dict param) {
         final String tableName = (String) param.remove("table_name");
-        if (StrUtil.isBlank(tableName)) {
+        if (CharSequenceUtil.isBlank(tableName)) {
             throw new GXException("请提供表名!");
         }
         final String fields = (String) Optional.ofNullable(param.remove("fields")).orElse("*");
         final boolean remove = (boolean) Optional.ofNullable(param.remove("remove")).orElse(false);
-        Set<String> lastFields = Arrays.stream(StrUtil.replace(fields, " ", "").split(",")).collect(Collectors.toSet());
+        Set<String> lastFields = Arrays.stream(CharSequenceUtil.replace(fields, " ", "").split(",")).collect(Collectors.toSet());
         Dict condition = Convert.convert(Dict.class, Optional.ofNullable(param.getObj(GXBaseBuilderConstants.SEARCH_CONDITION_NAME)).orElse(Dict.create()));
         return getFieldValueBySQL(tableName, lastFields, condition, remove);
     }
@@ -150,8 +149,8 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      */
     default boolean validateExists(Object value, String fieldName, ConstraintValidatorContext constraintValidatorContext, Dict param) throws UnsupportedOperationException {
         String tableName = param.getStr("table_name");
-        if (StrUtil.isBlank(tableName)) {
-            throw new GXException(StrUtil.format("请指定数据库表的名字 , 验证的字段 {} , 验证的值 : {}", fieldName, value));
+        if (CharSequenceUtil.isBlank(tableName)) {
+            throw new GXException(CharSequenceUtil.format("请指定数据库表的名字 , 验证的字段 {} , 验证的值 : {}", fieldName, value));
         }
         return 1 == checkRecordIsExists(tableName, Dict.create().set(fieldName, value));
     }
@@ -167,8 +166,8 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      */
     default boolean validateUnique(Object value, String fieldName, ConstraintValidatorContext constraintValidatorContext, Dict param) {
         String tableName = param.getStr("table_name");
-        if (StrUtil.isBlank(tableName)) {
-            throw new GXException(StrUtil.format("请指定数据库表的名字 , 验证的字段 {} , 验证的值 : {}", fieldName, value));
+        if (CharSequenceUtil.isBlank(tableName)) {
+            throw new GXException(CharSequenceUtil.format("请指定数据库表的名字 , 验证的字段 {} , 验证的值 : {}", fieldName, value));
         }
         return checkRecordIsUnique(tableName, Dict.create().set(fieldName, value)) > 1;
     }
@@ -229,11 +228,11 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
     default GXPagination<Dict> generatePage(Dict param) {
         String removeStr = Optional.ofNullable(param.getStr("remove_field")).orElse("");
         Map<String, Object> removeField = CollUtil.newHashMap();
-        if (StrUtil.isNotBlank(removeStr)) {
-            String[] split = StrUtil.split(removeStr, ",");
+        if (CharSequenceUtil.isNotBlank(removeStr)) {
+            String[] split = CharSequenceUtil.split(removeStr, ",");
             for (final String s : split) {
-                if (StrUtil.contains(s, "::")) {
-                    final String[] strings = StrUtil.split(s, "::");
+                if (CharSequenceUtil.contains(s, "::")) {
+                    final String[] strings = CharSequenceUtil.split(s, "::");
                     String mainKey = strings[0];
                     String subKey = strings[1];
                     final Object o = removeField.get(mainKey);
@@ -379,7 +378,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
             return "0";
         }
         if (appendSelf) {
-            return StrUtil.format("{}-{}", dict.getStr("path"), parentId);
+            return CharSequenceUtil.format("{}-{}", dict.getStr("path"), parentId);
         }
         return dict.getStr("path");
     }

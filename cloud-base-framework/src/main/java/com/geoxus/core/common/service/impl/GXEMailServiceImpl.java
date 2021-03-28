@@ -1,7 +1,7 @@
 package com.geoxus.core.common.service.impl;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.mail.MailUtil;
 import com.geoxus.core.common.service.GXEMailService;
 import com.geoxus.core.common.util.GXCacheKeysUtils;
@@ -19,10 +19,10 @@ public class GXEMailServiceImpl implements GXEMailService {
     @Override
     public boolean sendVerifyCode(String email) {
         final String code = RandomUtil.randomString(6);
-        final String format = StrUtil.format("本次修改密码验证码是 : {} , 有效期为5分钟", code);
+        final String format = CharSequenceUtil.format("本次修改密码验证码是 : {} , 有效期为5分钟", code);
         final String redisKey = gxCacheKeysUtils.getCacheKey("sys.email.verify.code", email);
         final String sendResult = MailUtil.send(email, "修改密码验证码", format, false);
-        if (StrUtil.isNotBlank(sendResult)) {
+        if (CharSequenceUtil.isNotBlank(sendResult)) {
             GXRedisUtils.set(redisKey, code, 300, TimeUnit.SECONDS);
             return true;
         }
@@ -34,7 +34,7 @@ public class GXEMailServiceImpl implements GXEMailService {
         final String redisKey = gxCacheKeysUtils.getCacheKey("sys.email.verify.code", email);
         final String value = GXRedisUtils.get(redisKey, String.class);
         if (null != value) {
-            if (!StrUtil.equalsAnyIgnoreCase(code, value)) {
+            if (!CharSequenceUtil.equalsAnyIgnoreCase(code, value)) {
                 return false;
             }
             return GXRedisUtils.delete(redisKey);

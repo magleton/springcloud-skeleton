@@ -2,6 +2,7 @@ package com.geoxus.core.framework.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
@@ -56,12 +57,12 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
         }
         final int coreModelId = coreModelService.getModelIdByModelIdentification(modelIdentification);
         if (coreModelId <= 0) {
-            throw new GXException(StrUtil.format(MODEL_SETTING_NOT_EXISTS, modelIdentification));
+            throw new GXException(CharSequenceUtil.format(MODEL_SETTING_NOT_EXISTS, modelIdentification));
         }
-        if (isFullMatchAttribute && !StrUtil.equals(jsonStr, "{}")) {
+        if (isFullMatchAttribute && !CharSequenceUtil.equals(jsonStr, "{}")) {
             final boolean b = coreModelAttributeService.checkCoreModelFieldAttributes(coreModelId, subFiled, jsonStr);
             if (!b) {
-                throw new GXException(StrUtil.format("{}字段提交的属性与数据库配置的字段属性不匹配!", subFiled));
+                throw new GXException(CharSequenceUtil.format("{}字段提交的属性与数据库配置的字段属性不匹配!", subFiled));
             }
         }
         final GXCoreModelEntity coreModelEntity = coreModelService.getCoreModelByModelId(coreModelId, subFiled);
@@ -102,30 +103,30 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
             final boolean b = coreModelService.checkModelHasAttribute(modelId, field);
             final String errorInfo = currentIndex > -1 ? currentIndex + "." + field : field;
             if (!b) {
-                context.buildConstraintViolationWithTemplate(StrUtil.format(FIELD_NOT_EXISTS, modelIdentification, field)).addPropertyNode(errorInfo).addConstraintViolation();
+                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_EXISTS, modelIdentification, field)).addPropertyNode(errorInfo).addConstraintViolation();
                 return true;
             }
             final GXCoreAttributesEntity attribute = coreAttributesService.getAttributeByAttributeName(field);
             Dict modelAttributesData = coreModelAttributeService.getModelAttributeByModelIdAndAttributeId(modelId, attribute.getAttributeId());
             String rule = modelAttributesData.getStr("validation_expression");
-            if (StrUtil.isBlank(rule)) {
+            if (CharSequenceUtil.isBlank(rule)) {
                 rule = Convert.toStr(validateRule.get(field));
             }
-            if (StrUtil.isBlank(rule) && modelAttributesData.getInt("force_validation") == 0) {
+            if (CharSequenceUtil.isBlank(rule) && modelAttributesData.getInt("force_validation") == 0) {
                 // 不验证当前数据
                 return false;
             }
             final String value = Convert.toStr(validateDataMap.get(field));
-            if (StrUtil.isBlank(rule)) {
+            if (CharSequenceUtil.isBlank(rule)) {
                 return true;
             }
             final boolean isMatch = Pattern.matches(rule, value);
             if (!isMatch && modelAttributesData.getInt("required") == VERIFY_VALUE) {
-                context.buildConstraintViolationWithTemplate(StrUtil.format(FIELD_NOT_MATCH, modelIdentification, field, rule)).addPropertyNode(errorInfo).addConstraintViolation();
+                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_MATCH, modelIdentification, field, rule)).addPropertyNode(errorInfo).addConstraintViolation();
                 return true;
             }
             if (!coreAttributeEnumsService.isExistsAttributeValue(attribute.getAttributeId(), value, modelId)) {
-                context.buildConstraintViolationWithTemplate(StrUtil.format(FIELD_VALUE_NOT_EXISTS, modelIdentification, field, value)).addPropertyNode(field).addConstraintViolation();
+                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_VALUE_NOT_EXISTS, modelIdentification, field, value)).addPropertyNode(field).addConstraintViolation();
                 return true;
             }
         }

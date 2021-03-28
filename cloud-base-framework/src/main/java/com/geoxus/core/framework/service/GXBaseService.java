@@ -5,6 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONObject;
@@ -271,9 +272,9 @@ public interface GXBaseService<T> extends IService<T> {
     @Transactional(rollbackFor = Exception.class)
     default boolean updateSingleField(Class<T> clazz, String path, Object value, Dict condition) {
         GXBaseMapper<T> baseMapper = (GXBaseMapper<T>) getBaseMapper();
-        int index = StrUtil.indexOfIgnoreCase(path, "::");
-        String mainPath = StrUtil.sub(path, 0, index);
-        String subPath = StrUtil.sub(path, index + 1, path.length());
+        int index = CharSequenceUtil.indexOfIgnoreCase(path, "::");
+        String mainPath = CharSequenceUtil.sub(path, 0, index);
+        String subPath = CharSequenceUtil.sub(path, index + 1, path.length());
         final Dict data = Dict.create().set(mainPath, Dict.create().set(subPath, value));
         return baseMapper.updateFieldByCondition(getTableName(clazz), data, condition);
     }
@@ -476,7 +477,7 @@ public interface GXBaseService<T> extends IService<T> {
                 continue;
             }
             if (object instanceof byte[]) {
-                String[] keys = StrUtil.split(key, "::");
+                String[] keys = CharSequenceUtil.split(key, "::");
                 Dict data = Convert.convert(Dict.class, Optional.ofNullable(retDict.getObj(keys[0])).orElse(Dict.create()));
                 String str = new String((byte[]) object, StandardCharsets.UTF_8);
                 retDict.set(keys[0], data.set(keys[1], str));

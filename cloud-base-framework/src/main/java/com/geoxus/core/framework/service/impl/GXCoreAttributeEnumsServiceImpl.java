@@ -1,7 +1,7 @@
 package com.geoxus.core.framework.service.impl;
 
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -64,7 +64,7 @@ public class GXCoreAttributeEnumsServiceImpl extends ServiceImpl<GXCoreAttribute
                 final int coreModelId = param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME);
                 boolean exists = isExistsAttributeValue(attributesEntity.getAttributeId(), attributeValue, coreModelId);
                 if (!exists) {
-                    constraintValidatorContext.buildConstraintViolationWithTemplate(StrUtil.format(FIELD_VALUE_NOT_EXISTS, field, attributeValue)).addPropertyNode(field).addConstraintViolation();
+                    constraintValidatorContext.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_VALUE_NOT_EXISTS, field, attributeValue)).addPropertyNode(field).addConstraintViolation();
                 }
                 return exists;
             }
