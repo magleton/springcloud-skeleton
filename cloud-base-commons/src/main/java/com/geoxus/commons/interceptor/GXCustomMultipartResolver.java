@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class GXCustomMultipartResolver extends CommonsMultipartResolver {
-
     @Autowired
     private GXUploadProgressListener uploadProgressListener;
 

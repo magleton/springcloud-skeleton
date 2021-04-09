@@ -1,5 +1,6 @@
 package com.geoxus.core.common.util;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -8,6 +9,7 @@ import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.filter.GXSQLFilter;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 查询参数
@@ -49,7 +51,7 @@ public class GXQueryUtils<T> {
         String orderField = GXSQLFilter.sqlInject((String) params.get(ORDER_FIELD));
         String order = (String) params.get(ORDER);
 
-        if (StrUtil.isNotEmpty(orderField) && StrUtil.isNotEmpty(order)) {
+        if (CharSequenceUtil.isNotEmpty(orderField) && CharSequenceUtil.isNotEmpty(order)) {
             if (ASC.equalsIgnoreCase(order)) {
                 return page.addOrder(OrderItem.asc(orderField));
             } else {
@@ -57,7 +59,7 @@ public class GXQueryUtils<T> {
             }
         }
 
-        if (StrUtil.isBlank(defaultOrderField)) {
+        if (CharSequenceUtil.isBlank(defaultOrderField)) {
             return page;
         }
 

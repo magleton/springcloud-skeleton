@@ -1,6 +1,6 @@
 package com.geoxus.commons.vo;
 
-import com.geoxus.core.common.vo.GXProgressData;
+import com.geoxus.core.common.vo.common.GXProgressData;
 import org.apache.commons.fileupload.ProgressListener;
 import org.springframework.stereotype.Component;
 

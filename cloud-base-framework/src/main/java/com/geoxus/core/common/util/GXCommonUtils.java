@@ -5,6 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.convert.ConvertException;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.*;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
@@ -423,7 +424,7 @@ public class GXCommonUtils {
         try {
             assert objectMapper != null;
             Dict data = objectMapper.readValue(jsonStr, Dict.class);
-            String[] paths = StrUtil.split(path, ".");
+            String[] paths = CharSequenceUtil.split(path, ".");
             final Object firstObj = data.getObj(paths[0]);
             if (null == firstObj) {
                 return getClassDefaultValue(clazz);
@@ -489,10 +490,10 @@ public class GXCommonUtils {
      */
     public static <R> R removeJSONStrAnyPath(String jsonStr, String path, Class<R> clazz) {
         final JSONObject parse = JSONUtil.parseObj(jsonStr);
-        int index = StrUtil.indexOf(path, '.');
+        int index = CharSequenceUtil.indexOf(path, '.');
         if (index != -1) {
-            String mainPath = StrUtil.sub(path, 0, StrUtil.lastIndexOfIgnoreCase(path, "."));
-            String subPath = StrUtil.sub(path, StrUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
+            String mainPath = CharSequenceUtil.sub(path, 0, CharSequenceUtil.lastIndexOfIgnoreCase(path, "."));
+            String subPath = CharSequenceUtil.sub(path, CharSequenceUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
             final Object o = parse.get(mainPath);
             if (Objects.nonNull(o)) {
                 if (JSONUtil.isJsonArray(o.toString()) && NumberUtil.isInteger(subPath)) {
@@ -519,10 +520,10 @@ public class GXCommonUtils {
      */
     public static void removeJSONStrAnyPath(String jsonStr, String path) {
         final JSONObject parse = JSONUtil.parseObj(jsonStr);
-        int index = StrUtil.indexOf(path, '.');
+        int index = CharSequenceUtil.indexOf(path, '.');
         if (index != -1) {
-            String mainPath = StrUtil.sub(path, 0, StrUtil.lastIndexOfIgnoreCase(path, "."));
-            String subPath = StrUtil.sub(path, StrUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
+            String mainPath = CharSequenceUtil.sub(path, 0, CharSequenceUtil.lastIndexOfIgnoreCase(path, "."));
+            String subPath = CharSequenceUtil.sub(path, CharSequenceUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
             final Object o = parse.get(mainPath);
             if (Objects.nonNull(o)) {
                 if (JSONUtil.isJsonArray(o.toString()) && NumberUtil.isInteger(subPath)) {
@@ -549,10 +550,10 @@ public class GXCommonUtils {
      * @return R
      */
     public static <R> R removeJSONObjectAnyPath(JSONObject parse, String path, Class<R> clazz) {
-        int index = StrUtil.indexOf(path, '.');
+        int index = CharSequenceUtil.indexOf(path, '.');
         if (index != -1) {
-            String mainPath = StrUtil.sub(path, 0, StrUtil.lastIndexOfIgnoreCase(path, "."));
-            String subPath = StrUtil.sub(path, StrUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
+            String mainPath = CharSequenceUtil.sub(path, 0, CharSequenceUtil.lastIndexOfIgnoreCase(path, "."));
+            String subPath = CharSequenceUtil.sub(path, CharSequenceUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
             final Object o = parse.getByPath(mainPath);
             if (Objects.nonNull(o)) {
                 if (JSONUtil.isJsonArray(o.toString()) && NumberUtil.isInteger(subPath)) {
@@ -577,10 +578,10 @@ public class GXCommonUtils {
      * @param path  路径
      */
     public static void removeJSONObjectAnyPath(JSONObject parse, String path) {
-        int index = StrUtil.indexOf(path, '.');
+        int index = CharSequenceUtil.indexOf(path, '.');
         if (index != -1) {
-            String mainPath = StrUtil.sub(path, 0, StrUtil.lastIndexOfIgnoreCase(path, "."));
-            String subPath = StrUtil.sub(path, StrUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
+            String mainPath = CharSequenceUtil.sub(path, 0, CharSequenceUtil.lastIndexOfIgnoreCase(path, "."));
+            String subPath = CharSequenceUtil.sub(path, CharSequenceUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
             final Object o = parse.getByPath(mainPath);
             if (Objects.nonNull(o)) {
                 if (JSONUtil.isJsonArray(o.toString()) && NumberUtil.isInteger(subPath)) {
@@ -751,7 +752,7 @@ public class GXCommonUtils {
      */
     public static String hiddenPhoneNumber(CharSequence phoneNumber, int startInclude, int endExclude, char replacedChar) {
         if (Validator.isMobile(phoneNumber)) {
-            return StrUtil.replace(phoneNumber, startInclude, endExclude, replacedChar);
+            return CharSequenceUtil.replace(phoneNumber, startInclude, endExclude, replacedChar);
         }
         return "";
     }
@@ -829,7 +830,7 @@ public class GXCommonUtils {
      */
     public static <R> R getSpringCacheValue(String cacheName, String key, Class<R> clazz) {
         Cache cache = getSpringCache(cacheName);
-        return cache.get(key, clazz);
+        return Objects.requireNonNull(cache).get(key, clazz);
     }
 
     /**
@@ -844,7 +845,7 @@ public class GXCommonUtils {
      */
     public static <R> R getSpringCacheValue(String cacheName, String key, Class<R> clazz, R defaultValue) {
         Cache cache = getSpringCache(cacheName);
-        if (cache.get(key) == null) {
+        if (Objects.requireNonNull(cache).get(key) == null) {
             return defaultValue;
         }
         return getSpringCacheValue(cacheName, key, clazz);
@@ -859,7 +860,7 @@ public class GXCommonUtils {
      */
     public static void setSpringCacheValue(String cacheName, String key, Object value) {
         Cache springCache = getSpringCache(cacheName);
-        springCache.put(key, value);
+        Objects.requireNonNull(springCache).put(key, value);
     }
 
     /**

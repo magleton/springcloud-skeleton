@@ -1,6 +1,7 @@
 package com.geoxus.core.framework.builder;
 
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.builder.GXBaseBuilder;
 import com.geoxus.core.common.constant.GXBaseBuilderConstants;
@@ -30,7 +31,7 @@ public class GXCoreModelBuilder implements GXBaseBuilder {
         for (Map.Entry<String, Object> entry : entrySet) {
             if (null != param.getObj(entry.getKey())) {
                 whereConditionIsExists = true;
-                sql.WHERE(StrUtil.format("{}".concat(entry.getValue().toString()), entry.getKey(), param.getObj(entry.getKey())));
+                sql.WHERE(CharSequenceUtil.format("{}".concat(entry.getValue().toString()), entry.getKey(), param.getObj(entry.getKey())));
             }
         }
         if (!whereConditionIsExists) {

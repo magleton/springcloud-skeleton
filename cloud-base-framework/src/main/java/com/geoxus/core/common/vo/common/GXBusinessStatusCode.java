@@ -1,4 +1,4 @@
-package com.geoxus.core.common.vo;
+package com.geoxus.core.common.vo.common;
 
 public enum GXBusinessStatusCode {
     NORMAL(0x0, "正常状态", "公用状态"),

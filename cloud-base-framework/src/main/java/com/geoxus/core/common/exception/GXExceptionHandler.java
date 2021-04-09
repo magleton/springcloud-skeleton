@@ -2,7 +2,7 @@ package com.geoxus.core.common.exception;
 
 import cn.hutool.http.HttpStatus;
 import com.geoxus.core.common.util.GXResultUtils;
-import com.geoxus.core.common.vo.GXResultCode;
+import com.geoxus.core.common.vo.common.GXResultCode;
 import com.mysql.cj.exceptions.CJException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;

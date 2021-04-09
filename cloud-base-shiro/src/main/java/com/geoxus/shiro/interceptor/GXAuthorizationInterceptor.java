@@ -6,7 +6,7 @@ import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.exception.GXTokenEmptyException;
 import com.geoxus.core.common.oauth.GXTokenManager;
 import com.geoxus.core.common.util.GXSpringContextUtils;
-import com.geoxus.core.common.vo.GXResultCode;
+import com.geoxus.core.common.vo.common.GXResultCode;
 import com.geoxus.shiro.annotation.GXLoginAnnotation;
 import com.geoxus.shiro.services.GXUUserService;
 import org.springframework.http.HttpStatus;

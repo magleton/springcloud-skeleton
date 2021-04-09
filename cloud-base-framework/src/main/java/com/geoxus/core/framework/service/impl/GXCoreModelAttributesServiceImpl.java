@@ -62,6 +62,7 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
         return getFieldValueBySQL(GXCoreModelAttributesEntity.class, fieldSet, condition, false);
     }
 
+    @Override
     @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #coreModelId + #attributeName")
     public Integer checkCoreModelHasAttribute(Integer coreModelId, String attributeName) {
         final Dict condition = Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId).set("attribute_name", attributeName);

@@ -1,9 +1,9 @@
 package com.geoxus.core.common.util;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
-import org.springframework.util.Base64Utils;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -198,7 +198,7 @@ public class GXAuthCodeUtils {
             cryptKey = keyA + md5(keyA + keyC);
             if (operation == DisCuzAuthCodeMode.DECODE) {
                 byte[] temp;
-                temp = Base64Utils.decode(cutString(source, cKeyLength).getBytes());
+                temp = Base64.decode(cutString(source, cKeyLength).getBytes());
                 result = new String(rc4(temp, cryptKey));
                 if ((result.indexOf("0000000000") == 0
                         || Integer.parseInt(cutString(result, 0, 10)) - DateUtil.currentSeconds() > 0)
@@ -211,7 +211,7 @@ public class GXAuthCodeUtils {
                 expiry = expiry > 0 ? (int) (DateUtil.currentSeconds() + expiry) : 0;
                 source = String.format("%010d", expiry) + cutString(md5(source + keyB), 0, 16) + source;
                 byte[] temp = rc4(source.getBytes(StandardCharsets.UTF_8), cryptKey);
-                return String.format("%s%s", keyC, Base64Utils.encodeToString(temp));
+                return String.format("%s%s", keyC, Base64.encode(temp));
             }
         } catch (Exception e) {
             return "{}";

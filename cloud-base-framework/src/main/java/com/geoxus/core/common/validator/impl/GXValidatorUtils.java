@@ -1,6 +1,7 @@
 package com.geoxus.core.common.validator.impl;
 
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -58,14 +59,14 @@ public class GXValidatorUtils {
             final Dict dict = Dict.create();
             for (ConstraintViolation<Object> constraint : constraintViolations) {
                 String currentFormName = constraint.getPropertyPath().toString();
-                if (StrUtil.isNotBlank(jsonName)) {
+                if (CharSequenceUtil.isNotBlank(jsonName)) {
                     currentFormName = jsonName + "." + currentFormName;
                 }
                 String message = constraint.getMessage();
-                currentFormName = StrUtil.toSymbolCase(currentFormName, '_');
+                currentFormName = CharSequenceUtil.toSymbolCase(currentFormName, '_');
                 if (constraint.getMessageTemplate().contains("{fieldName}")) {
                     final Dict param = Dict.create().set("fieldName", currentFormName);
-                    message = StrUtil.format(constraint.getMessageTemplate(), param);
+                    message = CharSequenceUtil.format(constraint.getMessageTemplate(), param);
                 }
                 dict.putIfAbsent(currentFormName, message);
             }

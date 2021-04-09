@@ -19,7 +19,7 @@ import com.geoxus.core.common.mapstruct.GXBaseMapStruct;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXSpringContextUtils;
 import com.geoxus.core.common.validator.impl.GXValidatorUtils;
-import com.geoxus.core.common.vo.GXResultCode;
+import com.geoxus.core.common.vo.common.GXResultCode;
 import com.geoxus.core.framework.service.GXCoreModelAttributesService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

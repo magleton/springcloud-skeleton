@@ -2,6 +2,7 @@ package com.geoxus.core.framework.service.impl;
 
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONException;
 import cn.hutool.json.JSONUtil;
@@ -55,9 +56,13 @@ public class GXAlterTableServiceImpl implements GXAlterTableService {
         }, false);
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
             final String dropSQL = generateDropColumnSQL(oldConditionMap, tableName);
-            if (!dropSQL.isEmpty()) statement.execute(dropSQL);
+            if (!dropSQL.isEmpty()) {
+                statement.execute(dropSQL);
+            }
             final String addColumnSQL = generateAddColumnSQL(newConditionMap, tableName, coreModelId);
-            if (!addColumnSQL.isEmpty()) statement.execute(addColumnSQL);
+            if (!addColumnSQL.isEmpty()) {
+                statement.execute(addColumnSQL);
+            }
         }
         return true;
     }
@@ -74,7 +79,7 @@ public class GXAlterTableServiceImpl implements GXAlterTableService {
                 StringBuilder indexField = new StringBuilder();
                 StringBuilder indexName = new StringBuilder();
                 for (String key : keySet) {
-                    indexName.append(StrUtil.format("_{}", key));
+                    indexName.append(CharSequenceUtil.format("_{}", key));
                     final int value = Integer.parseInt(indexData.get(key).toString());
                     indexField.append(String.format(indexFieldStr, key));
                     if (value > 0) {

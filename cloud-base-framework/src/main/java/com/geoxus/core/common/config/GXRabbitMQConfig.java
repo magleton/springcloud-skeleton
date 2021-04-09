@@ -33,7 +33,6 @@ public class GXRabbitMQConfig {
 
     @Bean
     public AsyncRabbitTemplate asyncRabbitTemplate(@Autowired RabbitTemplate rabbitTemplate) {
-        final AsyncRabbitTemplate asyncRabbitTemplate = new AsyncRabbitTemplate(rabbitTemplate);
-        return asyncRabbitTemplate;
+        return new AsyncRabbitTemplate(rabbitTemplate);
     }
 }

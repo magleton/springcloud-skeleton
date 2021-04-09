@@ -1,4 +1,4 @@
-package com.geoxus.core.common.vo;
+package com.geoxus.core.common.vo.common;
 
 public enum GXResultCode {
     OK(0, "操作成功"),

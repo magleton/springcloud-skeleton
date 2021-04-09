@@ -1,4 +1,4 @@
-package com.geoxus.core.common.vo;
+package com.geoxus.core.common.vo.common;
 
 import lombok.Data;
 

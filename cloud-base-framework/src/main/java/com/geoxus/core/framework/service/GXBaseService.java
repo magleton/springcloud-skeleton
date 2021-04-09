@@ -126,14 +126,14 @@ public interface GXBaseService<T> extends IService<T> {
         for (Map.Entry<String, Object> entry : fields.entrySet()) {
             String key = entry.getKey();
             String aliasName = key;
-            if (StrUtil.contains(key, "::")) {
-                String[] keys = StrUtil.split(key, "::");
-                aliasName = StrUtil.format("{}::{}",
+            if (CharSequenceUtil.contains(key, "::")) {
+                String[] keys = CharSequenceUtil.split(key, "::");
+                aliasName = CharSequenceUtil.format("{}::{}",
                         keys[0].replace("'", ""),
                         keys[1].replace("'", ""));
-                fieldSet.add(StrUtil.format("{}", aliasName));
+                fieldSet.add(CharSequenceUtil.format("{}", aliasName));
             } else {
-                fieldSet.add(StrUtil.format("{}", key));
+                fieldSet.add(CharSequenceUtil.format("{}", key));
             }
             dataKey.set(aliasName, key);
         }
@@ -187,7 +187,7 @@ public interface GXBaseService<T> extends IService<T> {
         Dict jsonField = Convert.convert(Dict.class, permissions.getObj("json_field"));
         Dict dbField = Convert.convert(Dict.class, permissions.getObj("db_field"));
         JSON json = JSONUtil.parse(JSONUtil.toJsonStr(entity));
-        int index = StrUtil.indexOfIgnoreCase(path, "::");
+        int index = CharSequenceUtil.indexOfIgnoreCase(path, "::");
         if (index == -1) {
             if (null != dbField.get(path)) {
                 GXCommonUtils.getLogger(GXBaseService.class).error("当前用户无权访问{}字段的数据...", path);
@@ -211,11 +211,11 @@ public interface GXBaseService<T> extends IService<T> {
             }
             return Convert.convert(type, json.getByPath(path));
         }
-        String mainField = StrUtil.sub(path, 0, index);
+        String mainField = CharSequenceUtil.sub(path, 0, index);
         if (null == json.getByPath(mainField)) {
-            throw new GXException(StrUtil.format("实体的主字段{}不存在!", mainField));
+            throw new GXException(CharSequenceUtil.format("实体的主字段{}不存在!", mainField));
         }
-        String subField = StrUtil.sub(path, index + 2, path.length());
+        String subField = CharSequenceUtil.sub(path, index + 2, path.length());
         Dict dict = Convert.convert(Dict.class, Optional.ofNullable(jsonField.getObj(mainField)).orElse(Dict.create()));
         if (!dict.isEmpty() && null != dict.get(subField)) {
             GXCommonUtils.getLogger(GXBaseService.class).error("当前用户无权访问{}.{}字段的数据...", mainField, subField);
@@ -243,7 +243,7 @@ public interface GXBaseService<T> extends IService<T> {
             if (Objects.isNull(value)) {
                 continue;
             }
-            final String[] strings = StrUtil.split(key, "::");
+            final String[] strings = CharSequenceUtil.split(key, "::");
             Object o = data.get(strings[0]);
             if (strings.length > 1) {
                 if (null != o) {

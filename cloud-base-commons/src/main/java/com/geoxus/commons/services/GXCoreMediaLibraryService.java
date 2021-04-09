@@ -3,6 +3,7 @@ package com.geoxus.commons.services;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.geoxus.commons.entities.GXCoreMediaLibraryEntity;
@@ -158,7 +159,7 @@ public interface GXCoreMediaLibraryService extends GXBaseService<GXCoreMediaLibr
         Object mediaObj = param.getObj(mediaFieldName);
         if (null == mediaObj) {
             //throw new GXException(StrUtil.format("请求参数param中不存在{}字段", mediaFieldName));
-            logger.error(StrUtil.format("请求参数param中不存在{}字段", mediaFieldName));
+            logger.error(CharSequenceUtil.format("请求参数param中不存在{}字段", mediaFieldName));
             return;
         }
         final List<JSONObject> media = Convert.convert(new TypeReference<List<JSONObject>>() {

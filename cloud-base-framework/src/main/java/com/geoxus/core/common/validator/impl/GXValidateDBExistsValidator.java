@@ -1,6 +1,7 @@
 package com.geoxus.core.common.validator.impl;
 
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.annotation.GXValidateDBExistsAnnotation;
 import com.geoxus.core.common.exception.GXException;
@@ -39,10 +40,10 @@ public class GXValidateDBExistsValidator implements ConstraintValidator<GXValida
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
         if (Objects.isNull(o)) {
-            throw new GXException(StrUtil.format("验证出错 , <{}>字段的值为<{}>", fieldName, o));
+            throw new GXException(CharSequenceUtil.format("验证出错 , <{}>字段的值为<{}>", fieldName, o));
         }
         if (null == service) {
-            throw new GXException(StrUtil.format("字段<{}>的值<{}>需要指定相应的Service进行验证...", fieldName, o));
+            throw new GXException(CharSequenceUtil.format("字段<{}>的值<{}>需要指定相应的Service进行验证...", fieldName, o));
         }
         return service.validateExists(o, fieldName, constraintValidatorContext, Dict.create().set("table_name", tableName));
     }

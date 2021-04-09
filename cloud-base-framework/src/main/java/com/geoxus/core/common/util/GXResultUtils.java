@@ -3,7 +3,7 @@ package com.geoxus.core.common.util;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.http.HttpStatus;
-import com.geoxus.core.common.vo.GXResultCode;
+import com.geoxus.core.common.vo.common.GXResultCode;
 
 import java.util.HashMap;
 import java.util.Map;

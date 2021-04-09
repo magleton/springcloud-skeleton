@@ -19,7 +19,7 @@ public abstract class GXBaseEvent<T> extends ApplicationEvent implements Resolva
     @GXFieldCommentAnnotation(zh = "事件名字")
     protected transient String eventName;
 
-    public GXBaseEvent(T source, String eventName, Dict param, Object scene) {
+    protected GXBaseEvent(T source, String eventName, Dict param, Object scene) {
         super(source);
         this.param = param;
         this.scene = scene;

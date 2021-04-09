@@ -5,6 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
@@ -77,9 +78,9 @@ public interface GXBaseBuilder {
                 value = JSONUtil.toJsonStr(value);
             }
             if (ReUtil.isMatch(GXCommonConstants.DIGITAL_REGULAR_EXPRESSION, value.toString())) {
-                sql.SET(StrUtil.format("{} " + GXBaseBuilderConstants.NUMBER_EQ, dataKey, value));
+                sql.SET(CharSequenceUtil.format("{} " + GXBaseBuilderConstants.NUMBER_EQ, dataKey, value));
             } else {
-                sql.SET(StrUtil.format("{} " + GXBaseBuilderConstants.STR_EQ, dataKey, value));
+                sql.SET(CharSequenceUtil.format("{} " + GXBaseBuilderConstants.STR_EQ, dataKey, value));
             }
         }
         final Set<String> conditionKeys = whereData.keySet();
@@ -89,9 +90,9 @@ public interface GXBaseBuilder {
             if (ReUtil.isMatch(GXCommonConstants.DIGITAL_REGULAR_EXPRESSION, value)) {
                 template = "{} " + GXBaseBuilderConstants.NUMBER_EQ;
             }
-            sql.WHERE(StrUtil.format(template, conditionKey, value));
+            sql.WHERE(CharSequenceUtil.format(template, conditionKey, value));
         }
-        sql.SET(StrUtil.format("updated_at = {}", DateUtil.currentSeconds()));
+        sql.SET(CharSequenceUtil.format("updated_at = {}", DateUtil.currentSeconds()));
         return sql.toString();
     }
 
@@ -123,10 +124,10 @@ public interface GXBaseBuilder {
             if (ReUtil.isMatch(GXCommonConstants.DIGITAL_REGULAR_EXPRESSION, value)) {
                 template = "{} " + GXBaseBuilderConstants.NUMBER_EQ;
             }
-            sql.WHERE(StrUtil.format(template, conditionKey, value));
+            sql.WHERE(CharSequenceUtil.format(template, conditionKey, value));
         }
         sql.LIMIT(1);
-        return StrUtil.format("SELECT IFNULL(({}) , 0)", sql.toString());
+        return CharSequenceUtil.format("SELECT IFNULL(({}) , 0)", sql.toString());
     }
 
     /**
@@ -160,7 +161,7 @@ public interface GXBaseBuilder {
             if (ReUtil.isMatch(GXCommonConstants.DIGITAL_REGULAR_EXPRESSION, value)) {
                 template = "{} " + GXBaseBuilderConstants.NUMBER_EQ;
             }
-            sql.WHERE(StrUtil.format(template, conditionKey, value));
+            sql.WHERE(CharSequenceUtil.format(template, conditionKey, value));
         }
         return sql.toString();
     }
@@ -196,7 +197,7 @@ public interface GXBaseBuilder {
             }
             values.append("),");
         }
-        return sql + StrUtil.sub(values, 0, values.lastIndexOf(","));
+        return sql + CharSequenceUtil.sub(values, 0, values.lastIndexOf(","));
     }
 
     /**
@@ -251,8 +252,8 @@ public interface GXBaseBuilder {
      */
     default String processTimeField(String fieldName, String conditionStr, Object param, String aliasPrefix) {
         final String today = DateUtil.today();
-        String startDate = StrUtil.format("{} 0:0:0", today);
-        String endDate = StrUtil.format("{} 23:59:59", today);
+        String startDate = CharSequenceUtil.format("{} 0:0:0", today);
+        String endDate = CharSequenceUtil.format("{} 23:59:59", today);
         final Dict dict = Convert.convert(Dict.class, param);
         if (null != dict.getStr("start")) {
             startDate = dict.getStr("start");
@@ -260,12 +261,12 @@ public interface GXBaseBuilder {
         if (null != dict.getStr("end")) {
             endDate = dict.getStr("end");
         }
-        if (!StrUtil.contains(fieldName, ".") && StrUtil.isNotBlank(aliasPrefix)) {
-            fieldName = StrUtil.format("{}.{}", aliasPrefix, fieldName);
+        if (!CharSequenceUtil.contains(fieldName, ".") && CharSequenceUtil.isNotBlank(aliasPrefix)) {
+            fieldName = CharSequenceUtil.format("{}.{}", aliasPrefix, fieldName);
         }
         final long start = DateUtil.parse(startDate).getTime() / 1000;
         final long end = DateUtil.parse(endDate).getTime() / 1000;
-        return StrUtil.format(conditionStr, fieldName, start, fieldName, end);
+        return CharSequenceUtil.format(conditionStr, fieldName, start, fieldName, end);
     }
 
     /**
@@ -279,8 +280,8 @@ public interface GXBaseBuilder {
     @GXDataSourceAnnotation("framework")
     default Dict mergeSearchConditionToSQL(SQL sql, Dict requestParam, String aliasPrefix) {
         final String modelIdentificationValue = getModelIdentificationValue();
-        if (StrUtil.isBlank(modelIdentificationValue)) {
-            throw new GXException(StrUtil.format("请配置{}.{}的模型标识", getClass().getSimpleName(), GXBaseBuilderConstants.MODEL_IDENTIFICATION_NAME));
+        if (CharSequenceUtil.isBlank(modelIdentificationValue)) {
+            throw new GXException(CharSequenceUtil.format("请配置{}.{}的模型标识", getClass().getSimpleName(), GXBaseBuilderConstants.MODEL_IDENTIFICATION_NAME));
         }
         final Dict condition = Dict.create().set(GXBaseBuilderConstants.MODEL_IDENTIFICATION_NAME, modelIdentificationValue);
         Dict searchField = Objects.requireNonNull(GXSpringContextUtils.getBean(GXCoreModelService.class)).getSearchCondition(condition);
@@ -292,7 +293,7 @@ public interface GXBaseBuilder {
             Object value = requestSearchCondition.getObj(key);
             if (key.equals(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION)
                     && searchField.getStr(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION) != null) {
-                sql.WHERE(StrUtil.indexedFormat(searchField.getStr(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION), "'" + value + "%'"));
+                sql.WHERE(CharSequenceUtil.indexedFormat(searchField.getStr(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION), "'" + value + "%'"));
                 continue;
             }
             String lastKey = ReUtil.replaceAll(key, "[!<>*^$@#%&]", "");
@@ -301,14 +302,14 @@ public interface GXBaseBuilder {
             }
             String operator = searchField.getStr(key);
             if (null == operator) {
-                if (StrUtil.isNotBlank(aliasPrefix)) {
-                    key = StrUtil.concat(true, aliasPrefix, ".", key);
+                if (CharSequenceUtil.isNotBlank(aliasPrefix)) {
+                    key = CharSequenceUtil.concat(true, aliasPrefix, ".", key);
                     operator = searchField.getStr(key);
                 }
-                if (null == operator && StrUtil.isNotBlank(timeFields.getStr(key))) {
+                if (null == operator && CharSequenceUtil.isNotBlank(timeFields.getStr(key))) {
                     operator = timeFields.getStr(key);
-                    if (null == operator && StrUtil.isNotBlank(aliasPrefix)) {
-                        key = StrUtil.concat(true, aliasPrefix, ".", key);
+                    if (null == operator && CharSequenceUtil.isNotBlank(aliasPrefix)) {
+                        key = CharSequenceUtil.concat(true, aliasPrefix, ".", key);
                         operator = timeFields.getStr(key);
                     }
                 }
@@ -316,20 +317,20 @@ public interface GXBaseBuilder {
             if (null == operator) {
                 GXCommonUtils.getLogger(GXBaseBuilder.class).warn("{}字段没有配置搜索条件", key);
             } else {
-                if (StrUtil.isNotBlank(timeFields.getStr(key))) {
+                if (CharSequenceUtil.isNotBlank(timeFields.getStr(key))) {
                     final String s = processTimeField(key, operator, value, aliasPrefix);
                     sql.WHERE(s);
                 } else {
                     if (value instanceof Collection) {
                         value = CollUtil.join((Collection<?>) value, ",");
                     }
-                    if (StrUtil.isNotBlank(aliasPrefix) && !StrUtil.contains(key, ".")) {
-                        sql.WHERE(StrUtil.format("`{}`.`{}` ".concat(operator), aliasPrefix, lastKey, value));
+                    if (CharSequenceUtil.isNotBlank(aliasPrefix) && !CharSequenceUtil.contains(key, ".")) {
+                        sql.WHERE(CharSequenceUtil.format("`{}`.`{}` ".concat(operator), aliasPrefix, lastKey, value));
                     } else {
-                        if (StrUtil.contains(key, ".")) {
-                            sql.WHERE(StrUtil.format("{} ".concat(operator), lastKey, value));
+                        if (CharSequenceUtil.contains(key, ".")) {
+                            sql.WHERE(CharSequenceUtil.format("{} ".concat(operator), lastKey, value));
                         } else {
-                            sql.WHERE(StrUtil.format("`{}` ".concat(operator), lastKey, value));
+                            sql.WHERE(CharSequenceUtil.format("`{}` ".concat(operator), lastKey, value));
                         }
                     }
                 }

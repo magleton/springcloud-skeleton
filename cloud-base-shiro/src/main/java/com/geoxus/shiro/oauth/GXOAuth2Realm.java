@@ -3,7 +3,7 @@ package com.geoxus.shiro.oauth;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.oauth.GXTokenManager;
-import com.geoxus.core.common.vo.GXBusinessStatusCode;
+import com.geoxus.core.common.vo.common.GXBusinessStatusCode;
 import com.geoxus.shiro.services.GXShiroService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;

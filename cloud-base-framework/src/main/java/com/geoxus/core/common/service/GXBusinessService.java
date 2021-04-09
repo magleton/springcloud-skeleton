@@ -16,7 +16,7 @@ import com.geoxus.core.common.mapper.GXBaseMapper;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.validator.GXValidateDBExists;
 import com.geoxus.core.common.validator.GXValidateDBUnique;
-import com.geoxus.core.common.vo.GXBusinessStatusCode;
+import com.geoxus.core.common.vo.common.GXBusinessStatusCode;
 import com.geoxus.core.common.vo.response.GXPagination;
 import com.geoxus.core.framework.service.GXBaseService;
 
@@ -147,6 +147,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      * @param param                      param
      * @return boolean
      */
+    @Override
     default boolean validateExists(Object value, String fieldName, ConstraintValidatorContext constraintValidatorContext, Dict param) throws UnsupportedOperationException {
         String tableName = param.getStr("table_name");
         if (CharSequenceUtil.isBlank(tableName)) {
@@ -164,6 +165,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      * @param param                      参数
      * @return boolean
      */
+    @Override
     default boolean validateUnique(Object value, String fieldName, ConstraintValidatorContext constraintValidatorContext, Dict param) {
         String tableName = param.getStr("table_name");
         if (CharSequenceUtil.isBlank(tableName)) {

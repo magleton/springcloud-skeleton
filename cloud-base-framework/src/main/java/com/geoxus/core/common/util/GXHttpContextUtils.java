@@ -30,8 +30,9 @@ public class GXHttpContextUtils {
      * @return HttpServletRequest
      */
     public static HttpServletRequest getHttpServletRequest() {
-        if (null != RequestContextHolder.getRequestAttributes()) {
-            return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (Objects.nonNull(requestAttributes)) {
+            return requestAttributes.getRequest();
         }
         return null;
     }
