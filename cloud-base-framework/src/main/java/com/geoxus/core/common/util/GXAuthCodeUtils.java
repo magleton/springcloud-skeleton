@@ -146,7 +146,7 @@ public class GXAuthCodeUtils {
      * @return 加密结果
      */
     public static String authCodeEncode(String source, String key, int expiry) {
-        return authCode(source, key, DisCuzAuthCodeMode.ENCODE, expiry);
+        return authCode(source, key, GXAuthCodeMode.ENCODE, expiry);
     }
 
     /**
@@ -157,7 +157,7 @@ public class GXAuthCodeUtils {
      * @return 加密结果
      */
     public static String authCodeEncode(String source, String key) {
-        return authCode(source, key, DisCuzAuthCodeMode.ENCODE, 0);
+        return authCode(source, key, GXAuthCodeMode.ENCODE, 0);
     }
 
     /**
@@ -168,7 +168,7 @@ public class GXAuthCodeUtils {
      * @return 解密结果
      */
     public static String authCodeDecode(String source, String key) {
-        return authCode(source, key, DisCuzAuthCodeMode.DECODE, 0);
+        return authCode(source, key, GXAuthCodeMode.DECODE, 0);
     }
 
     /**
@@ -180,7 +180,7 @@ public class GXAuthCodeUtils {
      * @param expiry    加密字串过期时间
      * @return 加密或者解密后的字符串
      */
-    private static String authCode(String source, String key, DisCuzAuthCodeMode operation, int expiry) {
+    private static String authCode(String source, String key, GXAuthCodeMode operation, int expiry) {
         try {
             if (source == null || key == null) {
                 return "{}";
@@ -194,9 +194,9 @@ public class GXAuthCodeUtils {
             key = md5(key);
             keyA = md5(cutString(key, 0, 16));
             keyB = md5(cutString(key, 16, 16));
-            keyC = operation == DisCuzAuthCodeMode.DECODE ? cutString(source, 0, cKeyLength) : randomString(cKeyLength);
+            keyC = operation == GXAuthCodeMode.DECODE ? cutString(source, 0, cKeyLength) : randomString(cKeyLength);
             cryptKey = keyA + md5(keyA + keyC);
-            if (operation == DisCuzAuthCodeMode.DECODE) {
+            if (operation == GXAuthCodeMode.DECODE) {
                 byte[] temp;
                 temp = Base64.decode(cutString(source, cKeyLength).getBytes());
                 result = new String(rc4(temp, cryptKey));
@@ -262,7 +262,7 @@ public class GXAuthCodeUtils {
     /**
      * 操作类型
      */
-    public enum DisCuzAuthCodeMode {
+    private enum GXAuthCodeMode {
         ENCODE, DECODE
     }
 }
