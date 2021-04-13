@@ -6,6 +6,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
+
 /**
  * 处理跨域问题
  *
@@ -19,6 +21,7 @@ public class GXCORSConfig {
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.setExposedHeaders(Arrays.asList("Access-Control-ALLOW-HEADERS", "Access-Control-Expose-Headers", "Access-Control-ALLOW-ORIGIN"));
         return corsConfiguration;
     }
 
