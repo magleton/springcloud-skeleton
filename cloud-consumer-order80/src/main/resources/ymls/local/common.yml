@@ -9,10 +9,7 @@ super:
   admin:
     id: 100
 
-common:
-  sensitive:
-    data:
-      key: OwOzXszTEz4sBXnjOqZganLvwEHpzl9G
+
 
 # QQ登录配置
 qq:

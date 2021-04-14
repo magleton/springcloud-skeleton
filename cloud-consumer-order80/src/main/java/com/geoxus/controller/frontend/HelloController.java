@@ -35,6 +35,13 @@ public class HelloController {
         return GXResultUtils.ok("");
     }
 
+    @PostMapping("/create")
+    public GXResultUtils index(@RequestBody TestEntity testEntity) {
+        log.info("AAAAA");
+        testService.save(testEntity);
+        return GXResultUtils.ok("");
+    }
+
     @PostMapping("/get")
     public GXResultUtils index(@RequestBody Dict param) {
         Integer id = param.getInt("id");
