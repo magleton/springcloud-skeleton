@@ -9,6 +9,7 @@ import com.geoxus.mapstruct.TestMapStruct;
 import com.geoxus.service.HelloService;
 import com.geoxus.service.TestService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class HelloController {
     @Resource
     private RestTemplate restTemplate;
 
-    @Resource
+    @Autowired
     private TestService testService;
 
     @Resource
@@ -43,9 +44,8 @@ public class HelloController {
     @PostMapping("/create")
     public GXResultUtils index(@RequestBody TestDTO testDTO) {
         log.info("AAAAA");
-        TestEntity testEntity = testMapStruct.dtoToEntity(testDTO);
-        testService.save(testEntity);
-        return GXResultUtils.ok("");
+        Integer id = testService.create(testDTO);
+        return GXResultUtils.ok("").putData(id);
     }
 
     @PostMapping("/get")
