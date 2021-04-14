@@ -28,9 +28,9 @@
     <property name="LOG_FILE"
               value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/${springAppName:-spring}.log}"/>
     <property name="CONSOLE_LOG_PATTERN"
-              value="%clr(%d{MM-dd HH:mm:ss.SSS}){faint} [%thread] %clr(%-5level) %clr([%10.10t]){magenta} %clr([%X{TraceId}]){yellow} %clr(%-40.40logger{39}.%-10.25M{25}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+              value="%clr(%d{MM-dd HH:mm:ss.SSS}){faint} [%thread] %clr(%-5level) %clr([%10.10t]){magenta} [traceId:%X{X-B3-TraceId}]{yellow} %clr(%-40.40logger{39}.%-10.25M{25}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     <property name="FILE_LOG_PATTERN"
-              value="%d{MM-dd HH:mm:ss.SSS} %-5level [%thread] [%10.10t] [%X{TraceId}] %-40.40logger{39}.%-10.25M{25} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+              value="%d{MM-dd HH:mm:ss.SSS} %-5level [%thread] [%10.10t] [traceId:%X{X-B3-TraceId}] %-40.40logger{39}.%-10.25M{25} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_FILE}</file>

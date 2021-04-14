@@ -30,10 +30,9 @@ public class HelloController {
     private TestService testService;
 
     @PostMapping("/index")
-    public GXResultUtils index(@RequestBody TestEntity entity) {
+    public GXResultUtils index() {
         log.info("AAAAA");
-        testService.save(entity);
-        return GXResultUtils.ok(entity.getId());
+        return GXResultUtils.ok("");
     }
 
     @PostMapping("/get")
