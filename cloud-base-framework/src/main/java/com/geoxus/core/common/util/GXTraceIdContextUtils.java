@@ -4,10 +4,10 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.IdUtil;
 import org.slf4j.MDC;
 
-public class TraceIdContextUtils {
+public class GXTraceIdContextUtils {
     public static final String TRACE_ID_KEY = "TraceId";
 
-    private TraceIdContextUtils() {
+    private GXTraceIdContextUtils() {
     }
 
     public static String getTraceId() {
@@ -29,8 +29,8 @@ public class TraceIdContextUtils {
         MDC.clear();
     }
 
-    public static class TraceIdGenerator {
-        private TraceIdGenerator() {
+    public static class GXTraceIdGenerator {
+        private GXTraceIdGenerator() {
         }
 
         /**

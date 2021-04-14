@@ -7,6 +7,8 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.*;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -30,6 +32,7 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -910,5 +913,28 @@ public class GXCommonUtils {
      */
     public static long getCurrentSessionUserId() {
         return 0L;
+    }
+
+    /**
+     * 获取AES对象
+     *
+     * @param key AES的key
+     * @return AES
+     */
+    public static AES getAES(String key) {
+        return SecureUtil.aes(key.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * 获取AES对象
+     *
+     * @return AES
+     */
+    public static AES getAES() {
+        String key = getEnvironmentValue("common.sensitive.data.key", String.class);
+        if (CharSequenceUtil.isBlank(key)) {
+            key = "XhFeV780D2218OBRmzxjcWvv";
+        }
+        return getAES(key);
     }
 }

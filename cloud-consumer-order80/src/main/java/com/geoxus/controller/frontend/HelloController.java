@@ -1,25 +1,51 @@
 package com.geoxus.controller.frontend;
 
 import cn.hutool.core.lang.Dict;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.geoxus.core.common.util.GXResultUtils;
+import com.geoxus.entities.TestEntity;
 import com.geoxus.service.HelloService;
+import com.geoxus.service.TestService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/hello/frontend")
 @Slf4j
 public class HelloController {
-    @Autowired
+    @Resource
     private HelloService helloService;
 
-    @GetMapping("/index")
-    public GXResultUtils index(@RequestParam("name") String name) {
+    @Resource
+    private RestTemplate restTemplate;
+
+    @Resource
+    private TestService testService;
+
+    @PostMapping("/index")
+    public GXResultUtils index(@RequestBody TestEntity entity) {
         log.info("AAAAA");
-        return GXResultUtils.ok(Dict.create().set("name", name).set("age", 23).set("address", "四春生"));
+        testService.save(entity);
+        return GXResultUtils.ok(entity.getId());
+    }
+
+    @PostMapping("/get")
+    public GXResultUtils index(@RequestBody Dict param) {
+        Integer id = param.getInt("id");
+        TestEntity entity = testService.getById(id);
+        return GXResultUtils.ok().putData(entity);
+    }
+
+    @PostMapping("/getList")
+    public GXResultUtils getList() {
+        List<TestEntity> list = testService.list(new QueryWrapper<TestEntity>().le("id", 20));
+        return GXResultUtils.ok().putData(list);
     }
 }

@@ -1,6 +1,6 @@
 package com.geoxus.interceptor;
 
-import com.geoxus.core.common.annotation.FeignHeaderAnnotation;
+import com.geoxus.core.common.annotation.GxFeignHeaderAnnotation;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +9,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
-import java.util.HashMap;
 
 @Component
 @Slf4j
@@ -22,15 +20,15 @@ public class FeignInterceptor implements RequestInterceptor {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes != null) {
             HttpServletRequest request = attributes.getRequest();
-            FeignHeaderAnnotation feignHeaderAnnotation = template.methodMetadata().method().getAnnotation(FeignHeaderAnnotation.class);
-            if (feignHeaderAnnotation == null) {
+            GxFeignHeaderAnnotation gxFeignHeaderAnnotation = template.methodMetadata().method().getAnnotation(GxFeignHeaderAnnotation.class);
+            if (gxFeignHeaderAnnotation == null) {
                 return;
             }
-            headers(feignHeaderAnnotation, request, template);
+            headers(gxFeignHeaderAnnotation, request, template);
         }
     }
 
-    private void headers(FeignHeaderAnnotation annotation, HttpServletRequest request, RequestTemplate template) {
+    private void headers(GxFeignHeaderAnnotation annotation, HttpServletRequest request, RequestTemplate template) {
         String[] names = annotation.names();
         if (names.length == 0) {
             return;

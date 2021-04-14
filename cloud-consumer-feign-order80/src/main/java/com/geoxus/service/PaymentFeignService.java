@@ -1,6 +1,6 @@
 package com.geoxus.service;
 
-import com.geoxus.core.common.annotation.FeignHeaderAnnotation;
+import com.geoxus.core.common.annotation.GxFeignHeaderAnnotation;
 import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.entities.CommonResult;
 import com.geoxus.entities.Payment;
@@ -24,6 +24,6 @@ public interface PaymentFeignService {
     public String paymentFeignTimeout();
 
     @GetMapping(value = "/hello/frontend/index")
-    @FeignHeaderAnnotation(names = {"test" , "test1" , "test2"})
+    @GxFeignHeaderAnnotation(names = {"test" , "test1" , "test2"})
     public GXResultUtils helloIndex(@RequestParam("name") String name);
 }
