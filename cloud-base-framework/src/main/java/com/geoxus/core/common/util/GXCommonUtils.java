@@ -933,7 +933,7 @@ public class GXCommonUtils {
     public static AES getAES() {
         String key = getEnvironmentValue("common.sensitive.data.key", String.class);
         if (CharSequenceUtil.isBlank(key)) {
-            key = "XhFeV780D2218OBRmzxjcWvv";
+            key = "XhFeV780D2218OBRm0xjcWvv";
         }
         return getAES(key);
     }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.geoxus.core.common.annotation.GXSensitiveDataAnnotation;
 import com.geoxus.core.common.annotation.GXSensitiveFieldAnnotation;
+import com.geoxus.core.common.entity.GXBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -14,7 +15,7 @@ import lombok.experimental.Accessors;
 @GXSensitiveDataAnnotation
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class TestEntity {
+public class TestEntity extends GXBaseEntity {
     @TableId(type = IdType.AUTO)
     private Integer id;
 

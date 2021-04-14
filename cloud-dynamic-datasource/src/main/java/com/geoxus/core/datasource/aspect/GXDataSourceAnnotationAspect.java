@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 public class GXDataSourceAnnotationAspect {
     @Pointcut("@annotation(com.geoxus.core.datasource.annotation.GXDataSourceAnnotation) || @within(com.geoxus.core.datasource.annotation.GXDataSourceAnnotation)")
     public void dataSourcePointCut() {
+        // 这是是切点标记
     }
 
     @Around("dataSourcePointCut()")

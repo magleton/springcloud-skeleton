@@ -3,7 +3,9 @@ package com.geoxus.controller.frontend;
 import cn.hutool.core.lang.Dict;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.geoxus.core.common.util.GXResultUtils;
+import com.geoxus.dto.TestDTO;
 import com.geoxus.entities.TestEntity;
+import com.geoxus.mapstruct.TestMapStruct;
 import com.geoxus.service.HelloService;
 import com.geoxus.service.TestService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,9 @@ public class HelloController {
     @Resource
     private TestService testService;
 
+    @Resource
+    private TestMapStruct testMapStruct;
+
     @PostMapping("/index")
     public GXResultUtils index() {
         log.info("AAAAA");
@@ -36,8 +41,9 @@ public class HelloController {
     }
 
     @PostMapping("/create")
-    public GXResultUtils index(@RequestBody TestEntity testEntity) {
+    public GXResultUtils index(@RequestBody TestDTO testDTO) {
         log.info("AAAAA");
+        TestEntity testEntity = testMapStruct.dtoToEntity(testDTO);
         testService.save(testEntity);
         return GXResultUtils.ok("");
     }

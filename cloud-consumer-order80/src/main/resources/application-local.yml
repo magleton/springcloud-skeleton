@@ -29,9 +29,9 @@ spring:
       #url: jdbc:mysql://xx.xx.xx.xx:3306/xx?useSSL=false&useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false
       username: britton
       password: britton
-      initial-size: 10
-      max-active: 100
-      min-idle: 10
+      initial-size: 2
+      max-active: 50
+      min-idle: 2
       max-wait: 60000
       pool-prepared-statements: true
       max-pool-prepared-statement-per-connection-size: 20
