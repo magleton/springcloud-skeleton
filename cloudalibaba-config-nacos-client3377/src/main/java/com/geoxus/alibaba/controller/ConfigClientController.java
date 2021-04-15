@@ -1,6 +1,7 @@
 package com.geoxus.alibaba.controller;
 
 import com.geoxus.alibaba.config.CommonConfig;
+import com.geoxus.alibaba.properties.GXDynamicDataSourceProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +25,14 @@ public class ConfigClientController {
     @Resource
     private CommonConfig commonConfig;
 
+    @Resource
+    private GXDynamicDataSourceProperties gxDynamicDataSourceProperties;
+
     @GetMapping("/config/info")
     public String getConfigInfo() {
         System.out.println(requestValue);
         System.out.println(commonConfig);
+        System.out.println(gxDynamicDataSourceProperties);
         return configInfo;
     }
 }

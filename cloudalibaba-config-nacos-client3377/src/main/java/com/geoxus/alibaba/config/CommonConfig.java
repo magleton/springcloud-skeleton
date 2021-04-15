@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @PropertySource(value = "nacos-extra.yml",
         factory = GXYamlPropertySourceFactory.class,
         ignoreResourceNotFound = true)
-@NacosConfigurationProperties(dataId = "${nacos.server.dataId}", groupId = "${nacos.server.groupId}", autoRefreshed = true, properties = @NacosProperties(namespace = "${nacos.server.namespace}"))
+@NacosConfigurationProperties(dataId = "${nacos.common.dataId}", groupId = "${nacos.common.groupId}", autoRefreshed = true, properties = @NacosProperties(namespace = "${nacos.common.namespace}"))
 @ConfigurationProperties(prefix = "common")
 @Data
 public class CommonConfig {

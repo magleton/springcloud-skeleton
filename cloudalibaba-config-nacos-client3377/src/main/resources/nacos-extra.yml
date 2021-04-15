@@ -1,5 +1,9 @@
 nacos:
-  server:
+  common:
     dateId: common.yaml
+    groupId: DEFAULT_GROUP
+    namespace: 1b0814d1-e386-4e15-b333-5a0374d85d4a
+  datasource:
+    dateId: datasource.yaml
     groupId: DEFAULT_GROUP
     namespace: 1b0814d1-e386-4e15-b333-5a0374d85d4a
