@@ -1,9 +1,12 @@
 package com.geoxus.alibaba.controller;
 
+import com.geoxus.alibaba.config.CommonConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @author britton
@@ -15,8 +18,16 @@ public class ConfigClientController {
     @Value("${config.info}")
     private String configInfo;
 
+    @Value("${common.request}")
+    private String requestValue;
+
+    @Resource
+    private CommonConfig commonConfig;
+
     @GetMapping("/config/info")
     public String getConfigInfo() {
+        System.out.println(requestValue);
+        System.out.println(commonConfig);
         return configInfo;
     }
 }
