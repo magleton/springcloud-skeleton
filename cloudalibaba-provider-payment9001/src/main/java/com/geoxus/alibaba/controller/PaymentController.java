@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @auther britton
+ * @author britton
  * @date 2020-02-23 14:13
  */
 @RestController

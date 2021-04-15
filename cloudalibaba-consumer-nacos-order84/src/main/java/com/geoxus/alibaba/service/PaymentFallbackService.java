@@ -5,7 +5,7 @@ import com.geoxus.entities.Payment;
 import org.springframework.stereotype.Component;
 
 /**
- * @auther britton
+ * @author britton
  * @date 2020-02-25 18:30
  */
 @Component

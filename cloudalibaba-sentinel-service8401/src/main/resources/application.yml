@@ -7,10 +7,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848 #Nacos服务注册中心地址
+        server-addr: localhost:8848 # Nacos服务注册中心地址
     sentinel:
       transport:
-        dashboard: localhost:8080 #配置Sentinel dashboard地址
+        dashboard: localhost:8080 # 配置Sentinel dashboard地址
         port: 8719
       datasource:
         ds1:
@@ -30,5 +30,3 @@ management:
 feign:
   sentinel:
     enabled: true # 激活Sentinel对Feign的支持
-
-
