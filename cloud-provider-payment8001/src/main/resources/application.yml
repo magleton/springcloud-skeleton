@@ -47,7 +47,7 @@ spring:
             multi-statement-allow: true
   redis:
     redisson:
-      config: classpath:redisson.yml
+      config: classpath:redission.yml
   cache:
     type: redis
   rabbitmq:

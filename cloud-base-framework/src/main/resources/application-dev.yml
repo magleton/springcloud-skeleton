@@ -50,7 +50,7 @@ spring:
   # redis参数
   redis:
     redisson:
-      config: classpath:redisson.yml
+      config: classpath:redission.yml
     database: 0
     host: 192.168.56.101
     port: 6379

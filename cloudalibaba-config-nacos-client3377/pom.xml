@@ -12,6 +12,11 @@
     <artifactId>cloudalibaba-config-nacos-client3377</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.geoxus</groupId>
+            <artifactId>cloud-base-framework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--nacos-config-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

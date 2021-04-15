@@ -20,14 +20,14 @@ import java.io.IOException;
 public class GXRedissonSpringDataConfig {
     @Bean(destroyMethod = "shutdown")
     @Profile("local")
-    public RedissonClient redissonClient(@Value("classpath:/redisson-local.yml") Resource configFile) throws IOException {
+    public RedissonClient redissionClient(@Value("classpath:/redission-local.yml") Resource configFile) throws IOException {
         Config config = Config.fromYAML(configFile.getInputStream());
         return Redisson.create(config);
     }
 
     @Bean(destroyMethod = "shutdown")
     @Profile("dev")
-    public RedissonClient redisson(@Value("classpath:/redisson.yml") Resource configFile) throws IOException {
+    public RedissonClient redission(@Value("classpath:/redission.yml") Resource configFile) throws IOException {
         Config config = Config.fromYAML(configFile.getInputStream());
         return Redisson.create(config);
     }
@@ -35,6 +35,6 @@ public class GXRedissonSpringDataConfig {
     @Bean
     @ConditionalOnExpression("'${spring.cache.type}'.equals('redis')")
     public CacheManager cacheManager(RedissonClient redissonClient) {
-        return new RedissonSpringCacheManager(redissonClient, "classpath:/redisson-cache-config.yml");
+        return new RedissonSpringCacheManager(redissonClient, "classpath:/redission-cache-config.yml");
     }
 }
