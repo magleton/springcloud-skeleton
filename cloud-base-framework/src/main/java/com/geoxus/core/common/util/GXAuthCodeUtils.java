@@ -198,7 +198,7 @@ public class GXAuthCodeUtils {
             cryptKey = keyA + md5(keyA + keyC);
             if (operation == GXAuthCodeMode.DECODE) {
                 byte[] temp;
-                temp = Base64.decode(cutString(source, cKeyLength).getBytes());
+                temp = Base64.decode(cutString(source, cKeyLength).getBytes(StandardCharsets.UTF_8));
                 result = new String(rc4(temp, cryptKey));
                 if ((result.indexOf("0000000000") == 0
                         || Integer.parseInt(cutString(result, 0, 10)) - DateUtil.currentSeconds() > 0)
