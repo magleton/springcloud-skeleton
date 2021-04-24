@@ -1,108 +1,119 @@
 package com.geoxus.core.common.util;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.lang.Dict;
 import cn.hutool.http.HttpStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.geoxus.core.common.vo.common.GXResultCode;
+import lombok.Data;
 
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * HTTP 返回数据格式
- *
- * @author zj chen <britton@126.com>
- */
-public class GXResultUtils extends HashMap<String, Object> {
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class GXResultUtils<T> {
     private static final long serialVersionUID = 1L;
 
-    public GXResultUtils() {
-        put("code", 0);
-        put("msg", "success");
-        put("data", new Object[0]);
+    /**
+     * 失败的提示消息
+     */
+    private static final String FAIL_MSG = "fail";
+
+    /**
+     * 成功的提示消息
+     */
+    private static final String SUCCESS_MSG = "success";
+
+    /**
+     * 成功的CODE
+     */
+    private static final int SUCCESS_CODE = HttpStatus.HTTP_OK;
+
+    /**
+     * 失败的CODE
+     */
+    private static final int FAIL_CODE = HttpStatus.HTTP_INTERNAL_ERROR;
+
+    /**
+     * 返回code码，200成功，其他失败
+     */
+    private int code = SUCCESS_CODE;
+
+    /**
+     * 错误信息
+     */
+    private String msg = SUCCESS_MSG;
+
+    /**
+     * 返回数据
+     */
+    private T data;
+
+    public static <T> GXResultUtils<T> ok(GXResultCode resultCode) {
+        return ok(resultCode.getCode(), resultCode.getMsg());
     }
 
-    public static GXResultUtils error() {
-        return error(HttpStatus.HTTP_INTERNAL_ERROR, "未知异常，请联系管理员");
+    public static <T> GXResultUtils<T> ok(GXResultCode resultCode, T data) {
+        return ok(resultCode.getCode(), resultCode.getMsg(), data);
     }
 
-    public static GXResultUtils error(String msg) {
-        return error(HttpStatus.HTTP_INTERNAL_ERROR, msg);
+    public static <T> GXResultUtils<T> ok(String msg) {
+        return ok(SUCCESS_CODE, msg, null);
     }
 
-    public static GXResultUtils error(int code) {
-        return error(code, "");
+    public static <T> GXResultUtils<T> ok(int code, String msg) {
+        return ok(code, msg, null);
     }
 
-    public static GXResultUtils error(int code, String msg) {
-        GXResultUtils r = new GXResultUtils();
-        r.put("code", code);
-        r.put("msg", msg);
+    public static <T> GXResultUtils<T> ok(int code) {
+        return ok(code, SUCCESS_MSG, null);
+    }
+
+    public static <T> GXResultUtils<T> ok(T data) {
+        return ok(SUCCESS_CODE, SUCCESS_MSG, data);
+    }
+
+    public static <T> GXResultUtils<T> ok(int code, String msg, T data) {
+        GXResultUtils<T> r = new GXResultUtils<>();
+        r.setCode(code);
+        r.setMsg(msg);
+        r.setData(data);
         return r;
     }
 
-    public static GXResultUtils error(GXResultCode resultCode) {
-        GXResultUtils r = new GXResultUtils();
-        r.put("code", resultCode.getCode());
-        r.put("msg", resultCode.getMsg());
+    public static <T> GXResultUtils<T> ok() {
+        return new GXResultUtils<>();
+    }
+
+    public static <T> GXResultUtils<T> error() {
+        return error(FAIL_CODE, "未知异常，请联系管理员");
+    }
+
+    public static <T> GXResultUtils<T> error(T data) {
+        return error(FAIL_CODE, FAIL_MSG, data);
+    }
+
+    public static <T> GXResultUtils<T> error(String msg) {
+        return error(FAIL_CODE, msg);
+    }
+
+    public static <T> GXResultUtils<T> error(int code) {
+        return error(code, FAIL_MSG, null);
+    }
+
+    public static <T> GXResultUtils<T> error(int code, String msg) {
+        return error(code, msg, null);
+    }
+
+    public static <T> GXResultUtils<T> error(GXResultCode resultCode) {
+        return error(resultCode.getCode(), resultCode.getMsg());
+    }
+
+    public static <T> GXResultUtils<T> error(GXResultCode resultCode, T data) {
+        return error(resultCode.getCode(), resultCode.getMsg(), data);
+    }
+
+    public static <T> GXResultUtils<T> error(int code, String msg, T data) {
+        GXResultUtils<T> r = new GXResultUtils<>();
+        r.setCode(code);
+        r.setMsg(msg);
+        r.setData(data);
         return r;
-    }
-
-    public static GXResultUtils ok(GXResultCode resultCode) {
-        GXResultUtils r = new GXResultUtils();
-        r.put("code", resultCode.getCode());
-        r.put("msg", resultCode.getMsg());
-        return r;
-    }
-
-    public static GXResultUtils ok(String msg) {
-        GXResultUtils r = new GXResultUtils();
-        r.put("msg", msg);
-        return r;
-    }
-
-    public static GXResultUtils ok(int code, String msg) {
-        GXResultUtils r = new GXResultUtils();
-        r.put("msg", msg);
-        r.put("code", code);
-        return r;
-    }
-
-    public static GXResultUtils ok(int code) {
-        GXResultUtils r = new GXResultUtils();
-        r.put("code", code);
-        return r;
-    }
-
-    public static GXResultUtils ok(Map<String, Object> map) {
-        GXResultUtils r = new GXResultUtils();
-        r.putData(map);
-        return r;
-    }
-
-    public static GXResultUtils ok() {
-        return new GXResultUtils();
-    }
-
-    @Override
-    public GXResultUtils put(String key, Object value) {
-        super.put(key, value);
-        return this;
-    }
-
-    public GXResultUtils putData(Object obj) {
-        super.put("data", obj);
-        return this;
-    }
-
-    public GXResultUtils addKeyValue(String key, Object value) {
-        Object o = get("data");
-        Dict data = Dict.create().set(key, value);
-        if (o instanceof Map) {
-            Dict dict = Convert.convert(Dict.class, o);
-            data.putAll(dict);
-        }
-        super.put("data", data);
-        return this;
     }
 }

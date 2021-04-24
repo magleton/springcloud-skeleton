@@ -4,9 +4,9 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
+import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.service.GXApiIdempotentService;
 import com.geoxus.core.common.util.GXHttpContextUtils;
-import com.geoxus.core.common.util.GXResultUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -36,6 +36,7 @@ public class GXApiIdempotentAspect {
         if (null != token && apiIdempotentService.checkApiIdempotentToken(token)) {
             return point.proceed(point.getArgs());
         }
-        return GXResultUtils.error().putData(Dict.create().set("error", StrUtil.format("{} HEADERS NOT EXISTS", API_IDEMPOTENT_TOKEN)));
+        Dict dict = Dict.create().set("error", StrUtil.format("{} HEADERS NOT EXISTS", API_IDEMPOTENT_TOKEN));
+        return GXResultUtils.error(dict);
     }
 }

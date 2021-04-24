@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 
 /**
- * @author  britton
+ * @author britton
  * @since 2021-02-24
  */
 @FeignClient(value = "seata-account-service")
 public interface AccountService {
     @PostMapping(value = "/account/decrease")
-    GXResultUtils decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money);
+    GXResultUtils<String> decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money);
 }

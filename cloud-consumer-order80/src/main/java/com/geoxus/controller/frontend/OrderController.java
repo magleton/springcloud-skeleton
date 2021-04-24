@@ -2,10 +2,8 @@ package com.geoxus.controller.frontend;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.http.HttpStatus;
 import com.geoxus.core.common.annotation.GXRequestBodyToEntityAnnotation;
 import com.geoxus.core.common.controller.GXControllerDTO;
-import com.geoxus.core.common.service.GXSessionService;
 import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.dto.OrdersDTO;
 import com.geoxus.entities.OrdersEntity;
@@ -38,17 +36,17 @@ public class OrderController implements GXControllerDTO<OrdersDTO> {
     @Override
     @PostMapping("/create")
     //@GXLoginAnnotation
-    public GXResultUtils create(@Valid @GXRequestBodyToEntityAnnotation(mapstructClazz = OrdersMapStruct.class, jsonFields = {"ext", "other"}) OrdersDTO ordersDTO) {
+    public GXResultUtils<Long> create(@Valid @GXRequestBodyToEntityAnnotation(mapstructClazz = OrdersMapStruct.class, jsonFields = {"ext", "other"}) OrdersDTO ordersDTO) {
         long orderNo = IdUtil.getSnowflake(1, 1).nextId();
         ordersDTO.setOrderNo(orderNo);
         OrdersEntity ordersEntity = ordersMapStruct.dtoToEntity(ordersDTO);
         orderService.create(ordersEntity, Dict.create().set("author", "枫叶思源"));
-        return GXResultUtils.ok(HttpStatus.HTTP_OK).addKeyValue("order_no", orderNo);
+        return GXResultUtils.ok(orderNo);
     }
 
     @Override
     @GetMapping("/list-or-search")
-    public GXResultUtils listOrSearch(Dict param) {
-        return GXResultUtils.ok().putData(orderService.listOrSearchPage(param));
+    public GXResultUtils<Dict> listOrSearch(Dict param) {
+        return GXResultUtils.ok(param);
     }
 }

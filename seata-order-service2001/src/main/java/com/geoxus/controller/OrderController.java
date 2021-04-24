@@ -1,8 +1,8 @@
 package com.geoxus.controller;
 
+import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.entities.OrderEntity;
 import com.geoxus.service.OrderService;
-import com.geoxus.core.common.util.GXResultUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +18,8 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/order/create")
-    public GXResultUtils create(OrderEntity orderEntity) {
+    public GXResultUtils<String> create(OrderEntity orderEntity) {
         orderService.create(orderEntity);
-        return GXResultUtils.ok(200, "订单创建成功");
+        return GXResultUtils.ok("订单创建成功");
     }
 }

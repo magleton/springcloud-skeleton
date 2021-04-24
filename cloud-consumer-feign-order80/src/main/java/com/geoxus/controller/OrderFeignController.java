@@ -33,7 +33,7 @@ public class OrderFeignController {
     }
 
     @GetMapping(value = "/feign/hello/index")
-    public GXResultUtils helloIndex() {
+    public GXResultUtils<String> helloIndex() {
         return paymentFeignService.helloIndex("britton");
     }
 }

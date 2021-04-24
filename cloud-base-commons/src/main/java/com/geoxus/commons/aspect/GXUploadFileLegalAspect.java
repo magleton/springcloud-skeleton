@@ -1,8 +1,8 @@
 package com.geoxus.commons.aspect;
 
+import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.oauth.GXTokenManager;
 import com.geoxus.core.common.util.GXHttpContextUtils;
-import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.vo.common.GXResultCode;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
