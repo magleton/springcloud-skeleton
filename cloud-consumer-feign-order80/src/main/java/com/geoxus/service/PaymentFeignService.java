@@ -1,6 +1,7 @@
 package com.geoxus.service;
 
 import com.geoxus.core.common.annotation.GxFeignHeaderAnnotation;
+import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.entities.CommonResult;
 import com.geoxus.entities.Payment;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -24,5 +25,5 @@ public interface PaymentFeignService {
 
     @GetMapping(value = "/hello/frontend/index")
     @GxFeignHeaderAnnotation(names = {"test", "test1", "test2"})
-    GXResponseUtils<String> helloIndex(@RequestParam("name") String name);
+    GXResultUtils<String> helloIndex(@RequestParam("name") String name);
 }
