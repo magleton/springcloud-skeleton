@@ -2,7 +2,6 @@ package com.geoxus.core.common.validator.impl;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
@@ -24,6 +23,10 @@ import java.util.Set;
 public class GXValidatorUtils {
     @GXFieldCommentAnnotation(zh = "验证器")
     private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+    private GXValidatorUtils() {
+
+    }
 
     /**
      * 校验对象
