@@ -2,6 +2,7 @@ package com.geoxus.core.framework.handler;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
@@ -33,6 +34,7 @@ public class GXJsonToMapTypeHandler extends BaseTypeHandler<Map<String, Object>>
         ps.setCharacterStream(i, reader, parameterString.length());
     }
 
+    @Override
     public Map<String, Object> getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String value = "";
         Clob clob = rs.getClob(columnName);
@@ -50,6 +52,7 @@ public class GXJsonToMapTypeHandler extends BaseTypeHandler<Map<String, Object>>
         return jsonToMap(value, coreModelId);
     }
 
+    @Override
     public Map<String, Object> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String value = "";
         Clob clob = rs.getClob(columnIndex);
@@ -60,6 +63,7 @@ public class GXJsonToMapTypeHandler extends BaseTypeHandler<Map<String, Object>>
         return jsonToMap(value, rs.getInt(CORE_MODEL_PRIMARY_NAME));
     }
 
+    @Override
     public Map<String, Object> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String value = "";
         Clob clob = cs.getClob(columnIndex);
@@ -77,7 +81,7 @@ public class GXJsonToMapTypeHandler extends BaseTypeHandler<Map<String, Object>>
     }
 
     private Map<String, Object> jsonToMap(String from, int coreModelId) {
-        from = StrUtil.isEmpty(from) ? "{}" : from;
+        from = CharSequenceUtil.isEmpty(from) ? "{}" : from;
         if (coreModelId == 0) {
             if (JSONUtil.isJson(from)) {
                 return JSONUtil.toBean(from, Dict.class);

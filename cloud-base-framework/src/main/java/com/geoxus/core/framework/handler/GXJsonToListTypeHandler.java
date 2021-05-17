@@ -36,6 +36,7 @@ public class GXJsonToListTypeHandler extends BaseTypeHandler<List<Map<String, Ob
         ps.setCharacterStream(i, reader, parameterString.length());
     }
 
+    @Override
     public List<Map<String, Object>> getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String value = "";
         int coreModelId;
@@ -49,6 +50,7 @@ public class GXJsonToListTypeHandler extends BaseTypeHandler<List<Map<String, Ob
         return jsonToList(value, coreModelId);
     }
 
+    @Override
     public List<Map<String, Object>> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String value = "";
         Clob clob = rs.getClob(columnIndex);
@@ -61,6 +63,7 @@ public class GXJsonToListTypeHandler extends BaseTypeHandler<List<Map<String, Ob
         return jsonToList(value, coreModelId);
     }
 
+    @Override
     public List<Map<String, Object>> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String value = "";
         Clob clob = cs.getClob(columnIndex);
