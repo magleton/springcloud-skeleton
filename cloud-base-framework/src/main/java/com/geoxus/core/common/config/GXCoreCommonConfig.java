@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.geoxus.core.common.factory.GXYamlPropertySourceFactory;
 import com.geoxus.core.common.validator.impl.GXValidateDBUniqueValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -22,6 +24,9 @@ import org.springframework.util.unit.DataSize;
 
 import javax.servlet.MultipartConfigElement;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * 通用配置类
@@ -31,6 +36,8 @@ import java.io.IOException;
         factory = GXYamlPropertySourceFactory.class,
         ignoreResourceNotFound = true)
 public class GXCoreCommonConfig {
+    private static final Logger LOG = LoggerFactory.getLogger(GXCoreCommonConfig.class);
+
     @Bean
     public GXValidateDBUniqueValidator validateDBUniqueOrExistsValidator() {
         return new GXValidateDBUniqueValidator();
@@ -52,8 +59,30 @@ public class GXCoreCommonConfig {
         final SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
         serializerProvider.setNullValueSerializer(new JsonSerializer<Object>() {
             @Override
-            public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-                gen.writeString("");
+            public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+                String fieldName = jsonGenerator.getOutputContext().getCurrentName();
+                try {
+                    // 反射获取字段类型
+                    Field field = jsonGenerator.getCurrentValue().getClass().getDeclaredField(fieldName);
+                    if (CharSequence.class.isAssignableFrom(field.getType())) {
+                        // 字符串型空值""
+                        jsonGenerator.writeString("");
+                        return;
+                    } else if (Collection.class.isAssignableFrom(field.getType())) {
+                        // 列表型空值返回[]
+                        jsonGenerator.writeStartArray();
+                        jsonGenerator.writeEndArray();
+                        return;
+                    } else if (Map.class.isAssignableFrom(field.getType())) {
+                        // map型空值或者bean对象返回"{}"
+                        jsonGenerator.writeStartObject();
+                        jsonGenerator.writeEndObject();
+                        return;
+                    }
+                } catch (NoSuchFieldException noSuchFieldException) {
+                    LOG.info(noSuchFieldException.getMessage());
+                }
+                jsonGenerator.writeString("");
             }
         });
         return objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
