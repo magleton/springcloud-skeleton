@@ -6,16 +6,23 @@ import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 import java.util.function.Supplier;
 
 /**
  * 并发请求任务工具类
  */
 public class GXConcurrentToolsUtils {
+    /**
+     * 标识特殊值 并行获取失败是会设置该值
+     */
+    public static final String FLAG_SPECIAL_VALUE = "BRT";
+
+    /**
+     * 默认超时时间是5秒钟
+     */
+    private static final int DEFAULT_TIME_OUT = 5;
+
     /**
      * 日志对象
      */
@@ -49,17 +56,17 @@ public class GXConcurrentToolsUtils {
      */
     public static <T> CompletableFuture<T> composerFuture(Supplier<T> callable, ConcurrentMap<String, Object> results, String resultKey) {
         final CompletableFuture<T> future = CompletableFuture.supplyAsync(callable, EXECUTOR_SERVICE);
-        future.whenComplete((t, u) -> results.put(resultKey, t));
+        future.whenComplete((t, ex) -> results.putIfAbsent(resultKey, null));
         future.handleAsync((t, ex) -> {
             if (Objects.nonNull(ex)) {
-                LOG.error("发生了异常 {} , 异常堆栈信息为 : {} ", ex.getMessage(), ex);
+                LOG.error("异常发生了 {} ", ex.getMessage());
             } else {
                 LOG.error("异常信息为null");
             }
             return t;
         });
         future.exceptionally(ex -> {
-            results.put(resultKey, null);
+            results.putIfAbsent(resultKey, FLAG_SPECIAL_VALUE);
             future.completeExceptionally(ex);
             return null;
         });
@@ -68,30 +75,23 @@ public class GXConcurrentToolsUtils {
 
     /**
      * @param completableFutures CompletableFuture对象列表
-     * @return CompletableFuture对象
+     * @return void
      */
-    public static CompletableFuture<Void> allOf(List<CompletableFuture<?>> completableFutures) {
-        return CompletableFuture.allOf(completableFutures.stream().toArray(value -> new CompletableFuture[completableFutures.size()]));
-    }
-
-    /**
-     * @param completableFutures CompletableFuture对象列表
-     * @return CompletableFuture对象
-     */
-    public static CompletableFuture<Object> anyOf(List<CompletableFuture<?>> completableFutures) {
-        return CompletableFuture.anyOf(completableFutures.stream().toArray(value -> new CompletableFuture[completableFutures.size()]));
-    }
-
-    /**
-     * 获取结果
-     *
-     * @param all CompletableFuture对象
-     */
-    public static void getResults(CompletableFuture<Void> all) {
+    public static void allOf(List<CompletableFuture<?>> completableFutures, int timeOut, TimeUnit unit) {
         try {
-            all.join();
-        } catch (Exception e) {
-            LOG.error("发生了异常 {} , 异常信息为 {}", e.getMessage(), e);
+            CompletableFuture.allOf(completableFutures.stream().toArray(value -> new CompletableFuture[completableFutures.size()])).get(timeOut, unit);
+        } catch (InterruptedException e) {
+            LOG.error("InterruptedException: ", e);
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException | TimeoutException e) {
+            LOG.error("并发获取数据出错 {}", e.getMessage());
+            if (e instanceof TimeoutException) {
+                completableFutures.forEach(f -> f.cancel(true));
+            }
         }
+    }
+
+    public static void allOf(List<CompletableFuture<?>> completableFutures) {
+        allOf(completableFutures, DEFAULT_TIME_OUT, TimeUnit.SECONDS);
     }
 }
