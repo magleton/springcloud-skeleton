@@ -34,20 +34,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 
 public class GXCommonUtils {
     @GXFieldCommentAnnotation(zh = "日志对象")
     private static final Logger LOG = LoggerFactory.getLogger(GXCommonUtils.class);
-
-    @GXFieldCommentAnnotation(zh = "通用线程池")
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(5);
-
-    @GXFieldCommentAnnotation(zh = "定时任务线程池")
-    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newScheduledThreadPool(5);
 
     private GXCommonUtils() {
     }
@@ -599,24 +590,6 @@ public class GXCommonUtils {
             return;
         }
         parse.remove(path);
-    }
-
-    /**
-     * 获取通用线程池
-     *
-     * @return ExecutorService
-     */
-    public static ExecutorService getFixedThreadPool() {
-        return EXECUTOR_SERVICE;
-    }
-
-    /**
-     * 获取定时任务线程池
-     *
-     * @return ScheduledExecutorService
-     */
-    public static ScheduledExecutorService getScheduledExecutorService() {
-        return SCHEDULED_EXECUTOR_SERVICE;
     }
 
     /**
