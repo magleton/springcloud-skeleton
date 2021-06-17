@@ -910,4 +910,49 @@ public class GXCommonUtils {
         }
         return getAES(key);
     }
+
+    /**
+     * 将任意对象转换为指定类型的对象
+     *
+     * @param obj       需要被转换的对象
+     * @param beanClass 目标类型
+     * @param <T>       目标类型
+     * @return T
+     */
+    public static <T> T toBean(Object obj, Class<T> beanClass) {
+        if (Objects.nonNull(obj)) {
+            return JSONUtil.toBean(JSONUtil.toJsonStr(obj), beanClass);
+        }
+        return null;
+    }
+
+    /**
+     * 将任意对象转换为指定类型的对象
+     *
+     * @param obj           需要被转换的对象
+     * @param typeReference 目标类型
+     * @param <T>           目标类型
+     * @return T
+     */
+    public static <T> T toBean(Object obj, cn.hutool.core.lang.TypeReference<T> typeReference, boolean ignoreError) {
+        if (Objects.nonNull(obj)) {
+            return JSONUtil.toBean(JSONUtil.toJsonStr(obj), typeReference.getType(), ignoreError);
+        }
+        return null;
+    }
+
+    /**
+     * 将任意对象转换为指定类型的对象
+     *
+     * @param obj      需要被转换的对象
+     * @param beanType 目标类型
+     * @param <T>      目标类型
+     * @return T
+     */
+    public static <T> T toBean(Object obj, Type beanType, boolean ignoreError) {
+        if (Objects.nonNull(obj)) {
+            return JSONUtil.toBean(JSONUtil.toJsonStr(obj), beanType, ignoreError);
+        }
+        return null;
+    }
 }
