@@ -920,8 +920,8 @@ public class GXCommonUtils {
      * @return T
      */
     public static <T> T toBean(Object obj, Class<T> beanClass) {
-        if (Objects.nonNull(obj)) {
-            return JSONUtil.toBean(JSONUtil.toJsonStr(obj), beanClass);
+        if (Objects.nonNull(obj) && !obj.getClass().getSimpleName().equalsIgnoreCase("object")) {
+            return JSONUtil.toBean(JSONUtil.parseObj(obj), beanClass);
         }
         return null;
     }
@@ -935,8 +935,8 @@ public class GXCommonUtils {
      * @return T
      */
     public static <T> T toBean(Object obj, cn.hutool.core.lang.TypeReference<T> typeReference, boolean ignoreError) {
-        if (Objects.nonNull(obj)) {
-            return JSONUtil.toBean(JSONUtil.toJsonStr(obj), typeReference.getType(), ignoreError);
+        if (Objects.nonNull(obj) && !obj.getClass().getSimpleName().equalsIgnoreCase("object")) {
+            return JSONUtil.toBean(JSONUtil.parseObj(obj), typeReference.getType(), ignoreError);
         }
         return null;
     }
@@ -950,8 +950,8 @@ public class GXCommonUtils {
      * @return T
      */
     public static <T> T toBean(Object obj, Type beanType, boolean ignoreError) {
-        if (Objects.nonNull(obj)) {
-            return JSONUtil.toBean(JSONUtil.toJsonStr(obj), beanType, ignoreError);
+        if (Objects.nonNull(obj) && !obj.getClass().getSimpleName().equalsIgnoreCase("object")) {
+            return JSONUtil.toBean(JSONUtil.parseObj(obj), beanType, ignoreError);
         }
         return null;
     }
