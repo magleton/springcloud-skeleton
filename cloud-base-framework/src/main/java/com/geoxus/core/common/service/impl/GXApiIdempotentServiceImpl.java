@@ -15,7 +15,7 @@ import java.time.Duration;
 
 @Service
 public class GXApiIdempotentServiceImpl implements GXApiIdempotentService {
-    @GXFieldCommentAnnotation(zh = "Guava缓存组件")
+    @GXFieldCommentAnnotation(zhDesc = "Guava缓存组件")
     private static final Cache<String, String> API_IDEMPOTENT_CACHE;
 
     static {

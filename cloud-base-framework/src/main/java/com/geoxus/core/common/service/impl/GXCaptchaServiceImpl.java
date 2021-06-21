@@ -21,7 +21,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class GXCaptchaServiceImpl implements GXCaptchaService {
-    @GXFieldCommentAnnotation(zh = "Guava缓存组件")
+    @GXFieldCommentAnnotation(zhDesc = "Guava缓存组件")
     private static final Cache<String, String> CAPTCHA_CACHE;
 
     static {

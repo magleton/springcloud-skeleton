@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 @GXDataSourceAnnotation("framework")
 public class GXCoreAttributeEnumsServiceImpl extends ServiceImpl<GXCoreAttributeEnumsMapper, GXCoreAttributesEnumsEntity> implements GXCoreAttributeEnumsService {
-    @GXFieldCommentAnnotation(zh = "字段不存在的提示")
+    @GXFieldCommentAnnotation(zhDesc = "字段不存在的提示")
     private static final String FIELD_VALUE_NOT_EXISTS = "{}属性不存在值{}";
 
     @Autowired

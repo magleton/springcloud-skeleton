@@ -17,56 +17,56 @@ public class GXCoreMediaLibraryEntity extends GXBaseEntity implements Serializab
     private static final long serialVersionUID = 1L;
 
     @TableId
-    @GXFieldCommentAnnotation(zh = "主键ID")
+    @GXFieldCommentAnnotation(zhDesc = "主键ID")
     private Integer id;
 
-    @GXFieldCommentAnnotation(zh = "模型类型")
+    @GXFieldCommentAnnotation(zhDesc = "模型类型")
     private String modelType;
 
-    @GXFieldCommentAnnotation(zh = "系统模型ID")
+    @GXFieldCommentAnnotation(zhDesc = "系统模型ID")
     private long coreModelId;
 
-    @GXFieldCommentAnnotation(zh = "模型ID")
+    @GXFieldCommentAnnotation(zhDesc = "模型ID")
     private long objectId;
 
-    @GXFieldCommentAnnotation(zh = "集合名字")
+    @GXFieldCommentAnnotation(zhDesc = "集合名字")
     private String collectionName;
 
-    @GXFieldCommentAnnotation(zh = "文件名字")
+    @GXFieldCommentAnnotation(zhDesc = "文件名字")
     private String name;
 
-    @GXFieldCommentAnnotation(zh = "带后缀的文件名字")
+    @GXFieldCommentAnnotation(zhDesc = "带后缀的文件名字")
     private String fileName;
 
-    @GXFieldCommentAnnotation(zh = "文件MIME")
+    @GXFieldCommentAnnotation(zhDesc = "文件MIME")
     private String mimeType;
 
     @TableField(select = false)
-    @GXFieldCommentAnnotation(zh = "存储方式")
+    @GXFieldCommentAnnotation(zhDesc = "存储方式")
     private String disk;
 
-    @GXFieldCommentAnnotation(zh = "文件大小")
+    @GXFieldCommentAnnotation(zhDesc = "文件大小")
     private long size;
 
-    @GXFieldCommentAnnotation(zh = "维护者")
+    @GXFieldCommentAnnotation(zhDesc = "维护者")
     private String manipulations = "[]";
 
-    @GXFieldCommentAnnotation(zh = "自定义属性")
+    @GXFieldCommentAnnotation(zhDesc = "自定义属性")
     private String customProperties = "{}";
 
-    @GXFieldCommentAnnotation(zh = "响应式图片")
+    @GXFieldCommentAnnotation(zhDesc = "响应式图片")
     private String responsiveImages = "{}";
 
-    @GXFieldCommentAnnotation(zh = "排序")
+    @GXFieldCommentAnnotation(zhDesc = "排序")
     private int orderColumn;
 
-    @GXFieldCommentAnnotation(zh = "资源类型")
+    @GXFieldCommentAnnotation(zhDesc = "资源类型")
     private String resourceType = "";
 
-    @GXFieldCommentAnnotation(zh = "OSS的URL地址")
+    @GXFieldCommentAnnotation(zhDesc = "OSS的URL地址")
     private String ossUrl;
 
     @TableField(exist = false)
-    @GXFieldCommentAnnotation(zh = "文件存放物理地址")
+    @GXFieldCommentAnnotation(zhDesc = "文件存放物理地址")
     private String filePath = "";
 }

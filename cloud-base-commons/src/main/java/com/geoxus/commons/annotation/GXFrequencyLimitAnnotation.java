@@ -14,20 +14,20 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GXFrequencyLimitAnnotation {
-    @GXFieldCommentAnnotation(zh = "值")
+    @GXFieldCommentAnnotation(zhDesc = "值")
     @AliasFor("count")
     int value() default 10;
 
-    @GXFieldCommentAnnotation(zh = "限制的默认次数")
+    @GXFieldCommentAnnotation(zhDesc = "限制的默认次数")
     @AliasFor("value")
     int count() default 10;
 
-    @GXFieldCommentAnnotation(zh = "限制的key")
+    @GXFieldCommentAnnotation(zhDesc = "限制的key")
     String key() default "";
 
-    @GXFieldCommentAnnotation(zh = "过期时间, 单位: 秒")
+    @GXFieldCommentAnnotation(zhDesc = "过期时间, 单位: 秒")
     int expire() default 600;
 
-    @GXFieldCommentAnnotation(zh = "场景值 使用IP限制还是使用其他的限制")
+    @GXFieldCommentAnnotation(zhDesc = "场景值 使用IP限制还是使用其他的限制")
     String scene() default "ip";
 }

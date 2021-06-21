@@ -11,11 +11,11 @@ import java.lang.annotation.*;
 public @interface GXFieldCommentAnnotation {
     String value() default "";
 
-    String zh() default "中文描述";
+    String zhDesc() default "中文描述";
 
-    String en() default "英文描述";
+    String enDesc() default "英文描述";
 
     long code() default 0;
 
-    boolean show() default false;
+    boolean isShow() default false;
 }

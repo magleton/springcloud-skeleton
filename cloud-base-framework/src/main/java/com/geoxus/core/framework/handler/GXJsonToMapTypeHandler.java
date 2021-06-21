@@ -3,7 +3,6 @@ package com.geoxus.core.framework.handler;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
@@ -21,10 +20,10 @@ import java.util.Map;
 @MappedTypes({Map.class})
 @Slf4j
 public class GXJsonToMapTypeHandler extends BaseTypeHandler<Map<String, Object>> {
-    @GXFieldCommentAnnotation(zh = "标识核心模型主键名字")
+    @GXFieldCommentAnnotation(zhDesc = "标识核心模型主键名字")
     private static final String CORE_MODEL_PRIMARY_NAME = GXCommonConstants.CORE_MODEL_PRIMARY_NAME;
 
-    @GXFieldCommentAnnotation(zh = "当前字段的名字")
+    @GXFieldCommentAnnotation(zhDesc = "当前字段的名字")
     private String columnName;
 
     @Override

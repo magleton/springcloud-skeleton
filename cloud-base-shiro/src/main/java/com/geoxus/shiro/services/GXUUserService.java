@@ -9,8 +9,8 @@ public interface GXUUserService<T extends GXUUserEntity> extends GXBusinessServi
     /**
      * 验证前端用户的Token是否有效
      *
-     * @param token
-     * @return
+     * @param token 用户token
+     * @return Dict
      */
     default Dict verifyUserToken(String token) {
         return Dict.create();

@@ -3,8 +3,8 @@ package com.geoxus.shiro.oauth;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
+import com.geoxus.core.common.constant.GXTokenConstants;
 import com.geoxus.core.common.util.GXResultUtils;
-import com.geoxus.core.common.oauth.GXTokenManager;
 import com.geoxus.core.common.util.GXHttpContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
@@ -72,9 +72,9 @@ public class GXOAuth2Filter extends AuthenticatingFilter {
      * 获取请求的token
      */
     private String getRequestToken(HttpServletRequest httpRequest) {
-        String token = httpRequest.getHeader(GXTokenManager.ADMIN_TOKEN);
+        String token = httpRequest.getHeader(GXTokenConstants.ADMIN_TOKEN);
         if (StrUtil.isBlank(token)) {
-            token = httpRequest.getParameter(GXTokenManager.ADMIN_TOKEN);
+            token = httpRequest.getParameter(GXTokenConstants.ADMIN_TOKEN);
         }
         return token;
     }

@@ -1,7 +1,7 @@
 package com.geoxus.core.common.filter;
 
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,10 +20,10 @@ import java.util.Map;
  * XSS过滤处理
  */
 public class GXXssHttpServletRequestWrapper extends HttpServletRequestWrapper {
-    @GXFieldCommentAnnotation(zh = "html过滤")
+    @GXFieldCommentAnnotation(zhDesc = "HTML过滤")
     private static final GXHTMLFilter htmlFilter = new GXHTMLFilter();
 
-    @GXFieldCommentAnnotation(zh = "没被包装过的HttpServletRequest(特殊场景，需要自己过滤)")
+    @GXFieldCommentAnnotation(zhDesc = "没被包装过的HttpServletRequest(特殊场景, 需要自己过滤)")
     HttpServletRequest orgRequest;
 
     public GXXssHttpServletRequestWrapper(HttpServletRequest request) {
@@ -43,18 +43,18 @@ public class GXXssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public ServletInputStream getInputStream() throws IOException {
-        //非json类型，直接返回
+        // 非json类型，直接返回
         if (!MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(super.getHeader(HttpHeaders.CONTENT_TYPE))) {
             return super.getInputStream();
         }
 
-        //为空，直接返回
+        // 为空，直接返回
         String json = IoUtil.read(super.getInputStream(), "utf-8");
-        if (StrUtil.isBlank(json)) {
+        if (CharSequenceUtil.isBlank(json)) {
             return super.getInputStream();
         }
 
-        //xss过滤
+        // xss过滤
         json = xssEncode(json);
         final ByteArrayInputStream bis = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
         return new ServletInputStream() {
@@ -70,7 +70,7 @@ public class GXXssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
             @Override
             public void setReadListener(ReadListener readListener) {
-
+                // 自定义读取的监听器
             }
 
             @Override
@@ -83,7 +83,7 @@ public class GXXssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public String getParameter(String name) {
         String value = super.getParameter(xssEncode(name));
-        if (StrUtil.isNotBlank(value)) {
+        if (CharSequenceUtil.isNotBlank(value)) {
             value = xssEncode(value);
         }
         return value;
@@ -106,8 +106,9 @@ public class GXXssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     public Map<String, String[]> getParameterMap() {
         Map<String, String[]> map = new LinkedHashMap<>();
         Map<String, String[]> parameters = super.getParameterMap();
-        for (String key : parameters.keySet()) {
-            String[] values = parameters.get(key);
+        for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
+            final String[] values = entry.getValue();
+            final String key = entry.getKey();
             for (int i = 0; i < values.length; i++) {
                 values[i] = xssEncode(values[i]);
             }
@@ -119,7 +120,7 @@ public class GXXssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public String getHeader(String name) {
         String value = super.getHeader(xssEncode(name));
-        if (StrUtil.isNotBlank(value)) {
+        if (CharSequenceUtil.isNotBlank(value)) {
             value = xssEncode(value);
         }
         return value;

@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class GXHttpContextUtils {
-    @GXFieldCommentAnnotation(zh = "日志对象")
+    @GXFieldCommentAnnotation(zhDesc = "日志对象")
     private static final Logger LOG = LoggerFactory.getLogger(GXHttpContextUtils.class);
 
     private GXHttpContextUtils() {

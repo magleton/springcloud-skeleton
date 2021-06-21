@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import java.util.concurrent.TimeUnit;
 
 public class GXRedisUtils {
-    @GXFieldCommentAnnotation(zh = "Logger对象")
+    @GXFieldCommentAnnotation(zhDesc = "Logger对象")
     private static final Logger logger;
 
     @GXFieldCommentAnnotation("计数器缓存的名字")

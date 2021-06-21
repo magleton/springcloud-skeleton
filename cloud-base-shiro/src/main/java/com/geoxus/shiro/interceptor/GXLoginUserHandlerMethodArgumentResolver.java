@@ -1,6 +1,7 @@
 package com.geoxus.shiro.interceptor;
 
 import cn.hutool.core.lang.Dict;
+import com.geoxus.core.common.constant.GXTokenConstants;
 import com.geoxus.core.common.oauth.GXTokenManager;
 import com.geoxus.core.common.util.GXSpringContextUtils;
 import com.geoxus.shiro.annotation.GXLoginUserAnnotation;
@@ -30,14 +31,14 @@ public class GXLoginUserHandlerMethodArgumentResolver implements HandlerMethodAr
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer container,
                                   NativeWebRequest request, WebDataBinderFactory factory) throws Exception {
         //获取用户ID
-        Object object = request.getAttribute(GXTokenManager.USER_ID, RequestAttributes.SCOPE_REQUEST);
+        Object object = request.getAttribute(GXTokenConstants.USER_ID, RequestAttributes.SCOPE_REQUEST);
         if (object == null) {
-            final String header = request.getHeader(GXTokenManager.USER_TOKEN);
+            final String header = request.getHeader(GXTokenConstants.USER_TOKEN);
             if (null == header) {
                 return null;
             }
             final Dict tokenData = GXTokenManager.decodeUserToken(header);
-            object = tokenData.getObj(GXTokenManager.USER_ID);
+            object = tokenData.getObj(GXTokenConstants.USER_ID);
             if (null == object) {
                 return null;
             }

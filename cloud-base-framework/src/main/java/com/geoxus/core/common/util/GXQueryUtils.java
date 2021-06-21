@@ -1,7 +1,6 @@
 package com.geoxus.core.common.util;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,25 +8,24 @@ import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.filter.GXSQLFilter;
 
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 查询参数
  */
 public class GXQueryUtils<T> {
-    @GXFieldCommentAnnotation(zh = "当前页码")
+    @GXFieldCommentAnnotation(zhDesc = "当前页码")
     private static final String PAGE = "page";
 
-    @GXFieldCommentAnnotation(zh = "每页显示记录数")
+    @GXFieldCommentAnnotation(zhDesc = "每页显示记录数")
     private static final String LIMIT = "limit";
 
-    @GXFieldCommentAnnotation(zh = "排序字段")
+    @GXFieldCommentAnnotation(zhDesc = "排序字段")
     private static final String ORDER_FIELD = "sidx";
 
-    @GXFieldCommentAnnotation(zh = "排序方式")
+    @GXFieldCommentAnnotation(zhDesc = "排序方式")
     private static final String ORDER = "order";
 
-    @GXFieldCommentAnnotation(zh = "升序")
+    @GXFieldCommentAnnotation(zhDesc = "升序")
     private static final String ASC = "asc";
 
     public IPage<T> getPage(Map<String, Object> params) {

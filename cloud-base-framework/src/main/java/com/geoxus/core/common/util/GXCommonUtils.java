@@ -36,9 +36,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"unchecked" , "unused"})
+@SuppressWarnings({"unchecked", "unused"})
 public class GXCommonUtils {
-    @GXFieldCommentAnnotation(zh = "日志对象")
+    @GXFieldCommentAnnotation(zhDesc = "日志对象")
     private static final Logger LOG = LoggerFactory.getLogger(GXCommonUtils.class);
 
     private GXCommonUtils() {
@@ -240,6 +240,7 @@ public class GXCommonUtils {
      * @param clz  Class 对象
      * @param data 数据
      */
+    @SuppressWarnings("all")
     public static void clazzFields(Class<?> clz, Dict data) {
         final Field[] fields = ReflectUtil.getFields(clz);
         for (Field field : fields) {
@@ -247,14 +248,14 @@ public class GXCommonUtils {
             if (null == fieldAnnotation) {
                 continue;
             }
-            if (fieldAnnotation.show()) {
+            if (fieldAnnotation.isShow()) {
                 final String fieldName = field.getName();
-                final boolean fieldShow = fieldAnnotation.show();
+                final boolean isShow = fieldAnnotation.isShow();
                 final String fieldComment = fieldAnnotation.value();
                 final long fieldCode = fieldAnnotation.code();
                 data.putIfAbsent(fieldName, Dict.create()
                         .set("code", fieldCode)
-                        .set("show", fieldShow)
+                        .set("isShow", isShow)
                         .set("comment", fieldComment)
                 );
             }

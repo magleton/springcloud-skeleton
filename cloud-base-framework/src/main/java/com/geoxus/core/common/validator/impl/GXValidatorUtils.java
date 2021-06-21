@@ -21,7 +21,7 @@ import java.util.Set;
  * 参考文档：http://docs.jboss.org/hibernate/validator/5.4/reference/en-US/html_single/
  */
 public class GXValidatorUtils {
-    @GXFieldCommentAnnotation(zh = "验证器")
+    @GXFieldCommentAnnotation(zhDesc = "验证器")
     private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     private GXValidatorUtils() {

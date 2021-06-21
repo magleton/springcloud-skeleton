@@ -16,7 +16,7 @@ import java.util.Set;
  * @author zj chen <britton@126.com>
  */
 public class GXSignatureUtils {
-    @GXFieldCommentAnnotation(zh = "logger对象")
+    @GXFieldCommentAnnotation(zhDesc = "logger对象")
     private static final Logger logger = GXCommonUtils.getLogger(GXSignatureUtils.class);
 
     private GXSignatureUtils() {

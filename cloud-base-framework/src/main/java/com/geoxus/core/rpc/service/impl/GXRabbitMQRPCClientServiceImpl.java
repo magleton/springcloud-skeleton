@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 @ConditionalOnClass(name = {"org.springframework.amqp.rabbit.connection.ConnectionFactory"})
 public class GXRabbitMQRPCClientServiceImpl implements GXRabbitMQRPCClientService {
-    @GXFieldCommentAnnotation(zh = "Direct Reply-To")
+    @GXFieldCommentAnnotation(zhDesc = "Direct Reply-To")
     private static final String REPLY_TO = "amq.rabbitmq.reply-to";
 
     @Autowired

@@ -47,7 +47,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
     @GXFieldCommentAnnotation("日志对象")
     private static final Logger LOGGER = GXCommonUtils.getLogger(GXRequestToBeanHandlerMethodArgumentResolver.class);
 
-    @GXFieldCommentAnnotation(zh = "请求中的参数名字")
+    @GXFieldCommentAnnotation(zhDesc = "请求中的参数名字")
     public static final String JSON_REQUEST_BODY = "JSON_REQUEST_BODY";
 
     @Autowired

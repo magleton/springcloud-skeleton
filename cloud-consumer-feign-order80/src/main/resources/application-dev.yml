@@ -1,7 +1,18 @@
 server:
   port: 80
-
-
+  
+spring:
+  application:
+    name: cloud-consumer-feign
+  rabbitmq:
+    host: 192.168.56.101
+    port: 5672
+    username: britton
+    password: britton
+    publisher-returns: true
+    template:
+      mandatory: true
+    publisher-confirm-type: simple
 eureka:
   instance:
     instance-id: ${spring.application.name}
@@ -23,6 +34,3 @@ logging:
   level:
     # feign日志以什么级别监控哪个接口
     com.geoxus.springcloud.service.PaymentFeignService: debug
-spring:
-  application:
-    name: cloud-consumer-feign

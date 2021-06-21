@@ -10,13 +10,13 @@ import org.springframework.core.ResolvableTypeProvider;
 import java.lang.reflect.Type;
 
 public abstract class GXBaseEvent<T> extends ApplicationEvent implements ResolvableTypeProvider {
-    @GXFieldCommentAnnotation(zh = "附加参数")
+    @GXFieldCommentAnnotation(zhDesc = "附加参数")
     protected transient Dict param;
 
-    @GXFieldCommentAnnotation(zh = "场景值,用于区分同一个事件的不同使用场景")
+    @GXFieldCommentAnnotation(zhDesc = "场景值,用于区分同一个事件的不同使用场景")
     protected transient Object scene;
 
-    @GXFieldCommentAnnotation(zh = "事件名字")
+    @GXFieldCommentAnnotation(zhDesc = "事件名字")
     protected transient String eventName;
 
     protected GXBaseEvent(T source, String eventName, Dict param, Object scene) {

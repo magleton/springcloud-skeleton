@@ -27,10 +27,10 @@ import java.util.concurrent.Executors;
 @Slf4j
 @ConditionalOnClass(name = {"org.springframework.amqp.rabbit.connection.ConnectionFactory"})
 public class GXRabbitMQRPCServerConfig {
-    @GXFieldCommentAnnotation(zh = "当前系统的处理器个数")
+    @GXFieldCommentAnnotation(zhDesc = "当前系统的处理器个数")
     private static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
 
-    @GXFieldCommentAnnotation(zh = "线程池中线程的个数")
+    @GXFieldCommentAnnotation(zhDesc = "线程池中线程的个数")
     private static final int THREAD_POOL_NUMBER = AVAILABLE_PROCESSORS * 5;
 
     private static final ThreadLocal<String> THREAD_LOCAL = new ThreadLocal<>();

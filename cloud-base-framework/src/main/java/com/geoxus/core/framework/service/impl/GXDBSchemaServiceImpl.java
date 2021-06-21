@@ -27,17 +27,17 @@ import java.util.*;
 @Slf4j
 @Service
 public class GXDBSchemaServiceImpl implements GXDBSchemaService {
-    @GXFieldCommentAnnotation(zh = "获取索引SQL模板")
+    @GXFieldCommentAnnotation(zhDesc = "获取索引SQL模板")
     private static final String SHOW_INDEX_SQL = "SHOW INDEX FROM `{}`";
 
-    @GXFieldCommentAnnotation(zh = "删除索引SQL模板")
+    @GXFieldCommentAnnotation(zhDesc = "删除索引SQL模板")
     private static final String DROP_INDEX_SQL = "DROP INDEX `{}` on `{}`";
 
-    @GXFieldCommentAnnotation(zh = "数据源对象")
+    @GXFieldCommentAnnotation(zhDesc = "数据源对象")
     @Autowired
     private DataSource dataSource;
 
-    @GXFieldCommentAnnotation(zh = "字段权限对象")
+    @GXFieldCommentAnnotation(zhDesc = "字段权限对象")
     @Autowired
     private GXCoreModelAttributePermissionService gxCoreModelAttributePermissionService;
 

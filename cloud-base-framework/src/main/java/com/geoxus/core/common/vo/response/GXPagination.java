@@ -12,19 +12,19 @@ import java.util.List;
 public class GXPagination<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @GXFieldCommentAnnotation(zh = "总记录数")
+    @GXFieldCommentAnnotation(zhDesc = "总记录数")
     private long total;
 
-    @GXFieldCommentAnnotation(zh = "每页记录数")
+    @GXFieldCommentAnnotation(zhDesc = "每页记录数")
     private long size;
 
-    @GXFieldCommentAnnotation(zh = "总页数")
+    @GXFieldCommentAnnotation(zhDesc = "总页数")
     private long pages;
 
-    @GXFieldCommentAnnotation(zh = "当前页数")
+    @GXFieldCommentAnnotation(zhDesc = "当前页数")
     private long current;
 
-    @GXFieldCommentAnnotation(zh = "列表数据")
+    @GXFieldCommentAnnotation(zhDesc = "列表数据")
     private transient List<T> records;
 
     /**

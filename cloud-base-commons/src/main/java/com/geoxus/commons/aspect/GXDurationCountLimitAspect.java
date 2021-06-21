@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 @Component
 public class GXDurationCountLimitAspect {
-    @GXFieldCommentAnnotation(zh = "缓存前缀")
+    @GXFieldCommentAnnotation(zhDesc = "缓存前缀")
     private static final String CACHE_KEY_PFEFIX = "duration:count:limit:";
 
     @Pointcut("@annotation(com.geoxus.commons.annotation.GXFrequencyLimitAnnotation)")

@@ -35,7 +35,7 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 @GXDataSourceAnnotation("framework")
 public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAttributesMapper, GXCoreModelAttributesEntity> implements GXCoreModelAttributesService {
-    @GXFieldCommentAnnotation(zh = "Guava缓存组件")
+    @GXFieldCommentAnnotation(zhDesc = "Guava缓存组件")
     private static final Cache<String, List<Dict>> LIST_DICT_CACHE;
 
     static {

@@ -23,10 +23,10 @@ import java.util.Map;
 
 @MappedTypes({List.class})
 public class GXJsonToListTypeHandler extends BaseTypeHandler<List<Map<String, Object>>> {
-    @GXFieldCommentAnnotation(zh = "标识核心模型主键名字")
+    @GXFieldCommentAnnotation(zhDesc = "标识核心模型主键名字")
     private static final String CORE_MODEL_PRIMARY_NAME = GXCommonConstants.CORE_MODEL_PRIMARY_NAME;
 
-    @GXFieldCommentAnnotation(zh = "当前字段的名字")
+    @GXFieldCommentAnnotation(zhDesc = "当前字段的名字")
     private String columnName;
 
     @Override

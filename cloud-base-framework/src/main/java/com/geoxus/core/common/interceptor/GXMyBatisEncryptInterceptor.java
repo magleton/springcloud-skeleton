@@ -24,6 +24,7 @@ public class GXMyBatisEncryptInterceptor implements Interceptor {
     private GXSensitiveDataEncryptService gxSensitiveDataEncryptService;
 
     @Override
+    @SuppressWarnings("all")
     public Object intercept(Invocation invocation) throws Throwable {
         // @Signature 指定了 type= parameterHandler 后，这里的 invocation.getTarget() 便是parameterHandler
         // 若指定ResultSetHandler ，这里则能强转为ResultSetHandler
@@ -55,8 +56,8 @@ public class GXMyBatisEncryptInterceptor implements Interceptor {
         return Plugin.wrap(o, this);
     }
 
-    //自定义配置写入，没有自定义配置的可以直接置空此方法
     @Override
     public void setProperties(Properties properties) {
+        // 自定义配置写入，没有自定义配置的可以直接置空此方法
     }
 }

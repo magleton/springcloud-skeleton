@@ -65,6 +65,6 @@ public class GXMyBatisDecryptInterceptor implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
-
+        // 自定义配置写入，没有自定义配置的可以直接置空此方法
     }
 }
