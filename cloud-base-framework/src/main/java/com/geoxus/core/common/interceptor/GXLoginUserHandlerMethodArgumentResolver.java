@@ -1,12 +1,13 @@
-package com.geoxus.shiro.interceptor;
+package com.geoxus.core.common.interceptor;
 
 import cn.hutool.core.lang.Dict;
+import com.geoxus.core.common.annotation.GXLoginUserAnnotation;
 import com.geoxus.core.common.constant.GXTokenConstants;
+import com.geoxus.core.common.entity.GXUUserEntity;
 import com.geoxus.core.common.oauth.GXTokenManager;
+import com.geoxus.core.common.service.GXUUserService;
 import com.geoxus.core.common.util.GXSpringContextUtils;
-import com.geoxus.shiro.annotation.GXLoginUserAnnotation;
-import com.geoxus.shiro.entities.GXUUserEntity;
-import com.geoxus.shiro.services.GXUUserService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -28,9 +29,9 @@ public class GXLoginUserHandlerMethodArgumentResolver implements HandlerMethodAr
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer container,
+    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer container,
                                   NativeWebRequest request, WebDataBinderFactory factory) throws Exception {
-        //获取用户ID
+        // 获取用户ID
         Object object = request.getAttribute(GXTokenConstants.USER_ID, RequestAttributes.SCOPE_REQUEST);
         if (object == null) {
             final String header = request.getHeader(GXTokenConstants.USER_TOKEN);
@@ -43,7 +44,7 @@ public class GXLoginUserHandlerMethodArgumentResolver implements HandlerMethodAr
                 return null;
             }
         }
-        //获取用户信息
+        // 获取用户信息
         return Objects.requireNonNull(GXSpringContextUtils.getBean(GXUUserService.class)).getById((Long) object);
     }
 }

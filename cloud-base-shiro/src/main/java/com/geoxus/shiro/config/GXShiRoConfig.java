@@ -41,7 +41,7 @@ public class GXShiRoConfig {
     /**
      * 安全管理器的配置
      *
-     * @return
+     * @return SecurityManager
      */
     @Bean
     public SecurityManager securityManager(GXOAuth2Realm oAuth2Realm, SessionManager sessionManager) {
@@ -58,8 +58,8 @@ public class GXShiRoConfig {
      * 则filterChainDefinitionMap必须包含oauth2过滤器
      * 否则会报"This subject is anonymous"这类的错误
      *
-     * @param securityManager
-     * @return
+     * @param securityManager 安全管理器
+     * @return ShiroFilterFactoryBean
      * @author britton <britton@126.com>
      */
     @Bean("shiroFilter")
@@ -67,7 +67,7 @@ public class GXShiRoConfig {
         log.info("ShiRoConfiguration.shiRoFilter() ......");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        //oauth过滤
+        // oauth过滤
         Map<String, Filter> filters = new HashMap<>();
         filters.put("oauth2", new GXOAuth2Filter());
         shiroFilterFactoryBean.setFilters(filters);
@@ -75,7 +75,7 @@ public class GXShiRoConfig {
         for (Map<String, String> map : shiroCustomerConfig.getConfig()) {
             filterChainDefinitionMap.putIfAbsent(map.get("key"), map.get("value"));
         }
-        filterChainDefinitionMap.put("/**", "oauth2");   //不能删除
+        filterChainDefinitionMap.put("/**", "oauth2");   // 不能删除
         filterChainDefinitionMap.put("/logout", "logout");
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/index");
@@ -102,8 +102,8 @@ public class GXShiRoConfig {
     /**
      * 开启@RequirePermission注解的配置，要结合DefaultAdvisorAutoProxyCreator一起使用，或者导入aop的依赖
      *
-     * @param securityManager
-     * @return
+     * @param securityManager 安全管理器
+     * @return AuthorizationAttributeSourceAdvisor
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {

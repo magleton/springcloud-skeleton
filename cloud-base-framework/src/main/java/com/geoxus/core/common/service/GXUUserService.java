@@ -1,9 +1,8 @@
-package com.geoxus.shiro.services;
+package com.geoxus.core.common.service;
 
 import cn.hutool.core.lang.Dict;
-import com.geoxus.core.common.service.GXBusinessService;
+import com.geoxus.core.common.entity.GXUUserEntity;
 import com.geoxus.core.common.validator.GXValidateDBExists;
-import com.geoxus.shiro.entities.GXUUserEntity;
 
 public interface GXUUserService<T extends GXUUserEntity> extends GXBusinessService<T>, GXValidateDBExists {
     /**

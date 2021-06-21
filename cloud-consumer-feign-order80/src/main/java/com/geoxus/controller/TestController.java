@@ -1,14 +1,14 @@
 package com.geoxus.controller;
 
-import com.geoxus.shiro.annotation.GXLoginAnnotation;
-import com.geoxus.shiro.annotation.GXLoginUserAnnotation;
-import com.geoxus.shiro.entities.GXUUserEntity;
+import com.geoxus.core.common.annotation.GXLoginAnnotation;
+import com.geoxus.core.common.annotation.GXLoginUserAnnotation;
+import com.geoxus.core.common.entity.GXUUserEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/test/frontend")
+@RequestMapping("/test")
 public class TestController {
     @GetMapping("/test")
     @GXLoginAnnotation

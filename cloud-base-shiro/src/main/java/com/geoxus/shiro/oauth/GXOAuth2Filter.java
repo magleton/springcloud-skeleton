@@ -1,11 +1,12 @@
 package com.geoxus.shiro.oauth;
 
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.constant.GXTokenConstants;
-import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.util.GXHttpContextUtils;
+import com.geoxus.core.common.util.GXResultUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -44,7 +45,7 @@ public class GXOAuth2Filter extends AuthenticatingFilter {
             httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
             httpResponse.setHeader("Access-Control-Allow-Origin", GXHttpContextUtils.getOrigin());
             String json = JSONUtil.toJsonStr(Objects.requireNonNull(GXResultUtils
-                    .error(HttpStatus.HTTP_UNAUTHORIZED, "invalid token", new Object())));
+                    .error(HttpStatus.HTTP_UNAUTHORIZED, "invalid token", Dict.create())));
             httpResponse.getWriter().print(json);
             return false;
         }

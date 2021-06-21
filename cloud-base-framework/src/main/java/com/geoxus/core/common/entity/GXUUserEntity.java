@@ -1,4 +1,4 @@
-package com.geoxus.shiro.entities;
+package com.geoxus.core.common.entity;
 
 import com.geoxus.core.common.entity.GXBaseEntity;
 import lombok.Data;
