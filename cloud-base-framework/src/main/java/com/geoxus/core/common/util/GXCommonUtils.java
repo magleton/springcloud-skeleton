@@ -36,6 +36,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings({"unchecked" , "unused"})
 public class GXCommonUtils {
     @GXFieldCommentAnnotation(zh = "日志对象")
     private static final Logger LOG = LoggerFactory.getLogger(GXCommonUtils.class);
@@ -115,8 +116,8 @@ public class GXCommonUtils {
      * @param jsonStr JSON字符串
      * @return Dict
      */
-    public static Dict jsonToDict(String jsonStr) {
-        return jsonToAnyObject(jsonStr, Dict.class);
+    public static Dict jsonConvertDict(String jsonStr) {
+        return jsonConvertAnyObject(jsonStr, Dict.class);
     }
 
     /**
@@ -125,13 +126,13 @@ public class GXCommonUtils {
      * @param jsonStr JSON字符串
      * @return List
      */
-    public static List<Dict> jsonToListDict(String jsonStr) {
+    public static List<Dict> jsonConvertDictList(String jsonStr) {
         if (!JSONUtil.isJson(jsonStr)) {
-            LOG.error("jsonToDict : {}", "请传递正确的JSON格式的字符串");
+            LOG.error("jsonConvertDict : {}", "请传递正确的JSON格式的字符串");
             return Collections.emptyList();
         }
         if (JSONUtil.isJsonArray(jsonStr)) {
-            return jsonToAnyObject(jsonStr, new TypeReference<List<Dict>>() {
+            return jsonConvertAnyObject(jsonStr, new TypeReference<List<Dict>>() {
             });
         }
         return Collections.emptyList();
@@ -251,7 +252,11 @@ public class GXCommonUtils {
                 final boolean fieldShow = fieldAnnotation.show();
                 final String fieldComment = fieldAnnotation.value();
                 final long fieldCode = fieldAnnotation.code();
-                data.putIfAbsent(fieldName, Dict.create().set("code", fieldCode).set("show", fieldShow).set("comment", fieldComment));
+                data.putIfAbsent(fieldName, Dict.create()
+                        .set("code", fieldCode)
+                        .set("show", fieldShow)
+                        .set("comment", fieldComment)
+                );
             }
         }
     }
@@ -353,7 +358,7 @@ public class GXCommonUtils {
      * @param <R>     R
      * @return R
      */
-    public static <R> R jsonToAnyObject(String jsonStr, Class<R> clazz) {
+    public static <R> R jsonConvertAnyObject(String jsonStr, Class<R> clazz) {
         if (!JSONUtil.isJson(jsonStr)) {
             LOG.error("不合法的JSON字符串 : {}", jsonStr);
             return getClassDefaultValue(clazz);
@@ -376,7 +381,7 @@ public class GXCommonUtils {
      * @param <R>       R
      * @return R
      */
-    public static <R> R jsonToAnyObject(String jsonStr, TypeReference<R> reference) {
+    public static <R> R jsonConvertAnyObject(String jsonStr, TypeReference<R> reference) {
         if (!JSONUtil.isJson(jsonStr)) {
             LOG.error("不合法的JSON字符串");
             return getClassDefaultValue(reference);
@@ -457,8 +462,8 @@ public class GXCommonUtils {
      * 获取json字符串中的任意一个key的数据
      * <pre>
      *     {@code
-     *      System.out.println(GXCommonUtils.getJSONValueByAnyPath(s, "data.data1.data2.name", new TypeReference<String>() {
-     *      }));
+     *      String str = GXCommonUtils.getJSONValueByAnyPath(s, "data.data1.data2.name", new TypeReference<String>() {});
+     *      System.out.println(str);
      *     }
      * </pre>
      *
@@ -482,6 +487,7 @@ public class GXCommonUtils {
      * @param <R>     泛型类型
      * @return R
      */
+    @SuppressWarnings("all")
     public static <R> R removeJSONStrAnyPath(String jsonStr, String path, Class<R> clazz) {
         final JSONObject parse = JSONUtil.parseObj(jsonStr);
         int index = CharSequenceUtil.indexOf(path, '.');
@@ -513,25 +519,7 @@ public class GXCommonUtils {
      * @param path    路径
      */
     public static void removeJSONStrAnyPath(String jsonStr, String path) {
-        final JSONObject parse = JSONUtil.parseObj(jsonStr);
-        int index = CharSequenceUtil.indexOf(path, '.');
-        if (index != -1) {
-            String mainPath = CharSequenceUtil.sub(path, 0, CharSequenceUtil.lastIndexOfIgnoreCase(path, "."));
-            String subPath = CharSequenceUtil.sub(path, CharSequenceUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
-            final Object o = parse.get(mainPath);
-            if (Objects.nonNull(o)) {
-                if (JSONUtil.isJsonArray(o.toString()) && NumberUtil.isInteger(subPath)) {
-                    final int delIndex = Integer.parseInt(subPath);
-                    if (null != parse.getByPath(mainPath, JSONArray.class)) {
-                        parse.getByPath(mainPath, JSONArray.class).remove(delIndex);
-                    }
-                } else if (null != parse.getByPath(mainPath, JSONObject.class)) {
-                    parse.getByPath(mainPath, JSONObject.class).remove(subPath);
-                }
-            }
-            return;
-        }
-        parse.remove(path);
+        removeJSONStrAnyPath(jsonStr, path, Object.class);
     }
 
     /**
@@ -543,6 +531,7 @@ public class GXCommonUtils {
      * @param <R>   泛型
      * @return R
      */
+    @SuppressWarnings("all")
     public static <R> R removeJSONObjectAnyPath(JSONObject parse, String path, Class<R> clazz) {
         int index = CharSequenceUtil.indexOf(path, '.');
         if (index != -1) {
@@ -572,24 +561,7 @@ public class GXCommonUtils {
      * @param path  路径
      */
     public static void removeJSONObjectAnyPath(JSONObject parse, String path) {
-        int index = CharSequenceUtil.indexOf(path, '.');
-        if (index != -1) {
-            String mainPath = CharSequenceUtil.sub(path, 0, CharSequenceUtil.lastIndexOfIgnoreCase(path, "."));
-            String subPath = CharSequenceUtil.sub(path, CharSequenceUtil.lastIndexOfIgnoreCase(path, ".") + 1, path.length());
-            final Object o = parse.getByPath(mainPath);
-            if (Objects.nonNull(o)) {
-                if (JSONUtil.isJsonArray(o.toString()) && NumberUtil.isInteger(subPath)) {
-                    final int delIndex = Integer.parseInt(subPath);
-                    if (null != parse.getByPath(mainPath, JSONArray.class)) {
-                        parse.getByPath(mainPath, JSONArray.class).remove(delIndex);
-                    }
-                } else if (null != parse.getByPath(mainPath, JSONObject.class)) {
-                    parse.getByPath(mainPath, JSONObject.class).remove(subPath);
-                }
-            }
-            return;
-        }
-        parse.remove(path);
+        removeJSONObjectAnyPath(parse, path, Object.class);
     }
 
     /**
@@ -667,7 +639,7 @@ public class GXCommonUtils {
      * @param returnRequestParam 是否返回requestParam
      * @return Dict
      */
-    public static Dict addConditionToSearchCondition(Dict requestParam, String key, Object value, boolean returnRequestParam) {
+    public static Dict addSearchCondition(Dict requestParam, String key, Object value, boolean returnRequestParam) {
         final Object obj = requestParam.getObj(GXBaseBuilderConstants.SEARCH_CONDITION_NAME);
         if (null == obj) {
             return requestParam;
@@ -689,7 +661,7 @@ public class GXCommonUtils {
      * @param returnRequestParam 是否返回requestParam
      * @return Dict
      */
-    public static Dict addConditionToSearchCondition(Dict requestParam, Dict sourceData, boolean returnRequestParam) {
+    public static Dict addSearchCondition(Dict requestParam, Dict sourceData, boolean returnRequestParam) {
         final Object obj = requestParam.getObj(GXBaseBuilderConstants.SEARCH_CONDITION_NAME);
         if (null == obj) {
             return requestParam;
@@ -736,7 +708,7 @@ public class GXCommonUtils {
     /**
      * 加密手机号码
      *
-     * @param phoneNumber 明文手机号
+     * @param phoneNumber 手机号明文
      * @return String
      */
     public static String encryptedPhoneNumber(String phoneNumber) {
@@ -762,7 +734,7 @@ public class GXCommonUtils {
     /**
      * 加密手机号码
      *
-     * @param phoneNumber 明文手机号
+     * @param phoneNumber 手机号明文
      * @param key         加密KEY
      * @return String
      */
@@ -864,8 +836,8 @@ public class GXCommonUtils {
     /**
      * 将任意对象转换成Dict
      *
-     * @param obj
-     * @return
+     * @param obj 需要转换的对象
+     * @return Dict
      */
     public static Dict convertAnyObjectToDict(Object obj) {
         try {
@@ -879,8 +851,10 @@ public class GXCommonUtils {
 
     /**
      * 获取当前登录用户的ID
+     * {@code
      * 0  : 表示普通用户
-     * >0 : 确定管理员
+     * >0 : 表示管理员
+     * }
      *
      * @return Long
      */

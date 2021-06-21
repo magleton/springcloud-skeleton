@@ -404,7 +404,7 @@ public interface GXBaseBuilder {
      * @return Dict
      */
     default Dict addConditionToSearchCondition(Dict requestParam, String key, Object value) {
-        return GXCommonUtils.addConditionToSearchCondition(requestParam, key, value, false);
+        return GXCommonUtils.addSearchCondition(requestParam, key, value, false);
     }
 
     /**
@@ -415,7 +415,7 @@ public interface GXBaseBuilder {
      * @return Dict
      */
     default Dict addConditionToSearchCondition(Dict requestParam, Dict sourceData) {
-        return GXCommonUtils.addConditionToSearchCondition(requestParam, sourceData, false);
+        return GXCommonUtils.addSearchCondition(requestParam, sourceData, false);
     }
 
     /**
