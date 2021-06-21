@@ -11,11 +11,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
+
 @Configuration
 @Slf4j
 @ConditionalOnClass(name = {"org.springframework.amqp.rabbit.connection.ConnectionFactory"})
 public class GXRabbitMQConfig {
-    @Autowired
+    @Resource
     private ConnectionFactory connectionFactory;
 
     @Bean

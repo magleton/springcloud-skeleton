@@ -1,4 +1,4 @@
-package com.geoxus.core.common.config;
+package com.geoxus.alibaba.config;
 
 import cn.hutool.json.JSONUtil;
 import org.redisson.Redisson;
@@ -8,7 +8,6 @@ import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +16,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 @Configuration
-@ConditionalOnClass(name = {"org.redisson.Redisson"})
-@ConditionalOnMissingClass(value = {"com.alibaba.nacos.api.config.ConfigFactory"})
+@ConditionalOnClass(name = {"org.redisson.Redisson", "com.alibaba.nacos.api.config.ConfigFactory"})
 public class GXRedissonSpringDataConfig {
     @Resource
     private GXRedissionConfig gxRedissionConfig;

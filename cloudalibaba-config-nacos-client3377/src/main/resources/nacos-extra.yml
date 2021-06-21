@@ -2,8 +2,16 @@ nacos:
   common:
     dateId: common.yaml
     groupId: DEFAULT_GROUP
-    namespace: 1b0814d1-e386-4e15-b333-5a0374d85d4a
+    namespace: c48b7108-c891-4572-bc68-d42ffdcfee4a
   datasource:
     dateId: datasource.yaml
     groupId: DEFAULT_GROUP
-    namespace: 1b0814d1-e386-4e15-b333-5a0374d85d4a
+    namespace: c48b7108-c891-4572-bc68-d42ffdcfee4a
+  redission:
+    dateId: redission.yaml
+    groupId: DEFAULT_GROUP
+    namespace: c48b7108-c891-4572-bc68-d42ffdcfee4a
+  redissionCacheConfig:
+    dateId: redissionCacheConfig.yaml
+    groupId: DEFAULT_GROUP
+    namespace: c48b7108-c891-4572-bc68-d42ffdcfee4a

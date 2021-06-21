@@ -13,6 +13,13 @@ import java.net.URL;
 
 public class GXSingletonUtils {
     /**
+     * 私有构造函数
+     */
+    private GXSingletonUtils() {
+
+    }
+
+    /**
      * 获取EhCacheCacheManager
      *
      * @return EhCacheCacheManager
