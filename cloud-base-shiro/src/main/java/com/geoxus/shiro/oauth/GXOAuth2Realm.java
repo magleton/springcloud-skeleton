@@ -3,6 +3,7 @@ package com.geoxus.shiro.oauth;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.oauth.GXTokenManager;
+import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.vo.common.GXBusinessStatusCode;
 import com.geoxus.shiro.services.GXShiroService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class GXOAuth2Realm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         log.info("授权验证权限时调用-->OAuth2Realm.doGetAuthorizationInfo() principals : " + principals.getPrimaryPrincipal());
         Dict dict = (Dict) principals.getPrimaryPrincipal();
-        Long adminId = Optional.ofNullable(dict.getLong(GXTokenManager.ADMIN_ID)).orElse(dict.getLong(StrUtil.toCamelCase(GXTokenManager.ADMIN_ID)));
+        Long adminId = Optional.ofNullable(dict.getLong(GXTokenManager.ADMIN_ID)).orElse(dict.getLong(GXCommonUtils.toCamelCase(GXTokenManager.ADMIN_ID)));
         //用户权限列表
         Set<String> permsSet = shiroService.getAdminAllPermissions(adminId);
         //用户角色

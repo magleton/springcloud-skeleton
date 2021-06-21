@@ -955,4 +955,26 @@ public class GXCommonUtils {
         }
         return null;
     }
+
+    /**
+     * 将下划线方式命名的字符串转换为驼峰式。如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。<br>
+     * 例如：hello_world=》helloWorld
+     *
+     * @param name 转换前的下划线大写方式命名的字符串
+     * @return 转换后的驼峰式命名的字符串
+     */
+    public static String toCamelCase(CharSequence name) {
+        return CharSequenceUtil.toCamelCase(name);
+    }
+
+    /**
+     * 将驼峰式命名的字符串转换为使用符号连接方式。如果转换前的驼峰式命名的字符串为空，则返回空字符串。<br>
+     *
+     * @param str    转换前的驼峰式命名的字符串，也可以为符号连接形式
+     * @param symbol 连接符
+     * @return 转换后符号连接方式命名的字符串
+     */
+    public static String toSymbolCase(CharSequence str, char symbol) {
+        return CharSequenceUtil.toSymbolCase(str, symbol);
+    }
 }

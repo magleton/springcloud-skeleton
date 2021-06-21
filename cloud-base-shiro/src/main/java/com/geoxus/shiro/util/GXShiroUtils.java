@@ -1,8 +1,8 @@
 package com.geoxus.shiro.util;
 
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.oauth.GXTokenManager;
+import com.geoxus.core.common.util.GXCommonUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -33,7 +33,7 @@ public class GXShiroUtils {
         }
         Long adminId = getAdminData().getLong(GXTokenManager.ADMIN_ID);
         if (null == adminId) {
-            adminId = getAdminData().getLong(StrUtil.toCamelCase(GXTokenManager.ADMIN_ID));
+            adminId = getAdminData().getLong(GXCommonUtils.toCamelCase(GXTokenManager.ADMIN_ID));
         }
         return null == adminId ? 0 : adminId;
     }
