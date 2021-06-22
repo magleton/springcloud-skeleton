@@ -1,8 +1,8 @@
-package com.geoxus.alibaba.config;
+package com.geoxus.nacos.config;
 
 import com.alibaba.nacos.api.annotation.NacosProperties;
 import com.alibaba.nacos.api.config.annotation.NacosConfigurationProperties;
-import com.geoxus.alibaba.factory.GXYamlPropertySourceFactory;
+import com.geoxus.nacos.factory.GXYamlPropertySourceFactory;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;

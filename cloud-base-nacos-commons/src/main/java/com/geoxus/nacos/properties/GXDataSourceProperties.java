@@ -1,4 +1,4 @@
-package com.geoxus.alibaba.properties;
+package com.geoxus.nacos.properties;
 
 import lombok.Data;
 

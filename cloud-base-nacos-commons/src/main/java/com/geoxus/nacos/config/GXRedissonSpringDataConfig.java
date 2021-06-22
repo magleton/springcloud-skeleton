@@ -1,4 +1,4 @@
-package com.geoxus.alibaba.config;
+package com.geoxus.nacos.config;
 
 import cn.hutool.json.JSONUtil;
 import org.redisson.Redisson;

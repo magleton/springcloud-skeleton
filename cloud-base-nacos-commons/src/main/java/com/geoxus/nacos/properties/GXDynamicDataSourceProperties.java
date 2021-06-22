@@ -1,9 +1,9 @@
-package com.geoxus.alibaba.properties;
+package com.geoxus.nacos.properties;
 
 import com.alibaba.nacos.api.annotation.NacosProperties;
 import com.alibaba.nacos.api.config.annotation.NacosConfigurationProperties;
-import com.geoxus.alibaba.factory.GXYamlPropertySourceFactory;
 import com.geoxus.core.datasource.properties.GXBaseDataSourceProperties;
+import com.geoxus.nacos.factory.GXYamlPropertySourceFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

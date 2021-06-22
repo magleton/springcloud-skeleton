@@ -1,8 +1,8 @@
 package com.geoxus.alibaba.controller;
 
-import com.geoxus.alibaba.config.CommonConfig;
-import com.geoxus.alibaba.properties.GXDynamicDataSourceProperties;
 import com.geoxus.core.common.util.GXCommonUtils;
+import com.geoxus.core.datasource.properties.GXBaseDataSourceProperties;
+import com.geoxus.nacos.config.CommonConfig;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -29,7 +29,7 @@ public class ConfigClientController {
     private CommonConfig commonConfig;
 
     @Resource
-    private GXDynamicDataSourceProperties gxDynamicDataSourceProperties;
+    private GXBaseDataSourceProperties gxBaseDataSourceProperties;
 
     @Resource
     private RedissonClient redissonClient;
@@ -42,7 +42,7 @@ public class ConfigClientController {
         System.out.println(redissonClient.<String>getBucket("test-bucket").get());
         System.out.println(requestValue);
         System.out.println(commonConfig);
-        System.out.println(gxDynamicDataSourceProperties);
+        System.out.println(gxBaseDataSourceProperties);
         return configInfo;
     }
 }

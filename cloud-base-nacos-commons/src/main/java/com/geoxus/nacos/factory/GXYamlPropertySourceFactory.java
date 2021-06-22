@@ -1,4 +1,4 @@
-package com.geoxus.alibaba.factory;
+package com.geoxus.nacos.factory;
 
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.core.env.PropertySource;
