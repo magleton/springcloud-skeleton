@@ -15,7 +15,8 @@ import java.util.Map;
 
 @Data
 @Configuration
-@Component("gxRedissionConfig")
+@SuppressWarnings("all")
+@Component
 @ConditionalOnClass(name = {"org.redisson.Redisson"})
 @ConditionalOnMissingClass(value = {"com.alibaba.nacos.api.config.ConfigFactory"})
 @PropertySource(value = {"classpath:/redisson.yml"},

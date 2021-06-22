@@ -16,7 +16,8 @@ import java.util.Map;
 
 @Data
 @Configuration
-@Component("gxRedissionCacheManagerConfig")
+@SuppressWarnings("all")
+@Component()
 @PropertySource(value = "nacos-extra.yml",
         factory = GXYamlPropertySourceFactory.class,
         ignoreResourceNotFound = false)

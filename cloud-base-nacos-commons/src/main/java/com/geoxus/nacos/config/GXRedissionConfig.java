@@ -14,7 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Data
-@Component("gxRedissionConfig")
+@SuppressWarnings("all")
+@Component()
 @PropertySource(value = "nacos-extra.yml",
         factory = GXYamlPropertySourceFactory.class,
         ignoreResourceNotFound = false)
