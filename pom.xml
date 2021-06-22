@@ -45,7 +45,6 @@
         <module>cloud-base-framework</module>
         <module>cloud-alibaba-canal</module>
         <module>cloud-dynamic-datasource</module>
-        <module>cloud-seata-dynamic-datasource</module>
         <module>cloud-base-shiro</module>
         <module>cloud-base-commons</module>
         <module>cloud-base-nacos-commons</module>

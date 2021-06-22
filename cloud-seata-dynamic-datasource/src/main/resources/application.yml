@@ -1,7 +1,0 @@
-spring:
-  cloud:
-    alibaba:
-      seata:
-        tx-service-group: fsp_tx_group
-seata:
-  enable-auto-data-source-proxy: false

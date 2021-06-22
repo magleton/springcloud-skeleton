@@ -14,9 +14,10 @@ import org.springframework.stereotype.Component;
 /**
  * 多数据源属性
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Component
+@SuppressWarnings("all")
+@EqualsAndHashCode(callSuper = true)
 @PropertySource(value = "nacos-extra.yml",
         factory = GXYamlPropertySourceFactory.class,
         ignoreResourceNotFound = false)
@@ -24,5 +25,4 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "dynamic")
 @ConditionalOnClass(name = {"com.alibaba.nacos.api.config.ConfigFactory"})
 public class GXDynamicDataSourceProperties extends GXBaseDataSourceProperties {
-    private String name;
 }

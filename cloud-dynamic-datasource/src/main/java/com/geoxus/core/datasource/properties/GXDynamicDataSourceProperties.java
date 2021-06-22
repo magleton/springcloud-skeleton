@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
  * 多数据源属性
  */
 @Data
+@SuppressWarnings("all")
 @EqualsAndHashCode(callSuper = true)
 @Component
 @PropertySource(value = {"classpath:/ymls/${spring.profiles.active}/datasource.yml"},

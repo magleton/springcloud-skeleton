@@ -13,6 +13,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
@@ -24,17 +28,6 @@
         <dependency>
             <groupId>com.geoxus</groupId>
             <artifactId>cloud-base-framework</artifactId>
-            <version>${project.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.geoxus.springcloud</groupId>
-                    <artifactId>cloud-dynamic-datasource</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.geoxus.springcloud</groupId>
-            <artifactId>cloud-seata-dynamic-datasource</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!--feign-->
