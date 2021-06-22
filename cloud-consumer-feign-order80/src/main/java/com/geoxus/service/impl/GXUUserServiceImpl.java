@@ -8,7 +8,7 @@ import com.geoxus.entities.UserEntity;
 import com.geoxus.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
-//@Service
+@Service
 public class GXUUserServiceImpl extends ServiceImpl<UserMapper, UserEntity> implements GXUUserService<UserEntity> {
     @Override
     public Dict verifyUserToken(String token) {

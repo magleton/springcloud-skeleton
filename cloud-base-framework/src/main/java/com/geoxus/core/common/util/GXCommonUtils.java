@@ -616,9 +616,7 @@ public class GXCommonUtils {
      * @return RedissonSpringCacheManager
      */
     public static RedissonSpringCacheManager getRedissonCacheManager() {
-        RedissonSpringCacheManager instance = GXSingletonUtils.getRedissonSpringCacheManager();
-        assert null != instance;
-        return instance;
+        return GXSingletonUtils.getRedissonSpringCacheManager();
     }
 
     /**

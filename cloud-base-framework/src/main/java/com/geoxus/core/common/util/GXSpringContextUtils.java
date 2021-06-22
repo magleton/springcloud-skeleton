@@ -32,7 +32,7 @@ public class GXSpringContextUtils {
         try {
             return applicationContext.getBean(clazz);
         } catch (Exception e) {
-            log.error(String.format("Bean获取出错 : %s / %s", clazz.getSimpleName(), e.getMessage()), e);
+            log.error(String.format("记录获取Bean的信息, 不影响业务, Bean获取出错 : %s / %s", clazz.getSimpleName(), e.getMessage()), e);
         }
         return null;
     }

@@ -3,6 +3,7 @@ package com.geoxus.core.datasource.config;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
+import com.geoxus.core.datasource.properties.GXBaseDataSourceProperties;
 import com.geoxus.core.datasource.properties.GXDataSourceProperties;
 import com.geoxus.core.datasource.properties.GXDynamicDataSourceProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ import java.util.Map;
 @Slf4j
 public class GXDynamicDataSourceConfig {
     @Autowired
-    private GXDynamicDataSourceProperties dynamicDataSourceProperties;
+    private GXBaseDataSourceProperties gxBaseDataSourceProperties;
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.druid")
@@ -32,7 +33,7 @@ public class GXDynamicDataSourceConfig {
         if (!StrUtil.isEmpty(gxDataSourceProperties.getUrl())) {
             return gxDataSourceProperties;
         }
-        return dynamicDataSourceProperties.getDatasource().get("framework");
+        return gxBaseDataSourceProperties.getDatasource().get("framework");
     }
 
     @Bean
@@ -73,7 +74,7 @@ public class GXDynamicDataSourceConfig {
     }
 
     protected Map<Object, Object> getDynamicDataSource() {
-        Map<String, GXDataSourceProperties> dataSourcePropertiesMap = dynamicDataSourceProperties.getDatasource();
+        Map<String, GXDataSourceProperties> dataSourcePropertiesMap = gxBaseDataSourceProperties.getDatasource();
         Map<Object, Object> targetDataSources = new HashMap<>(dataSourcePropertiesMap.size());
         // TODO 此处可以通过在其他地方获取连接信息来新建连接池,比如从另外的数据库读取信息
         dataSourcePropertiesMap.forEach((k, v) -> {

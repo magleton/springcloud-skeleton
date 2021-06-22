@@ -1,15 +1,9 @@
 package com.geoxus.core.common.util;
 
-import org.redisson.Redisson;
-import org.redisson.api.RedissonClient;
-import org.redisson.config.Config;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.DefaultResourceLoader;
-
-import java.net.URL;
 
 public class GXSingletonUtils {
     /**
@@ -52,43 +46,6 @@ public class GXSingletonUtils {
      * @return RedissonSpringCacheManager
      */
     public static RedissonSpringCacheManager getRedissonSpringCacheManager() {
-        final String beanName = "9372fd46c598a";
-        RedissonSpringCacheManager cacheManager = GXSpringContextUtils.getBean(RedissonSpringCacheManager.class);
-        if (cacheManager != null) {
-            return cacheManager;
-        }
-        cacheManager = GXSpringContextUtils.getBean(beanName, RedissonSpringCacheManager.class);
-        if (null != cacheManager) {
-            return cacheManager;
-        }
-        try {
-            URL resource = GXCommonUtils.class.getClassLoader().getResource("redisson.yml");
-            Config config = Config.fromYAML(resource);
-            RedissonClient redissonClient = Redisson.create(config);
-            RedissonSpringCacheManager manager = new RedissonSpringCacheManager(redissonClient, "classpath:/redisson-cache-config.yml");
-            manager.setResourceLoader(getDefaultResourceLoader());
-            manager.afterPropertiesSet();
-            GXCommonUtils.registerSingleton(beanName, manager);
-            return manager;
-        } catch (Exception e) {
-            GXCommonUtils.getLogger(GXSignatureUtils.class).error("读取redisson.yml文件失败...");
-        }
-        return null;
-    }
-
-    /**
-     * 获取Spring的DefaultResourceLoader
-     *
-     * @return DefaultResourceLoader
-     */
-    public static DefaultResourceLoader getDefaultResourceLoader() {
-        final String beanName = "6C598A1CDDB7233";
-        DefaultResourceLoader bean = GXSpringContextUtils.getBean(beanName, DefaultResourceLoader.class);
-        if (null != bean) {
-            return bean;
-        }
-        DefaultResourceLoader loader = new DefaultResourceLoader();
-        GXCommonUtils.registerSingleton(beanName, loader);
-        return loader;
+        return GXSpringContextUtils.getBean(RedissonSpringCacheManager.class);
     }
 }
