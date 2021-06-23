@@ -23,8 +23,7 @@ import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.event.GXBaseEvent;
 import com.geoxus.core.rpc.config.GXRabbitMQRPCRemoteServersConfig;
 import com.geoxus.core.rpc.service.GXRabbitMQRPCClientService;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.CaffeineSpec;
+import com.github.benmanes.caffeine.cache.CacheLoader;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -610,6 +609,48 @@ public class GXCommonUtils {
         EhCacheCacheManager instance = GXSingletonUtils.getEhCacheCacheManager();
         assert null != instance;
         return instance;
+    }
+
+    /**
+     * 获取Caffeine的Cache对象
+     *
+     * @param configNameKey 缓存名字的KEY【可以是配置文件中配置的key也可以是缓存名字】
+     * @return Cache
+     */
+    public static <K, V> com.github.benmanes.caffeine.cache.Cache<K, V> getCaffeine(String configNameKey) {
+        return GXSingletonUtils.getCaffeineCache(configNameKey);
+    }
+
+    /**
+     * 获取Caffeine的Cache对象
+     *
+     * @param configNameKey 缓存名字的KEY【可以是配置文件中配置的key也可以是缓存名字】
+     * @param cacheLoader   CacheLoader对象
+     * @return LoadingCache
+     */
+    public static <K, V> com.github.benmanes.caffeine.cache.LoadingCache<K, V> getCaffeine(String configNameKey, CacheLoader<K, V> cacheLoader) {
+        return GXSingletonUtils.getCaffeineCache(configNameKey, cacheLoader);
+    }
+
+    /**
+     * 获取Caffeine的Cache对象
+     *
+     * @param configNameKey 缓存名字的KEY【可以是配置文件中配置的key也可以是缓存名字】
+     * @return AsyncCache
+     */
+    public static <K, V> com.github.benmanes.caffeine.cache.AsyncCache<K, V> getAsyncCaffeine(String configNameKey) {
+        return GXSingletonUtils.getAsyncCaffeine(configNameKey);
+    }
+
+    /**
+     * 获取Caffeine的Cache对象
+     *
+     * @param configNameKey 缓存名字的KEY【可以是配置文件中配置的key也可以是缓存名字】
+     * @param cacheLoader   CacheLoader对象
+     * @return AsyncLoadingCache
+     */
+    public static <K, V> com.github.benmanes.caffeine.cache.AsyncLoadingCache<K, V> getAsyncCaffeine(String configNameKey, CacheLoader<K, V> cacheLoader) {
+        return GXSingletonUtils.getAsyncCaffeine(configNameKey, cacheLoader);
     }
 
     /**
