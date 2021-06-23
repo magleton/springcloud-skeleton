@@ -1,6 +1,7 @@
 package com.geoxus.alibaba.controller;
 
 import com.geoxus.core.common.util.GXCommonUtils;
+import com.geoxus.core.common.util.GXSpringContextUtils;
 import com.geoxus.core.datasource.properties.GXBaseDataSourceProperties;
 import com.geoxus.nacos.config.CommonConfig;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -51,6 +52,7 @@ public class ConfigClientController {
         System.out.println(caffeine.getIfPresent("a1"));
         System.out.println(caffeine1.getIfPresent("a2"));
         System.out.println(cache1.getIfPresent("name"));
+        final RedissonClient bean = GXSpringContextUtils.getBean(RedissonClient.class);
         System.out.println(redissonClient.<String>getBucket("test-bucket").get());
         System.out.println(requestValue);
         System.out.println(commonConfig);

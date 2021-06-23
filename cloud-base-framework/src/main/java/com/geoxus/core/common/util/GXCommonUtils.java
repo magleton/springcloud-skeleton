@@ -24,6 +24,7 @@ import com.geoxus.core.common.event.GXBaseEvent;
 import com.geoxus.core.rpc.config.GXRabbitMQRPCRemoteServersConfig;
 import com.geoxus.core.rpc.service.GXRabbitMQRPCClientService;
 import com.github.benmanes.caffeine.cache.CacheLoader;
+import org.redisson.api.RedissonClient;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -660,6 +661,15 @@ public class GXCommonUtils {
      */
     public static RedissonSpringCacheManager getRedissonCacheManager() {
         return GXSingletonUtils.getRedissonSpringCacheManager();
+    }
+
+    /**
+     * 获取Redisson客户端对象
+     *
+     * @return RedissonClient
+     */
+    public static RedissonClient getRedissonClient() {
+        return GXSpringContextUtils.getBean(RedissonClient.class);
     }
 
     /**
