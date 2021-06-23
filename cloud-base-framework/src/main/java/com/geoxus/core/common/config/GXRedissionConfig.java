@@ -1,7 +1,7 @@
 package com.geoxus.core.common.config;
 
 import com.geoxus.core.common.factory.GXYamlPropertySourceFactory;
-import com.geoxus.core.common.properties.GXRedissionProperties;
+import com.geoxus.core.common.properties.GXRedissonProperties;
 import lombok.Data;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
@@ -25,5 +25,5 @@ import java.util.Map;
         ignoreResourceNotFound = true)
 @ConfigurationProperties(prefix = "redission")
 public class GXRedissionConfig {
-    private Map<String, GXRedissionProperties> config = new LinkedHashMap<>();
+    private Map<String, GXRedissonProperties> config = new LinkedHashMap<>();
 }

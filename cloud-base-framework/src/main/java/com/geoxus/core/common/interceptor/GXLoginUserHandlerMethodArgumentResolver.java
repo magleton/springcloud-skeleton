@@ -19,13 +19,14 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import java.util.Objects;
 
 /**
- * 有@LoginUserAnnotation注解的方法参数，注入当前登录用户
+ * 有@GXLoginUserAnnotation注解的方法参数，注入当前登录用户
  */
 @Component
 public class GXLoginUserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().getSuperclass().isAssignableFrom(GXUUserEntity.class) && parameter.hasParameterAnnotation(GXLoginUserAnnotation.class);
+        return parameter.getParameterType().getSuperclass().isAssignableFrom(GXUUserEntity.class)
+                && parameter.hasParameterAnnotation(GXLoginUserAnnotation.class);
     }
 
     @Override

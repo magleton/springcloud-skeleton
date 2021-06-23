@@ -7,18 +7,18 @@ import com.geoxus.core.common.vo.common.GXResultCode;
 import com.geoxus.core.framework.entity.GXCoreAttributesEntity;
 import com.geoxus.core.framework.service.GXCoreAttributesService;
 import com.geoxus.core.framework.service.GXCoreModelService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 @Service
 public class GXValidateModelMapServiceImpl implements GXValidateModelMap {
-    @Autowired
+    @Resource
     private GXCoreAttributesService coreAttributesService;
 
-    @Autowired
+    @Resource
     private GXCoreModelService coreModelService;
 
     @Override

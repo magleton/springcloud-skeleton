@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClas
 
 @Data
 @ConditionalOnMissingClass(value = {"com.alibaba.nacos.api.config.ConfigFactory"})
-public class GXRedissionProperties {
+public class GXRedissonProperties {
     /**
      * 链接地址
      */
