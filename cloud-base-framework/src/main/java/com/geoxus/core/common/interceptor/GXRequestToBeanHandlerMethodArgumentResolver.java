@@ -67,7 +67,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         final String value = Objects.requireNonNull(gxRequestBodyToTargetAnnotation).value();
         final String[] jsonFields = gxRequestBodyToTargetAnnotation.jsonFields();
         boolean fillJSONField = gxRequestBodyToTargetAnnotation.fillJSONField();
-        boolean validateEntity = gxRequestBodyToTargetAnnotation.validateEntity();
+        boolean validateTarget = gxRequestBodyToTargetAnnotation.validateTarget();
         boolean validateCoreModelId = gxRequestBodyToTargetAnnotation.validateCoreModelId();
         if (null == dict.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME) && validateCoreModelId) {
             throw new GXException(CharSequenceUtil.format("请传递{}参数", GXCommonConstants.CORE_MODEL_PRIMARY_NAME));
@@ -122,7 +122,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         }
         Object bean = Convert.convert(parameterType, dict);
         Class<?>[] groups = gxRequestBodyToTargetAnnotation.groups();
-        if (validateEntity) {
+        if (validateTarget) {
             if (parameter.hasParameterAnnotation(Valid.class)) {
                 GXValidatorUtils.validateEntity(bean, value, groups);
             } else if (parameter.hasParameterAnnotation(Validated.class)) {

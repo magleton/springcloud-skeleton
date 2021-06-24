@@ -16,7 +16,7 @@ public @interface GXRequestBodyToTargetAnnotation {
 
     boolean fillJSONField() default true;
 
-    boolean validateEntity() default true;
+    boolean validateTarget() default true;
 
     boolean validateCoreModelId() default true;
 
