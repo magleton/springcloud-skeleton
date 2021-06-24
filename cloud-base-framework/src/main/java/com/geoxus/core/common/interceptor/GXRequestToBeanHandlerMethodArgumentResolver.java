@@ -9,7 +9,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.annotation.GXMergeSingleFieldToJSONFieldAnnotation;
-import com.geoxus.core.common.annotation.GXRequestBodyToEntityAnnotation;
+import com.geoxus.core.common.annotation.GXRequestBodyToDtoAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.dto.GXBaseDTO;
 import com.geoxus.core.common.entity.GXBaseEntity;
@@ -55,7 +55,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(GXRequestBodyToEntityAnnotation.class);
+        return parameter.hasParameterAnnotation(GXRequestBodyToDtoAnnotation.class);
     }
 
     @Override
@@ -63,12 +63,12 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         final String body = getRequestBody(webRequest);
         final Dict dict = Convert.convert(Dict.class, JSONUtil.toBean(body, Dict.class));
         final Class<?> parameterType = parameter.getParameterType();
-        final GXRequestBodyToEntityAnnotation gxRequestBodyToEntityAnnotation = parameter.getParameterAnnotation(GXRequestBodyToEntityAnnotation.class);
-        final String value = Objects.requireNonNull(gxRequestBodyToEntityAnnotation).value();
-        final String[] jsonFields = gxRequestBodyToEntityAnnotation.jsonFields();
-        boolean fillJSONField = gxRequestBodyToEntityAnnotation.fillJSONField();
-        boolean validateEntity = gxRequestBodyToEntityAnnotation.validateEntity();
-        boolean validateCoreModelId = gxRequestBodyToEntityAnnotation.validateCoreModelId();
+        final GXRequestBodyToDtoAnnotation gxRequestBodyToDtoAnnotation = parameter.getParameterAnnotation(GXRequestBodyToDtoAnnotation.class);
+        final String value = Objects.requireNonNull(gxRequestBodyToDtoAnnotation).value();
+        final String[] jsonFields = gxRequestBodyToDtoAnnotation.jsonFields();
+        boolean fillJSONField = gxRequestBodyToDtoAnnotation.fillJSONField();
+        boolean validateEntity = gxRequestBodyToDtoAnnotation.validateEntity();
+        boolean validateCoreModelId = gxRequestBodyToDtoAnnotation.validateCoreModelId();
         if (null == dict.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME) && validateCoreModelId) {
             throw new GXException(CharSequenceUtil.format("请传递{}参数", GXCommonConstants.CORE_MODEL_PRIMARY_NAME));
         }
@@ -121,7 +121,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
             }
         }
         Object bean = Convert.convert(parameterType, dict);
-        Class<?>[] groups = gxRequestBodyToEntityAnnotation.groups();
+        Class<?>[] groups = gxRequestBodyToDtoAnnotation.groups();
         if (validateEntity) {
             if (parameter.hasParameterAnnotation(Valid.class)) {
                 GXValidatorUtils.validateEntity(bean, value, groups);
@@ -131,8 +131,8 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
             }
         }
 
-        Class<?> mapstructClazz = gxRequestBodyToEntityAnnotation.mapstructClazz();
-        boolean isConvertToEntity = gxRequestBodyToEntityAnnotation.isConvertToEntity();
+        Class<?> mapstructClazz = gxRequestBodyToDtoAnnotation.mapstructClazz();
+        boolean isConvertToEntity = gxRequestBodyToDtoAnnotation.isConvertToEntity();
         if (mapstructClazz != Void.class && isConvertToEntity) {
             GXBaseMapStruct<GXBaseDTO, GXBaseEntity> convert = Convert.convert(new TypeReference<GXBaseMapStruct<GXBaseDTO, GXBaseEntity>>() {
             }, GXSpringContextUtils.getBean(mapstructClazz));

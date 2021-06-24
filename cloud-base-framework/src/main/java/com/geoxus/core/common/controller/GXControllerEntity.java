@@ -1,7 +1,7 @@
 package com.geoxus.core.common.controller;
 
 import cn.hutool.core.lang.Dict;
-import com.geoxus.core.common.annotation.GXRequestBodyToEntityAnnotation;
+import com.geoxus.core.common.annotation.GXRequestBodyToDtoAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.entity.GXBaseEntity;
@@ -21,7 +21,7 @@ public interface GXControllerEntity<T extends GXBaseEntity> {
     /**
      * 创建数据
      */
-    default GXResultUtils<?> create(@Valid @GXRequestBodyToEntityAnnotation(groups = {GXCreateGroup.class}) T target) {
+    default GXResultUtils<?> create(@Valid @GXRequestBodyToDtoAnnotation(groups = {GXCreateGroup.class}) T target) {
         return GXResultUtils.ok(GXCommonConstants.DEFAULT_DATA);
     }
 
@@ -31,7 +31,7 @@ public interface GXControllerEntity<T extends GXBaseEntity> {
      * @param target
      * @return
      */
-    default GXResultUtils<?> update(@Valid @GXRequestBodyToEntityAnnotation(groups = {GXUpdateGroup.class}) T target) {
+    default GXResultUtils<?> update(@Valid @GXRequestBodyToDtoAnnotation(groups = {GXUpdateGroup.class}) T target) {
         return GXResultUtils.ok(GXCommonConstants.DEFAULT_DATA);
     }
 
