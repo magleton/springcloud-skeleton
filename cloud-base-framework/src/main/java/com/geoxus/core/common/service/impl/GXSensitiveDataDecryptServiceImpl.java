@@ -1,6 +1,5 @@
 package com.geoxus.core.common.service.impl;
 
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ReflectUtil;
 import com.geoxus.core.common.annotation.GXSensitiveFieldAnnotation;
 import com.geoxus.core.common.service.GXSensitiveDataDecryptService;
@@ -29,7 +28,7 @@ public class GXSensitiveDataDecryptServiceImpl implements GXSensitiveDataDecrypt
                     final String[] params = sensitiveField.params();
                     String value = (String) object;
                     final Object bean = GXSpringContextUtils.getBean(serviceClazz);
-                    final Object invoke = ReflectUtil.invoke(bean, decryAlgorithm, value, deEncryptKey, Dict.create().set("author", "枫叶思源"));
+                    final Object invoke = ReflectUtil.invoke(bean, decryAlgorithm, value, deEncryptKey, params);
                     ReflectUtil.setFieldValue(result, accessible, invoke);
                 }
             }
