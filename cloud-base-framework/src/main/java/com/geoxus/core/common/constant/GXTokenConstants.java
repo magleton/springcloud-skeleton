@@ -26,4 +26,7 @@ public class GXTokenConstants {
 
     @GXFieldCommentAnnotation(zhDesc = "ADMIN端TOKEN即将过期的刷新时间")
     public static final int ADMIN_EXPIRES_REFRESH = 24 * 60;
+
+    private GXTokenConstants() {
+    }
 }

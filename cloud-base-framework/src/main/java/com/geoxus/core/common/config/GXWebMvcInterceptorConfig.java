@@ -3,6 +3,7 @@ package com.geoxus.core.common.config;
 import com.geoxus.core.common.interceptor.GXAuthorizationInterceptor;
 import com.geoxus.core.common.interceptor.GXLoginUserHandlerMethodArgumentResolver;
 import com.geoxus.core.common.interceptor.GXRequestToBeanHandlerMethodArgumentResolver;
+import com.geoxus.core.common.interceptor.GXTraceIdInterceptor;
 import com.geoxus.core.common.util.GXSpringContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,9 @@ public class GXWebMvcInterceptorConfig implements WebMvcConfigurer {
     @Resource
     private GXWebMvcConfig gxWebMvcConfig;
 
+    @Resource
+    private GXTraceIdInterceptor gxTraceIdInterceptor;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -44,6 +48,7 @@ public class GXWebMvcInterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(@NotNull InterceptorRegistry registry) {
         final List<String> list = gxWebMvcConfig.getUrlPatterns();
+        registry.addInterceptor(gxTraceIdInterceptor);
         if (Objects.nonNull(GXSpringContextUtils.getBean(GXAuthorizationInterceptor.class))) {
             registry.addInterceptor(Objects.requireNonNull(GXSpringContextUtils.getBean(GXAuthorizationInterceptor.class))).addPathPatterns(list);
         }

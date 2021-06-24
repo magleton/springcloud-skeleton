@@ -9,11 +9,11 @@ public class GXBaseBuilderConstants {
     @GXFieldCommentAnnotation(zhDesc = "模型标识的名字")
     public static final String MODEL_IDENTIFICATION_NAME = "model_identification";
 
-    @GXFieldCommentAnnotation(zhDesc = "前模糊查询条件")
-    public static final String BEFORE_LIKE = " like '%{}'";
+    @GXFieldCommentAnnotation(zhDesc = "左糊查询条件")
+    public static final String LEFT_LIKE = " like '%{}'";
 
     @GXFieldCommentAnnotation(zhDesc = "后模糊查询条件")
-    public static final String AFTER_LIKE = " like '{}%'";
+    public static final String RIGHT_LIKE = " like '{}%'";
 
     @GXFieldCommentAnnotation(zhDesc = "全模糊查询")
     public static final String FULL_LIKE = " like '%{}%'";

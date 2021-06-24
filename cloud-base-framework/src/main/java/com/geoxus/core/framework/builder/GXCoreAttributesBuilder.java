@@ -24,9 +24,9 @@ public class GXCoreAttributesBuilder implements GXBaseBuilder {
     @Override
     public Dict getDefaultSearchField() {
         return Dict.create()
-                .set("ca.attribute_name", GXBaseBuilderConstants.AFTER_LIKE)
-                .set("ca.show_name", GXBaseBuilderConstants.AFTER_LIKE)
-                .set("ca.category", GXBaseBuilderConstants.AFTER_LIKE);
+                .set("ca.attribute_name", GXBaseBuilderConstants.RIGHT_LIKE)
+                .set("ca.show_name", GXBaseBuilderConstants.RIGHT_LIKE)
+                .set("ca.category", GXBaseBuilderConstants.RIGHT_LIKE);
     }
 
     @Override
