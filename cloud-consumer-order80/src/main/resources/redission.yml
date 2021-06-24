@@ -1,4 +1,4 @@
 singleServerConfig:
   address: "redis://192.168.56.101:6379"
-  password:
+  password: britton
   database: 10

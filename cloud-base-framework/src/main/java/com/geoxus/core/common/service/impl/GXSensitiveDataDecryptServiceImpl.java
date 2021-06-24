@@ -1,8 +1,10 @@
 package com.geoxus.core.common.service.impl;
 
+import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.ReflectUtil;
 import com.geoxus.core.common.annotation.GXSensitiveFieldAnnotation;
 import com.geoxus.core.common.service.GXSensitiveDataDecryptService;
-import com.geoxus.core.common.util.GXCommonUtils;
+import com.geoxus.core.common.util.GXSpringContextUtils;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -17,13 +19,18 @@ public class GXSensitiveDataDecryptServiceImpl implements GXSensitiveDataDecrypt
         for (Field field : declaredFields) {
             GXSensitiveFieldAnnotation sensitiveField = field.getAnnotation(GXSensitiveFieldAnnotation.class);
             if (Objects.nonNull(sensitiveField)) {
-                field.setAccessible(true);
-                Object object = field.get(result);
+                final Field accessible = ReflectUtil.setAccessible(field);
+                Object object = accessible.get(result);
                 // 只实现对String的解密
                 if (object instanceof String) {
+                    final Class<?> serviceClazz = sensitiveField.serviceClazz();
+                    final String decryAlgorithm = sensitiveField.decryAlgorithm();
+                    final String deEncryptKey = sensitiveField.deEncryptKey();
+                    final String[] params = sensitiveField.params();
                     String value = (String) object;
-                    String s = GXCommonUtils.getAES().decryptStr(value);
-                    field.set(result, s);
+                    final Object bean = GXSpringContextUtils.getBean(serviceClazz);
+                    final Object invoke = ReflectUtil.invoke(bean, decryAlgorithm, value, deEncryptKey, Dict.create().set("author", "枫叶思源"));
+                    ReflectUtil.setFieldValue(result, accessible, invoke);
                 }
             }
         }
