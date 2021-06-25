@@ -222,6 +222,57 @@ public class GXSpELToolUtils {
     }
 
     /**
+     * 将匹配的表达式设置新值
+     * <pre>
+     * {@code
+     *  final TestDTO testDTO = new TestDTO();
+     *  testDTO.setTest("ceshi");
+     *  testDTO.setContent("content");
+     *  testDTO.setRoster(Arrays.asList("hello", "jack", "jerry"));
+     *  String oldValue = GXSpELToolUtils.setValueBySpELExpression(testDTO, "roster[1]", String.class, "newValue");
+     * }
+     * </pre>
+     *
+     * @param targetObject     目标对象
+     * @param expressionString 表达式
+     * @param oldValueClazz    旧值类型
+     * @param newValue         新值
+     * @return 旧值
+     */
+    public static <T> T setValueBySpELExpression(Object targetObject, String expressionString, Class<T> oldValueClazz, T newValue) {
+        final ExpressionParser expressionParser = new SpelExpressionParser();
+        final StandardEvaluationContext context = new StandardEvaluationContext(targetObject);
+        final T oldValue = expressionParser.parseExpression(expressionString).getValue(context, oldValueClazz);
+        expressionParser.parseExpression(expressionString).setValue(context, newValue);
+        return oldValue;
+    }
+
+    /**
+     * 将匹配的表达式设置新值
+     * <pre>
+     *     {@code
+     *       final Dict dict = Dict.create().set("username", "枫叶思源");
+     *       final String oldValues = GXSpELToolUtils.setValueBySpELExpression(dict, "#data['username']", String.class, "newValues");
+     *     }
+     * </pre>
+     *
+     * @param dict             目标对象
+     * @param expressionString 表达式
+     * @param oldValueClazz    旧值类型
+     * @param newValue         新值
+     * @return 旧值
+     */
+    public static <T> T setValueBySpELExpression(Dict dict, String expressionString, Class<T> oldValueClazz, T newValue) {
+        ExpressionParser expressionParser = new SpelExpressionParser();
+        EvaluationContext context = new StandardEvaluationContext();
+        String dataKey = "data";
+        context.setVariable(dataKey, dict);
+        final T oldValue = expressionParser.parseExpression(expressionString).getValue(context, oldValueClazz);
+        expressionParser.parseExpression(expressionString).setValue(context, newValue);
+        return oldValue;
+    }
+
+    /**
      * 解析可变参数占位符
      *
      * @param methodParamTypes 参数的类型

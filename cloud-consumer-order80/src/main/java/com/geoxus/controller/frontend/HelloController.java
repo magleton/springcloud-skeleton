@@ -71,7 +71,11 @@ public class HelloController {
         testDTO.setTest("ceshi");
         testDTO.setContent("content");
         testDTO.setRoster(Arrays.asList("hello", "jack", "jerry"));
-        System.out.println(GXSpELToolUtils.calculateSpELExpression(testDTO, "roster.?[#this > 1]", List.class));
+        System.out.println(GXSpELToolUtils.setValueBySpELExpression(testDTO, "roster[1]", String.class, "KKKLALLALLLA"));
+
+        final Dict dict = Dict.create().set("username", "枫叶思源");
+        final String newValues = GXSpELToolUtils.setValueBySpELExpression(dict, "#data['username']", String.class, "newValues");
+        System.out.println(newValues);
         return GXResultUtils.ok(entity);
     }
 
