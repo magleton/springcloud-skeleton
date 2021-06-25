@@ -92,7 +92,7 @@ public class GXSpELToolUtils {
      *         return "链接字符串 : " + str1 + " ---- " + str2 + " ==== " + str3;
      *     }
      *   }
-     *   String retVal = registerFunctionSpELExpression(StringUtils.class, "concat", new Class[]{String.class, String.class, String.class}, String.class, "hello", "britton", "枫叶思源");
+     *   String retVal = registerFunctionSpELExpression(StringUtils.class, String.class, "concat", new Class[]{String.class, String.class, String.class}, "hello", "britton", "枫叶思源");
      *   }</pre>
      *
      * @param targetClass      提供函数的目标类
