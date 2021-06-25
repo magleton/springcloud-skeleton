@@ -2,13 +2,15 @@ package com.geoxus.controller.frontend;
 
 import cn.hutool.core.lang.Dict;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.util.GXAuthCodeUtils;
+import com.geoxus.core.common.util.GXResultUtils;
+import com.geoxus.core.common.util.GXSpELToolUtils;
 import com.geoxus.dto.TestDTO;
 import com.geoxus.entities.TestEntity;
 import com.geoxus.mapstruct.TestMapStruct;
 import com.geoxus.service.HelloService;
 import com.geoxus.service.TestService;
+import com.geoxus.util.TestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +59,13 @@ public class HelloController {
     public GXResultUtils<TestEntity> index(@RequestBody Dict param) {
         Integer id = param.getInt("id");
         TestEntity entity = testService.getById(id);
+        /*final String hello = GXSpELToolUtils.callBeanMethodSpELExpression(HelloService.class, "hello", String.class,
+                new Class[]{String.class, int.class, TestEntity.class}, "枫叶思源", 98, entity);
+        System.out.println(hello);*/
+        final String s = GXSpELToolUtils.registerFunctionSpELExpression(TestUtils.class, "test", String.class, new Class[]{String.class, TestEntity.class}, "hello", entity);
+        System.out.println(s);
+        //  final String s = GXSpELToolUtils.callTargetObjectMethodSpELExpression(GXSpringContextUtils.getBean(HelloService.class), "hello", String.class, new Class[]{String.class, int.class}, "枫叶思源", 98);
+        // System.out.println(s);
         return GXResultUtils.ok(entity);
     }
 

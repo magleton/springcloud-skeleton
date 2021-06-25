@@ -2,6 +2,7 @@ package com.geoxus.core.common.util;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
@@ -9,6 +10,7 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
@@ -59,10 +61,10 @@ public class GXSpELToolUtils {
      *      private int roleId;
      *  }
      *  Inventor targetObj = new Inventor();
-     *  String value = assignmentSpELExpression( , Dict.create().set("name" , "枫叶思源").set("age" , 12) , "name" , String.class);
+     *  String value = assignmentSpELExpression(targetObj , Dict.create().set("name" , "枫叶思源").set("age" , 12) , "name" , String.class);
      *  // 如果目标对象没有对应的字段存在
      *  // 则会抛出异常信息,eg:
-     *  // String value = assignmentSpELExpression( , Dict.create().set("name111" , "枫叶思源").set("age" , 12) , "name" , String.class);
+     *  // String value = assignmentSpELExpression(targetObj , Dict.create().set("name111" , "枫叶思源").set("age" , 12) , "name" , String.class);
      * }</pre>
      *
      * @param targetObj 目标对象
@@ -95,12 +97,12 @@ public class GXSpELToolUtils {
      *
      * @param targetClass      提供函数的目标类
      * @param methodName       目标方法
-     * @param methodParamTypes 方法参数的类型
      * @param clazz            返回值的类型
+     * @param methodParamTypes 方法参数的类型
      * @param params           调用参数的类型(实参
      * @return T
      */
-    public static <T> T registerFunctionSpELExpression(Class<?> targetClass, String methodName, Class<?>[] methodParamTypes, Class<T> clazz, Object... params) {
+    public static <T> T registerFunctionSpELExpression(Class<?> targetClass, String methodName, Class<T> clazz, Class<?>[] methodParamTypes, Object... params) {
         ExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setVariable("params", params);
@@ -109,6 +111,77 @@ public class GXSpELToolUtils {
             return null;
         }
         context.registerFunction(methodName, method);
+        final String format = CharSequenceUtil.format("#{}({})", methodName, parsePlaceholderParams(methodParamTypes, params));
+        return parser.parseExpression(format).getValue(context, clazz);
+    }
+
+    /**
+     * 调用指定bean中的方法
+     *
+     * <pre>
+     *     {@code
+     *     String s = GXSpELToolUtils.callBeanMethodSpELExpression(
+     *     HelloService.class,
+     *     "hello",
+     *     String.class,
+     *     new Class[]{String.class, int.class, TestEntity.class},
+     *     "枫叶思源", 98 , testEntity);
+     *     }
+     * </pre>
+     *
+     * @param beanClazz        Bean的Class对象
+     * @param methodName       方法名字
+     * @param clazz            返回的类型
+     * @param methodParamTypes 参数的类型
+     * @param params           参数列表
+     * @return T
+     */
+    public static <T> T callBeanMethodSpELExpression(Class<?> beanClazz, String methodName, Class<T> clazz, Class<?>[] methodParamTypes, Object... params) {
+        final Object beanObj = GXSpringContextUtils.getBean(beanClazz);
+        if (Objects.isNull(beanObj)) {
+            return null;
+        }
+        final ExpressionParser expressionParser = new SpelExpressionParser();
+        final StandardEvaluationContext context = new StandardEvaluationContext(beanObj);
+        final String expressionString = CharSequenceUtil.format("{}({})", methodName, parseArgumentParams(context, methodParamTypes, params));
+        return expressionParser.parseExpression(expressionString).getValue(context, clazz);
+    }
+
+    /**
+     * 调用指定对象中的方法
+     * <pre>
+     *  {@code
+     *    String s = GXSpELToolUtils.callTargetObjectMethodSpELExpression(
+     *    GXSpringContextUtils.getBean(HelloService.class),
+     *    "hello",
+     *    String.class,
+     *    new Class[]{String.class, int.class,TestEntity.class},
+     *    "枫叶思源", 98 , testEntity);
+     *  }
+     * </pre>
+     *
+     * @param targetObject     目标对象
+     * @param methodName       方法名字
+     * @param clazz            返回的类型
+     * @param methodParamTypes 参数的类型
+     * @param params           参数列表
+     * @return T
+     */
+    public static <T> T callTargetObjectMethodSpELExpression(@NotNull Object targetObject, String methodName, Class<T> clazz, Class<?>[] methodParamTypes, Object... params) {
+        final ExpressionParser expressionParser = new SpelExpressionParser();
+        final StandardEvaluationContext context = new StandardEvaluationContext(targetObject);
+        final String expressionString = CharSequenceUtil.format("{}({})", methodName, parseArgumentParams(context, methodParamTypes, params));
+        return expressionParser.parseExpression(expressionString).getValue(context, clazz);
+    }
+
+    /**
+     * 解析可变参数占位符
+     *
+     * @param methodParamTypes 参数的类型
+     * @param params           具体参数
+     * @return StringBuilder
+     */
+    private static String parsePlaceholderParams(Class<?>[] methodParamTypes, Object... params) {
         StringBuilder methodParam = new StringBuilder();
         for (int i = 0; i < methodParamTypes.length; i++) {
             if (i >= params.length) {
@@ -117,7 +190,36 @@ public class GXSpELToolUtils {
             }
             methodParam.append("#params[").append(i).append("] , ");
         }
-        final String format = CharSequenceUtil.format("#{}({})", methodName, CharSequenceUtil.subBefore(methodParam.toString(), ',', true));
-        return parser.parseExpression(format).getValue(context, clazz);
+        return CharSequenceUtil.subBefore(methodParam.toString(), ',', true);
+    }
+
+    /**
+     * 解析可变参数实际参数
+     *
+     * @param methodParamTypes 参数的类型
+     * @param params           具体参数
+     * @return StringBuilder
+     */
+    private static String parseArgumentParams(EvaluationContext context, Class<?>[] methodParamTypes, Object... params) {
+        StringBuilder methodParam = new StringBuilder();
+        for (int i = 0; i < methodParamTypes.length; i++) {
+            if (i >= params.length) {
+                methodParam.append("null , ");
+                continue;
+            }
+            final Class<?> type = methodParamTypes[i];
+            if (ClassUtil.isSimpleValueType(type)) {
+                if (type.getSimpleName().equalsIgnoreCase("string")) {
+                    methodParam.append("'").append(params[i]).append("' , ");
+                } else {
+                    methodParam.append(params[i]).append(" , ");
+                }
+            } else {
+                final String name = CharSequenceUtil.replace(type.getName(), ".", "");
+                context.setVariable(name, params[i]);
+                methodParam.append("#").append(name).append(" , ");
+            }
+        }
+        return CharSequenceUtil.subBefore(methodParam.toString(), ',', true);
     }
 }
