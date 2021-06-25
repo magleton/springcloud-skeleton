@@ -52,6 +52,46 @@ public class GXSpELToolUtils {
     }
 
     /**
+     * 计算SpEL的表达式
+     * <pre> {@code
+     *  Dict data = Dict.create().set("name","jack").set("age",12);
+     *  String expression = "#data['name']=='jack' and #data['flags']==true";
+     *  calculateSpELExpression(data ,expression ,String.class, "data");
+     * } </pre>
+     *
+     * @param data             数据
+     * @param expressionString 表达式  #data['name']=='jack' and #data['flags']==true
+     * @param beanClass        返回的数据类型  Dog.class
+     * @return T
+     */
+    public static <T> T calculateSpELExpression(Dict data, String expressionString, Class<T> beanClass) {
+        return calculateSpELExpression(data, expressionString, beanClass, "data");
+    }
+
+    /**
+     * 计算目标类的表达式
+     * <pre>
+     *     {@code
+     *     Dict data = GXSpELToolUtils.calculateSpELExpression(entity , "test == 'world' ? {'username':'枫叶'} :{'kk' : 'jack'}" , Dict.class);
+     *     String data = GXSpELToolUtils.calculateSpELExpression(entity , "test == 'world' ? '枫叶' :{'jack'" , Dict.class);
+     *     }
+     * </pre>
+     *
+     * @param targetObject     目标对象
+     * @param expressionString 表达式
+     * @param beanClazz        返回对象的类型
+     * @return T
+     */
+    public static <T> T calculateSpELExpression(Object targetObject, String expressionString, Class<T> beanClazz) {
+        if (Objects.isNull(targetObject)) {
+            return GXCommonUtils.getClassDefaultValue(beanClazz);
+        }
+        ExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext context = new StandardEvaluationContext(targetObject);
+        return parser.parseExpression(expressionString).getValue(context, beanClazz);
+    }
+
+    /**
      * 在计算时动态为目标对象设置值
      *
      * <pre> {@code
