@@ -72,8 +72,15 @@ public class GXSpELToolUtils {
      * 计算目标类的表达式
      * <pre>
      *     {@code
-     *     Dict data = GXSpELToolUtils.calculateSpELExpression(entity , "test == 'world' ? {'username':'枫叶'} :{'kk' : 'jack'}" , Dict.class);
-     *     String data = GXSpELToolUtils.calculateSpELExpression(entity , "test == 'world' ? '枫叶' :{'jack'" , Dict.class);
+     *     eg1:
+     *      Dict data = GXSpELToolUtils.calculateSpELExpression(entity , "test == 'world' ? {'username':'枫叶'} :{'kk' : 'jack'}" , Dict.class);
+     *      String data = GXSpELToolUtils.calculateSpELExpression(entity , "test == 'world' ? '枫叶' :{'jack'" , Dict.class);
+     *     eg2:
+     *      final TestDTO testDTO = new TestDTO();
+     *      testDTO.setTest("test");
+     *      testDTO.setContent("content");
+     *      testDTO.setRoster(Arrays.asList("hello", "jack", "jerry"));
+     *      GXSpELToolUtils.calculateSpELExpression(testDTO, "roster[1]", String.class);
      *     }
      * </pre>
      *

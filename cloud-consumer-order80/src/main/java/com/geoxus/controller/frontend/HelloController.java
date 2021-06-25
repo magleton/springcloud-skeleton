@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -66,6 +67,11 @@ public class HelloController {
         System.out.println(s);
         //  final String s = GXSpELToolUtils.callTargetObjectMethodSpELExpression(GXSpringContextUtils.getBean(HelloService.class), "hello", String.class, new Class[]{String.class, int.class}, "枫叶思源", 98);
         // System.out.println(s);
+        final TestDTO testDTO = new TestDTO();
+        testDTO.setTest("ceshi");
+        testDTO.setContent("content");
+        testDTO.setRoster(Arrays.asList("hello", "jack", "jerry"));
+        System.out.println(GXSpELToolUtils.calculateSpELExpression(testDTO, "roster.?[#this > 1]", List.class));
         return GXResultUtils.ok(entity);
     }
 
