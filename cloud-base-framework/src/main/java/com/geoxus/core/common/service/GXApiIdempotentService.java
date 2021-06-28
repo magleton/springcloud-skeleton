@@ -30,7 +30,7 @@ public interface GXApiIdempotentService {
      * @param condition 验证条件
      * @return 验证是否通过
      */
-    default boolean customApiIdempotentValidate(Dict condition) {
+    default boolean customApiIdempotentValidate(Object... condition) {
         return Boolean.TRUE;
     }
 }

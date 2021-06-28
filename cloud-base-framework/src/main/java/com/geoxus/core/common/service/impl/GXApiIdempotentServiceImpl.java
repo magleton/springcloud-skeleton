@@ -28,7 +28,7 @@ public class GXApiIdempotentServiceImpl implements GXApiIdempotentService {
     }
 
     @Override
-    public boolean customApiIdempotentValidate(Dict condition) {
+    public boolean customApiIdempotentValidate(Object... condition) {
         return GXApiIdempotentService.super.customApiIdempotentValidate(condition);
     }
 

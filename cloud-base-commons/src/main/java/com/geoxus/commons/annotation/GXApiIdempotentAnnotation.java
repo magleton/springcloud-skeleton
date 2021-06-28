@@ -26,9 +26,4 @@ public @interface GXApiIdempotentAnnotation {
      * 自定义方法
      */
     String methodName() default "customApiIdempotentValidate";
-
-    /**
-     * 需要验证的字段信息
-     */
-    String[] fieldNames() default {};
 }

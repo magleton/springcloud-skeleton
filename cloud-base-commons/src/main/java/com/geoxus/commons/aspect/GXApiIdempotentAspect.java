@@ -6,7 +6,6 @@ import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import cn.hutool.json.JSONUtil;
 import com.geoxus.commons.annotation.GXApiIdempotentAnnotation;
 import com.geoxus.core.common.util.GXResultUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -31,7 +30,7 @@ public class GXApiIdempotentAspect {
     @Around("apiIdempotentPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         final Method method = getMethod(point);
-        final Dict condition = getParameters(point);
+        final Object[] condition = getParameters(point);
         final Object targetObject = getTargetObject(point);
         if (Objects.isNull(targetObject) || Objects.isNull(method)) {
             Dict dict = Dict.create().set("error", CharSequenceUtil.format("验证对象信息不存在信息, 请核对是否配置正确~~~"));
@@ -50,21 +49,11 @@ public class GXApiIdempotentAspect {
      * 并且形成调用函数的实际参数
      *
      * @param point 切点对象
-     * @return 实际参数
+     * @return 方法接受的参数列表
      */
-    private Dict getParameters(ProceedingJoinPoint point) {
+    private Object[] getParameters(ProceedingJoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
-        Method signatureMethod = signature.getMethod();
-        final GXApiIdempotentAnnotation methodAnnotation = signatureMethod.getAnnotation(GXApiIdempotentAnnotation.class);
-        final String[] fieldNames = methodAnnotation.fieldNames();
-        final Object[] args = point.getArgs();
-        final Dict targetDict = JSONUtil.toBean(JSONUtil.toJsonStr(args[0]), Dict.class);
-        final Dict condition = Dict.create();
-        for (String fieldName : fieldNames) {
-            final Object o = targetDict.get(fieldName);
-            condition.set(fieldName, o);
-        }
-        return condition;
+        return point.getArgs();
     }
 
     /**
