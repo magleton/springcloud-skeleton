@@ -38,11 +38,11 @@ public class GXApiIdempotentAspect {
             return GXResultUtils.error(dict);
         }
         final boolean retData = invoke(targetObject, method, condition);
-        if (retData) {
-            return point.proceed(point.getArgs());
+        if (!retData) {
+            Dict dict = Dict.create().set("error", CharSequenceUtil.format("请不要提交的太过于频繁~~~~"));
+            return GXResultUtils.error(dict);
         }
-        Dict dict = Dict.create().set("error", CharSequenceUtil.format("请不要提交的太过于频繁~~~~"));
-        return GXResultUtils.error(dict);
+        return point.proceed(point.getArgs());
     }
 
     /**
