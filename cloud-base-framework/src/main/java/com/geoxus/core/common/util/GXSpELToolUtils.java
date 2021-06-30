@@ -4,9 +4,11 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
+import org.slf4j.Logger;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
@@ -20,6 +22,11 @@ import java.util.Objects;
  * @author <email>britton@126.com</email>
  */
 public class GXSpELToolUtils {
+    /**
+     * 日志对象
+     */
+    private static final Logger LOG = GXCommonUtils.getLogger(GXSpELToolUtils.class);
+
     /**
      * 私有函数
      * 防止被外部构造
@@ -47,8 +54,13 @@ public class GXSpELToolUtils {
         EvaluationContext context = new StandardEvaluationContext();
         dataKey = Objects.isNull(dataKey) ? "data" : dataKey;
         context.setVariable(dataKey, data);
-        final Expression expression = parser.parseExpression(expressionString);
-        return expression.getValue(context, beanClass);
+        try {
+            final Expression expression = parser.parseExpression(expressionString);
+            return expression.getValue(context, beanClass);
+        } catch (SpelEvaluationException e) {
+            LOG.error("SpEL表达式失败 , 表达式 : {} , 异常信息 : {}", expressionString, e.getMessage());
+        }
+        return GXCommonUtils.getClassDefaultValue(beanClass);
     }
 
     /**
@@ -93,9 +105,14 @@ public class GXSpELToolUtils {
         if (Objects.isNull(targetObject)) {
             return GXCommonUtils.getClassDefaultValue(beanClazz);
         }
-        ExpressionParser parser = new SpelExpressionParser();
-        StandardEvaluationContext context = new StandardEvaluationContext(targetObject);
-        return parser.parseExpression(expressionString).getValue(context, beanClazz);
+        try {
+            ExpressionParser parser = new SpelExpressionParser();
+            StandardEvaluationContext context = new StandardEvaluationContext(targetObject);
+            return parser.parseExpression(expressionString).getValue(context, beanClazz);
+        } catch (SpelEvaluationException e) {
+            LOG.error("SpEL表达式失败 , 表达式 : {} , 异常信息 : {}", expressionString, e.getMessage());
+        }
+        return GXCommonUtils.getClassDefaultValue(beanClazz);
     }
 
     /**
@@ -124,7 +141,7 @@ public class GXSpELToolUtils {
         final StandardEvaluationContext inventorContext = new StandardEvaluationContext(targetObj);
         final ExpressionParser parser = new SpelExpressionParser();
         if (data.isEmpty()) {
-            return null;
+            return GXCommonUtils.getClassDefaultValue(clazz);
         }
         data.forEach((key, value) -> parser.parseExpression(key).setValue(inventorContext, value));
         return parser.parseExpression(targetKey).getValue(inventorContext, clazz);
