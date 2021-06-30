@@ -30,6 +30,11 @@ public class GXSpELToolUtils {
     private static final Logger LOG = GXCommonUtils.getLogger(GXSpELToolUtils.class);
 
     /**
+     * 目标类中方法不存在的提示信息
+     */
+    private static final String METHOD_NOT_FOUND_TIPS_TEMPLATE = "目标类{}中没有满足签名为{}({})的方法存在~~~";
+
+    /**
      * 私有函数
      * 防止被外部构造
      */
@@ -172,13 +177,8 @@ public class GXSpELToolUtils {
         ExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setVariable("params", params);
-        final Method method = ReflectUtil.getMethod(targetClass, methodName, methodParamTypes);
-        if (Objects.isNull(method)) {
-            final String paramStr = Arrays.stream(methodParamTypes).map(Class::getSimpleName).collect(Collectors.joining(","));
-            LOG.info("目标类{}中没有满足签名为{}({})的方法存在~~~", targetClass.getSimpleName(), paramStr, methodName);
-            return null;
-        }
-        context.registerFunction(methodName, method);
+        if (methodNotExists(targetClass, methodName, methodParamTypes)) return null;
+        context.registerFunction(methodName, ReflectUtil.getMethod(targetClass, methodName, methodParamTypes));
         final String format = CharSequenceUtil.format("#{}({})", methodName, parsePlaceholderParams(methodParamTypes, params));
         return parser.parseExpression(format).getValue(context, clazz);
     }
@@ -209,16 +209,29 @@ public class GXSpELToolUtils {
         if (Objects.isNull(beanObj)) {
             return null;
         }
-        final Method method = ReflectUtil.getMethod(beanClazz, methodName, methodParamTypes);
-        if (Objects.isNull(method)) {
-            final String paramStr = Arrays.stream(methodParamTypes).map(Class::getSimpleName).collect(Collectors.joining(","));
-            LOG.info("目标类{}中没有满足签名为{}({})的方法存在~~~", beanClazz.getSimpleName(), paramStr, methodName);
-            return null;
-        }
+        if (methodNotExists(beanClazz, methodName, methodParamTypes)) return null;
         final ExpressionParser expressionParser = new SpelExpressionParser();
         final StandardEvaluationContext context = new StandardEvaluationContext(beanObj);
         final String expressionString = CharSequenceUtil.format("{}({})", methodName, parseArgumentParams(context, methodParamTypes, params));
         return expressionParser.parseExpression(expressionString).getValue(context, clazz);
+    }
+
+    /**
+     * 判断目标类型是否包含指定的签名方法
+     *
+     * @param beanClazz        目标类型
+     * @param methodName       方法名字
+     * @param methodParamTypes 方法参数类型
+     * @return 是否存在  true 存在  false 不存在
+     */
+    private static boolean methodNotExists(Class<?> beanClazz, String methodName, Class<?>[] methodParamTypes) {
+        final Method method = ReflectUtil.getMethod(beanClazz, methodName, methodParamTypes);
+        if (Objects.isNull(method)) {
+            final String paramStr = Arrays.stream(methodParamTypes).map(Class::getSimpleName).collect(Collectors.joining(","));
+            LOG.error(METHOD_NOT_FOUND_TIPS_TEMPLATE, beanClazz.getSimpleName(), methodName, paramStr);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -242,6 +255,12 @@ public class GXSpELToolUtils {
      * @return T
      */
     public static <T> T callTargetObjectMethodSpELExpression(@NotNull Object targetObject, String methodName, Class<T> clazz, Class<?>[] methodParamTypes, Object... params) {
+        final Method method = ReflectUtil.getMethod(targetObject.getClass(), methodName, methodParamTypes);
+        if (Objects.isNull(method)) {
+            final String paramStr = Arrays.stream(methodParamTypes).map(Class::getSimpleName).collect(Collectors.joining(","));
+            LOG.info(METHOD_NOT_FOUND_TIPS_TEMPLATE, targetObject.getClass().getSimpleName(), methodName, paramStr);
+            return null;
+        }
         final ExpressionParser expressionParser = new SpelExpressionParser();
         final StandardEvaluationContext context = new StandardEvaluationContext(targetObject);
         final String expressionString = CharSequenceUtil.format("{}({})", methodName, parseArgumentParams(context, methodParamTypes, params));
