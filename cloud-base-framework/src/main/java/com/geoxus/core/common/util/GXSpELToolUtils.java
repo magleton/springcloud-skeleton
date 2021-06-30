@@ -14,7 +14,9 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * SpEL工具类
@@ -172,6 +174,8 @@ public class GXSpELToolUtils {
         context.setVariable("params", params);
         final Method method = ReflectUtil.getMethod(targetClass, methodName, methodParamTypes);
         if (Objects.isNull(method)) {
+            final String paramStr = Arrays.stream(methodParamTypes).map(Class::getSimpleName).collect(Collectors.joining(","));
+            LOG.info("目标类{}中没有满足签名为{}({})的方法存在~~~", targetClass.getSimpleName(), paramStr, methodName);
             return null;
         }
         context.registerFunction(methodName, method);
@@ -203,6 +207,12 @@ public class GXSpELToolUtils {
     public static <T> T callBeanMethodSpELExpression(Class<?> beanClazz, String methodName, Class<T> clazz, Class<?>[] methodParamTypes, Object... params) {
         final Object beanObj = GXSpringContextUtils.getBean(beanClazz);
         if (Objects.isNull(beanObj)) {
+            return null;
+        }
+        final Method method = ReflectUtil.getMethod(beanClazz, methodName, methodParamTypes);
+        if (Objects.isNull(method)) {
+            final String paramStr = Arrays.stream(methodParamTypes).map(Class::getSimpleName).collect(Collectors.joining(","));
+            LOG.info("目标类{}中没有满足签名为{}({})的方法存在~~~", beanClazz.getSimpleName(), paramStr, methodName);
             return null;
         }
         final ExpressionParser expressionParser = new SpelExpressionParser();

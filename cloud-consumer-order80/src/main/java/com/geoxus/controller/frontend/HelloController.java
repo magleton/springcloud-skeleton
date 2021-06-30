@@ -76,6 +76,12 @@ public class HelloController {
         final Dict dict = Dict.create().set("username", "枫叶思源");
         final String newValues = GXSpELToolUtils.setValueBySpELExpression(dict, "#data['username']", String.class, "newValues");
         System.out.println(newValues);
+
+        final String s1 = GXSpELToolUtils.callBeanMethodSpELExpression(TestService.class, "callBack",
+                String.class,
+                new Class<?>[]{String.class, String.class, String.class},
+                "陈建鸿", "枫叶思源");
+        System.out.println(s1);
         return GXResultUtils.ok(entity);
     }
 
