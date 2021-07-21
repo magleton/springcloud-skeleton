@@ -65,7 +65,8 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         final Class<?> parameterType = parameter.getParameterType();
         final GXRequestBodyToTargetAnnotation gxRequestBodyToTargetAnnotation = parameter.getParameterAnnotation(GXRequestBodyToTargetAnnotation.class);
         final String value = Objects.requireNonNull(gxRequestBodyToTargetAnnotation).value();
-        final String[] jsonFields = gxRequestBodyToTargetAnnotation.jsonFields();
+        //final String[] jsonFields = gxRequestBodyToTargetAnnotation.jsonFields();
+        List<String> jsonFields = new ArrayList<>(16);
         boolean fillJSONField = gxRequestBodyToTargetAnnotation.fillJSONField();
         boolean validateTarget = gxRequestBodyToTargetAnnotation.validateTarget();
         boolean validateCoreModelId = gxRequestBodyToTargetAnnotation.validateCoreModelId();
@@ -82,6 +83,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
             String dbJSONFieldName = annotation.dbJSONFieldName();
             String dbFieldName = annotation.dbFieldName();
             String currentFieldName = field.getName();
+            jsonFields.add(dbJSONFieldName);
             Object fieldValue = dict.get(currentFieldName);
             if (Objects.isNull(fieldValue)) {
                 fieldValue = dict.getObj(CharSequenceUtil.toSymbolCase(dbFieldName, '_'));

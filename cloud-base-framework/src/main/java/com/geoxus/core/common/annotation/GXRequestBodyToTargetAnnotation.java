@@ -12,7 +12,7 @@ public @interface GXRequestBodyToTargetAnnotation {
 
     Class<?>[] groups() default {};
 
-    String[] jsonFields() default {"ext"};
+    //String[] jsonFields() default {"ext"};
 
     boolean fillJSONField() default true;
 
