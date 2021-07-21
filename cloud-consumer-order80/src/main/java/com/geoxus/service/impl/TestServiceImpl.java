@@ -1,5 +1,6 @@
 package com.geoxus.service.impl;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.constant.OrdersConstant;
 import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
@@ -26,5 +27,11 @@ public class TestServiceImpl extends ServiceImpl<TestMapper, TestEntity> impleme
         TestEntity testEntity = testMapStruct.dtoToEntity(testDTO);
         save(testEntity);
         return testEntity.getId();
+    }
+
+    @Override
+    public String callBack(String realName, String nickName) {
+        final String format = CharSequenceUtil.format("你好呀~~~~ {} ~~~~ {}", realName, nickName);
+        return format;
     }
 }

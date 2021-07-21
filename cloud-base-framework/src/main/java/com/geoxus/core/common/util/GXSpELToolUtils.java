@@ -4,15 +4,19 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
+import org.slf4j.Logger;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * SpEL工具类
@@ -20,6 +24,16 @@ import java.util.Objects;
  * @author <email>britton@126.com</email>
  */
 public class GXSpELToolUtils {
+    /**
+     * 日志对象
+     */
+    private static final Logger LOG = GXCommonUtils.getLogger(GXSpELToolUtils.class);
+
+    /**
+     * 目标类中方法不存在的提示信息
+     */
+    private static final String METHOD_NOT_FOUND_TIPS_TEMPLATE = "目标类{}中没有满足签名为{}({})的方法存在~~~";
+
     /**
      * 私有函数
      * 防止被外部构造
@@ -47,8 +61,13 @@ public class GXSpELToolUtils {
         EvaluationContext context = new StandardEvaluationContext();
         dataKey = Objects.isNull(dataKey) ? "data" : dataKey;
         context.setVariable(dataKey, data);
-        final Expression expression = parser.parseExpression(expressionString);
-        return expression.getValue(context, beanClass);
+        try {
+            final Expression expression = parser.parseExpression(expressionString);
+            return expression.getValue(context, beanClass);
+        } catch (SpelEvaluationException e) {
+            LOG.error("SpEL表达式失败 , 表达式 : {} , 异常信息 : {}", expressionString, e.getMessage());
+        }
+        return GXCommonUtils.getClassDefaultValue(beanClass);
     }
 
     /**
@@ -93,9 +112,14 @@ public class GXSpELToolUtils {
         if (Objects.isNull(targetObject)) {
             return GXCommonUtils.getClassDefaultValue(beanClazz);
         }
-        ExpressionParser parser = new SpelExpressionParser();
-        StandardEvaluationContext context = new StandardEvaluationContext(targetObject);
-        return parser.parseExpression(expressionString).getValue(context, beanClazz);
+        try {
+            ExpressionParser parser = new SpelExpressionParser();
+            StandardEvaluationContext context = new StandardEvaluationContext(targetObject);
+            return parser.parseExpression(expressionString).getValue(context, beanClazz);
+        } catch (SpelEvaluationException e) {
+            LOG.error("SpEL表达式失败 , 表达式 : {} , 异常信息 : {}", expressionString, e.getMessage());
+        }
+        return GXCommonUtils.getClassDefaultValue(beanClazz);
     }
 
     /**
@@ -124,7 +148,7 @@ public class GXSpELToolUtils {
         final StandardEvaluationContext inventorContext = new StandardEvaluationContext(targetObj);
         final ExpressionParser parser = new SpelExpressionParser();
         if (data.isEmpty()) {
-            return null;
+            return GXCommonUtils.getClassDefaultValue(clazz);
         }
         data.forEach((key, value) -> parser.parseExpression(key).setValue(inventorContext, value));
         return parser.parseExpression(targetKey).getValue(inventorContext, clazz);
@@ -153,11 +177,8 @@ public class GXSpELToolUtils {
         ExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext context = new StandardEvaluationContext();
         context.setVariable("params", params);
-        final Method method = ReflectUtil.getMethod(targetClass, methodName, methodParamTypes);
-        if (Objects.isNull(method)) {
-            return null;
-        }
-        context.registerFunction(methodName, method);
+        if (methodNotExists(targetClass, methodName, methodParamTypes)) return null;
+        context.registerFunction(methodName, ReflectUtil.getMethod(targetClass, methodName, methodParamTypes));
         final String format = CharSequenceUtil.format("#{}({})", methodName, parsePlaceholderParams(methodParamTypes, params));
         return parser.parseExpression(format).getValue(context, clazz);
     }
@@ -188,10 +209,29 @@ public class GXSpELToolUtils {
         if (Objects.isNull(beanObj)) {
             return null;
         }
+        if (methodNotExists(beanClazz, methodName, methodParamTypes)) return null;
         final ExpressionParser expressionParser = new SpelExpressionParser();
         final StandardEvaluationContext context = new StandardEvaluationContext(beanObj);
         final String expressionString = CharSequenceUtil.format("{}({})", methodName, parseArgumentParams(context, methodParamTypes, params));
         return expressionParser.parseExpression(expressionString).getValue(context, clazz);
+    }
+
+    /**
+     * 判断目标类型是否包含指定的签名方法
+     *
+     * @param beanClazz        目标类型
+     * @param methodName       方法名字
+     * @param methodParamTypes 方法参数类型
+     * @return 是否存在  true 存在  false 不存在
+     */
+    private static boolean methodNotExists(Class<?> beanClazz, String methodName, Class<?>[] methodParamTypes) {
+        final Method method = ReflectUtil.getMethod(beanClazz, methodName, methodParamTypes);
+        if (Objects.isNull(method)) {
+            final String paramStr = Arrays.stream(methodParamTypes).map(Class::getSimpleName).collect(Collectors.joining(","));
+            LOG.error(METHOD_NOT_FOUND_TIPS_TEMPLATE, beanClazz.getSimpleName(), methodName, paramStr);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -215,6 +255,12 @@ public class GXSpELToolUtils {
      * @return T
      */
     public static <T> T callTargetObjectMethodSpELExpression(@NotNull Object targetObject, String methodName, Class<T> clazz, Class<?>[] methodParamTypes, Object... params) {
+        final Method method = ReflectUtil.getMethod(targetObject.getClass(), methodName, methodParamTypes);
+        if (Objects.isNull(method)) {
+            final String paramStr = Arrays.stream(methodParamTypes).map(Class::getSimpleName).collect(Collectors.joining(","));
+            LOG.info(METHOD_NOT_FOUND_TIPS_TEMPLATE, targetObject.getClass().getSimpleName(), methodName, paramStr);
+            return null;
+        }
         final ExpressionParser expressionParser = new SpelExpressionParser();
         final StandardEvaluationContext context = new StandardEvaluationContext(targetObject);
         final String expressionString = CharSequenceUtil.format("{}({})", methodName, parseArgumentParams(context, methodParamTypes, params));

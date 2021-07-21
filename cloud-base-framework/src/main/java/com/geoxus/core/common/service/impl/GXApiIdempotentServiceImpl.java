@@ -1,11 +1,9 @@
 package com.geoxus.core.common.service.impl;
 
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
-import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.service.GXApiIdempotentService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -30,13 +28,8 @@ public class GXApiIdempotentServiceImpl implements GXApiIdempotentService {
     }
 
     @Override
-    public boolean checkApiIdempotentToken(String token) {
-        final String s = API_IDEMPOTENT_CACHE.getIfPresent(token);
-        if (CharSequenceUtil.isBlank(s)) {
-            throw new GXException("API TOKEN不能为空");
-        }
-        API_IDEMPOTENT_CACHE.invalidate(token);
-        return true;
+    public boolean customApiIdempotentValidate(Object... condition) {
+        return GXApiIdempotentService.super.customApiIdempotentValidate(condition);
     }
 
     private String getTokenValue(String initStr) {

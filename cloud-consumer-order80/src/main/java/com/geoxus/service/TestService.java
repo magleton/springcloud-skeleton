@@ -9,4 +9,6 @@ import com.geoxus.entities.TestEntity;
 @GXDataSourceAnnotation(OrdersConstant.DATASOURCE)
 public interface TestService extends IService<TestEntity> {
     Integer create(TestDTO testDTO);
+
+    String callBack(String realName, String nickName);
 }
