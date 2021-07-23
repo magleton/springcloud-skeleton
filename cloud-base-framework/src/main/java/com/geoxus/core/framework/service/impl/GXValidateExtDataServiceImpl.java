@@ -49,7 +49,7 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
     private GXCoreModelAttributesService coreModelAttributeService;
 
     @Override
-    public boolean validateExtData(Object o, String modelIdentification, String subFiled, boolean isFullMatchAttribute, ConstraintValidatorContext context) throws UnsupportedOperationException {
+    public boolean validateExtData(Object o, String modelIdentification, String tableFiled, boolean isFullMatchAttribute, ConstraintValidatorContext context) throws UnsupportedOperationException {
         final String jsonStr = JSONUtil.toJsonStr(o);
         if (!JSONUtil.isJson(jsonStr)) {
             return false;
@@ -59,12 +59,12 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
             throw new GXException(CharSequenceUtil.format(MODEL_SETTING_NOT_EXISTS, modelIdentification));
         }
         if (isFullMatchAttribute && !CharSequenceUtil.equals(jsonStr, "{}")) {
-            final boolean b = coreModelAttributeService.checkCoreModelFieldAttributes(coreModelId, subFiled, jsonStr);
+            final boolean b = coreModelAttributeService.checkCoreModelFieldAttributes(coreModelId, tableFiled, jsonStr);
             if (!b) {
-                throw new GXException(CharSequenceUtil.format("{}字段提交的属性与数据库配置的字段属性不匹配!", subFiled));
+                throw new GXException(CharSequenceUtil.format("{}字段提交的属性与数据库配置的字段属性不匹配!", tableFiled));
             }
         }
-        final GXCoreModelEntity coreModelEntity = coreModelService.getCoreModelByModelId(coreModelId, subFiled);
+        final GXCoreModelEntity coreModelEntity = coreModelService.getCoreModelByModelId(coreModelId, tableFiled);
         final List<Dict> attributesList = coreModelEntity.getCoreAttributes();
         final Dict validateRule = Dict.create();
         for (Dict dict : attributesList) {
@@ -90,23 +90,23 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
      * 数据验证
      *
      * @param modelIdentification         模型标识
-     * @param modelId                     模型ID
+     * @param coreModelId                     模型ID
      * @param parentAttributeValidateRule attribute原始的验证规则
      * @param validateDataMap             需要验证的数据
      * @param context                     验证组件上下文对象
      * @return boolean
      */
-    private boolean dataValidation(String modelIdentification, int modelId, Dict parentAttributeValidateRule, Map<String, Object> validateDataMap, ConstraintValidatorContext context, int currentIndex) {
+    private boolean dataValidation(String modelIdentification, int coreModelId, Dict parentAttributeValidateRule, Map<String, Object> validateDataMap, ConstraintValidatorContext context, int currentIndex) {
         final Set<String> keySet = validateDataMap.keySet();
         for (String field : keySet) {
-            final boolean b = coreModelService.checkModelHasAttribute(modelId, field);
+            final boolean b = coreModelService.checkModelHasAttribute(coreModelId, field);
             final String errorInfo = currentIndex > -1 ? currentIndex + "." + field : field;
             if (!b) {
                 context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_EXISTS, modelIdentification, field)).addPropertyNode(errorInfo).addConstraintViolation();
                 return true;
             }
             final GXCoreAttributesEntity attribute = coreAttributesService.getAttributeByAttributeName(field);
-            Dict modelAttributesData = coreModelAttributeService.getModelAttributeByModelIdAndAttributeId(modelId, attribute.getAttributeId());
+            Dict modelAttributesData = coreModelAttributeService.getModelAttributeByModelIdAndAttributeId(coreModelId, attribute.getAttributeId());
             String currentRule = modelAttributesData.getStr("validation_expression");
             if (CharSequenceUtil.isBlank(currentRule)) {
                 currentRule = Convert.toStr(parentAttributeValidateRule.get(field));
@@ -124,7 +124,7 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
                 context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_MATCH, modelIdentification, field, currentRule)).addPropertyNode(errorInfo).addConstraintViolation();
                 return true;
             }
-            if (!coreAttributeEnumsService.isExistsAttributeValue(attribute.getAttributeId(), value, modelId)) {
+            if (!coreAttributeEnumsService.isExistsAttributeValue(attribute.getAttributeId(), value, coreModelId)) {
                 context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_VALUE_NOT_EXISTS, modelIdentification, field, value)).addPropertyNode(field).addConstraintViolation();
                 return true;
             }

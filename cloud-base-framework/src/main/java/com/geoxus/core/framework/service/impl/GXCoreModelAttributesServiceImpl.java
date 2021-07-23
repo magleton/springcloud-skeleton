@@ -18,7 +18,7 @@ import com.geoxus.core.framework.entity.GXCoreModelAttributesEntity;
 import com.geoxus.core.framework.mapper.GXCoreModelAttributesMapper;
 import com.geoxus.core.framework.service.GXCoreAttributesService;
 import com.geoxus.core.framework.service.GXCoreModelAttributesService;
-import com.geoxus.core.framework.service.GXCoreModelDbFieldService;
+import com.geoxus.core.framework.service.GXCoreModelTableFieldService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +48,7 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
     private GXCacheKeysUtils gxCacheKeysUtils;
 
     @Resource
-    private GXCoreModelDbFieldService gxCoreModelDbFieldService;
+    private GXCoreModelTableFieldService gxCoreModelTableFieldService;
 
     @Resource
     private GXCoreAttributesService gxCoreAttributesService;
@@ -88,9 +88,9 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
             paramSet.add(entry.getKey());
         }
         final String cacheKey = gxCacheKeysUtils.getCacheKey("", CharSequenceUtil.format("{}.{}.{}", coreModelId, modelAttributeField, String.join(".", paramSet)));
-        final Dict condition = Dict.create().set("core_model_id", coreModelId).set("model_attribute_field", modelAttributeField);
+        final Dict condition = Dict.create().set("core_model_id", coreModelId).set("table_field_name", modelAttributeField);
         try {
-            final List<Dict> list = LIST_DICT_CACHE.get(cacheKey, () -> baseMapper.listOrSearch(condition));
+            final List<Dict> list = LIST_DICT_CACHE.get(cacheKey, () -> gxCoreModelTableFieldService.getModelAttributesByModelId(condition));
             if (list.isEmpty()) {
                 return false;
             }

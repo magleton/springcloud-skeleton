@@ -9,11 +9,13 @@ public interface GXValidateExtDataService {
     /**
      * Checks whether or not a given value exists for a given field
      *
-     * @param o     The value to check for
-     * @param modelIdentification The name of the model
-     * @param isFullMatchAttribute
+     * @param o                    The value to check for
+     * @param modelIdentification  The name of the model
+     * @param tableFiled           Table Field
+     * @param isFullMatchAttribute is full Match
+     * @param context              context
      * @return True if the value exists for the field; false otherwise
      * @throws UnsupportedOperationException
      */
-    boolean validateExtData(Object o, String modelIdentification, String subFiled, boolean isFullMatchAttribute, ConstraintValidatorContext context) throws UnsupportedOperationException;
+    boolean validateExtData(Object o, String modelIdentification, String tableFiled, boolean isFullMatchAttribute, ConstraintValidatorContext context) throws UnsupportedOperationException;
 }

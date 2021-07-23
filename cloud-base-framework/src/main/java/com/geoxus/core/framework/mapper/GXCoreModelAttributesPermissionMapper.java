@@ -13,6 +13,6 @@ import java.util.List;
 @Mapper
 @Primary
 public interface GXCoreModelAttributesPermissionMapper extends GXBaseMapper<GXCoreModelAttributesPermissionEntity> {
-    @SelectProvider(type = GXCoreModelAttributesPermissionsBuilder.class, method = "listOrSearch")
+    @SelectProvider(type = GXCoreModelAttributesPermissionsBuilder.class, method = "getModelAttributePermissionByModelId")
     List<Dict> getModelAttributePermissionByModelId(Dict param);
 }

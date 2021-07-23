@@ -16,7 +16,7 @@ public class GXCoreModelAttributesBuilder implements GXBaseBuilder {
         final SQL sql = new SQL().SELECT("" +
                 "ca.ext as c_ext, ca.attribute_name, ca.attribute_id, ca.show_name, ca.category, ca.data_type,\n" +
                 "ca.front_type, ca.validation_desc, ca.validation_expression, cmaa.error_tips, cmaa.force_validation, cmaa.default_value, \n" +
-                "cmaa.fixed_value, cmaa.db_field_name, cmaa.required, cmaa.ext as cm_ext , cmaa.is_auto_generation")
+                "cmaa.fixed_value, cmaa.table_field_name, cmaa.required, cmaa.ext as cm_ext , cmaa.is_auto_generation")
                 .FROM("core_model_attributes as cmaa");
         sql.INNER_JOIN("core_model_table_field as cmtf on cmaa.core_model_table_field_id=cmtf.core_model_table_field_id");
         sql.LEFT_OUTER_JOIN("core_attributes ca on cmaa.attribute_id = ca.attribute_id");
