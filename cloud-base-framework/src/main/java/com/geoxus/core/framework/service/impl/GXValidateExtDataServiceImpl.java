@@ -3,7 +3,6 @@ package com.geoxus.core.framework.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.exception.GXException;
@@ -15,9 +14,9 @@ import com.geoxus.core.framework.service.GXCoreAttributeEnumsService;
 import com.geoxus.core.framework.service.GXCoreAttributesService;
 import com.geoxus.core.framework.service.GXCoreModelAttributesService;
 import com.geoxus.core.framework.service.GXCoreModelService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 import java.util.Map;
@@ -37,16 +36,16 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
 
     private static final String MODEL_SETTING_NOT_EXISTS = "{}模型不存在,请先配置模型";
 
-    @Autowired
+    @Resource
     private GXCoreModelService coreModelService;
 
-    @Autowired
+    @Resource
     private GXCoreAttributesService coreAttributesService;
 
-    @Autowired
+    @Resource
     private GXCoreAttributeEnumsService coreAttributeEnumsService;
 
-    @Autowired
+    @Resource
     private GXCoreModelAttributesService coreModelAttributeService;
 
     @Override
@@ -90,14 +89,14 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
     /**
      * 数据验证
      *
-     * @param modelIdentification 模型标识
-     * @param modelId             模型ID
-     * @param validateRule        验证规则
-     * @param validateDataMap     需要验证的数据
-     * @param context             验证组件上下文对象
+     * @param modelIdentification         模型标识
+     * @param modelId                     模型ID
+     * @param parentAttributeValidateRule attribute原始的验证规则
+     * @param validateDataMap             需要验证的数据
+     * @param context                     验证组件上下文对象
      * @return boolean
      */
-    private boolean dataValidation(String modelIdentification, int modelId, Dict validateRule, Map<String, Object> validateDataMap, ConstraintValidatorContext context, int currentIndex) {
+    private boolean dataValidation(String modelIdentification, int modelId, Dict parentAttributeValidateRule, Map<String, Object> validateDataMap, ConstraintValidatorContext context, int currentIndex) {
         final Set<String> keySet = validateDataMap.keySet();
         for (String field : keySet) {
             final boolean b = coreModelService.checkModelHasAttribute(modelId, field);
@@ -108,21 +107,21 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
             }
             final GXCoreAttributesEntity attribute = coreAttributesService.getAttributeByAttributeName(field);
             Dict modelAttributesData = coreModelAttributeService.getModelAttributeByModelIdAndAttributeId(modelId, attribute.getAttributeId());
-            String rule = modelAttributesData.getStr("validation_expression");
-            if (CharSequenceUtil.isBlank(rule)) {
-                rule = Convert.toStr(validateRule.get(field));
+            String currentRule = modelAttributesData.getStr("validation_expression");
+            if (CharSequenceUtil.isBlank(currentRule)) {
+                currentRule = Convert.toStr(parentAttributeValidateRule.get(field));
             }
-            if (CharSequenceUtil.isBlank(rule) && modelAttributesData.getInt("force_validation") == 0) {
+            if (CharSequenceUtil.isBlank(currentRule) && modelAttributesData.getInt("force_validation") == 0) {
                 // 不验证当前数据
                 return false;
             }
-            final String value = Convert.toStr(validateDataMap.get(field));
-            if (CharSequenceUtil.isBlank(rule)) {
+            if (CharSequenceUtil.isBlank(currentRule)) {
                 return true;
             }
-            final boolean isMatch = Pattern.matches(rule, value);
+            final String value = Convert.toStr(validateDataMap.get(field));
+            final boolean isMatch = Pattern.matches(currentRule, value);
             if (!isMatch && modelAttributesData.getInt("required") == VERIFY_VALUE) {
-                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_MATCH, modelIdentification, field, rule)).addPropertyNode(errorInfo).addConstraintViolation();
+                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_MATCH, modelIdentification, field, currentRule)).addPropertyNode(errorInfo).addConstraintViolation();
                 return true;
             }
             if (!coreAttributeEnumsService.isExistsAttributeValue(attribute.getAttributeId(), value, modelId)) {

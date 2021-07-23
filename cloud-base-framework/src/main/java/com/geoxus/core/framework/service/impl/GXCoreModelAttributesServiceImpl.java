@@ -109,18 +109,18 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
     }
 
     @Override
-    public Dict getModelAttributesDefaultValue(int coreModelId, String modelAttributeField, String jsonStr) {
+    public Dict getModelAttributesDefaultValue(int coreModelId, String tableField, String jsonStr) {
         if (!JSONUtil.isJson(jsonStr)) {
             return Dict.create();
         }
         final Dict sourceDict = JSONUtil.toBean(jsonStr, Dict.class);
-        final String cacheKey = gxCacheKeysUtils.getCacheKey("", CharSequenceUtil.format("{}.{}", coreModelId, modelAttributeField));
+        final String cacheKey = gxCacheKeysUtils.getCacheKey("", CharSequenceUtil.format("{}.{}", coreModelId, tableField));
         final Dict condition = Dict.create()
                 .set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId)
-                .set("db_field_name", modelAttributeField);
+                .set("table_field_name", tableField);
         try {
             final Dict retDict = Dict.create();
-            final List<Dict> list = LIST_DICT_CACHE.get(cacheKey, () -> baseMapper.listOrSearch(condition));
+            final List<Dict> list = LIST_DICT_CACHE.get(cacheKey, () -> baseMapper.getModelAttributesByModelId(condition));
             Dict errorsDict = Dict.create();
             for (Dict dict : list) {
                 final String attributeName = CharSequenceUtil.toCamelCase(dict.getStr("attribute_name"));
@@ -143,7 +143,7 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
                 Integer required = dict.getInt("required");
                 String errorTips = dict.getStr("error_tips");
                 if (CharSequenceUtil.isBlank(errorTips)) {
-                    errorTips = CharSequenceUtil.format("{}.{}为必填字段", modelAttributeField, attributeName);
+                    errorTips = CharSequenceUtil.format("{}.{}为必填字段", tableField, attributeName);
                 }
                 if (required == 1 && null == sourceDict.getObj(attributeName) && null == dict.getObj("default_value")) {
                     errorsDict.set(attributeName, errorTips);

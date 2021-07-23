@@ -9,17 +9,21 @@ import org.apache.ibatis.jdbc.SQL;
 public class GXCoreModelAttributesBuilder implements GXBaseBuilder {
     @Override
     public String listOrSearch(Dict param) {
+        return "";
+    }
+
+    public String getModelAttributesByModelId(Dict param) {
         final SQL sql = new SQL().SELECT("" +
                 "ca.ext as c_ext, ca.attribute_name, ca.attribute_id, ca.show_name, ca.category, ca.data_type,\n" +
                 "ca.front_type, ca.validation_desc, ca.validation_expression, cmaa.error_tips, cmaa.force_validation, cmaa.default_value, \n" +
                 "cmaa.fixed_value, cmaa.db_field_name, cmaa.required, cmaa.ext as cm_ext , cmaa.is_auto_generation")
                 .FROM("core_model_attributes as cmaa");
-        sql.INNER_JOIN("core_model_db_field as cmdf on cmaa.core_model_db_field_id=cmdf.core_model_db_field_id");
+        sql.INNER_JOIN("core_model_table_field as cmtf on cmaa.core_model_table_field_id=cmtf.core_model_table_field_id");
         sql.LEFT_OUTER_JOIN("core_attributes ca on cmaa.attribute_id = ca.attribute_id");
         sql.INNER_JOIN("core_model on  core_model.model_id = cmaa.core_model_id");
         sql.WHERE(StrUtil.format("cmaa.core_model_id={core_model_id}", param));
-        if (CharSequenceUtil.isNotBlank(param.getStr("db_field_name"))) {
-            sql.WHERE(StrUtil.format("cmdf.db_field_name = '{db_field_name}'", param));
+        if (CharSequenceUtil.isNotBlank(param.getStr("table_field_name"))) {
+            sql.WHERE(StrUtil.format("cmtf.table_field_name = '{table_field_name}'", param));
         }
         return sql.toString();
     }
