@@ -12,8 +12,6 @@ public @interface GXRequestBodyToTargetAnnotation {
 
     Class<?>[] groups() default {};
 
-    //String[] jsonFields() default {"ext"};
-
     boolean fillJSONField() default true;
 
     boolean validateTarget() default true;

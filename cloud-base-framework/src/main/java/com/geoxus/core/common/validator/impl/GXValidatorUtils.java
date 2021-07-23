@@ -2,6 +2,7 @@ package com.geoxus.core.common.validator.impl;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
@@ -69,7 +70,7 @@ public class GXValidatorUtils {
                 currentFormName = CharSequenceUtil.toSymbolCase(currentFormName, '_');
                 if (constraint.getMessageTemplate().contains("{fieldName}")) {
                     final Dict param = Dict.create().set("fieldName", currentFormName);
-                    message = CharSequenceUtil.format(constraint.getMessageTemplate(), param);
+                    message = StrUtil.format(constraint.getMessageTemplate(), param);
                 }
                 dict.putIfAbsent(currentFormName, message);
             }

@@ -65,7 +65,6 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         final Class<?> parameterType = parameter.getParameterType();
         final GXRequestBodyToTargetAnnotation gxRequestBodyToTargetAnnotation = parameter.getParameterAnnotation(GXRequestBodyToTargetAnnotation.class);
         final String value = Objects.requireNonNull(gxRequestBodyToTargetAnnotation).value();
-        //final String[] jsonFields = gxRequestBodyToTargetAnnotation.jsonFields();
         List<String> jsonFields = new ArrayList<>(16);
         boolean fillJSONField = gxRequestBodyToTargetAnnotation.fillJSONField();
         boolean validateTarget = gxRequestBodyToTargetAnnotation.validateTarget();
@@ -82,8 +81,8 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
             }
             String dbJSONFieldName = annotation.dbJSONFieldName();
             String dbFieldName = annotation.dbFieldName();
-            String currentFieldName = field.getName();
             jsonFields.add(dbJSONFieldName);
+            String currentFieldName = field.getName();
             Object fieldValue = dict.get(currentFieldName);
             if (Objects.isNull(fieldValue)) {
                 fieldValue = dict.getObj(CharSequenceUtil.toSymbolCase(dbFieldName, '_'));
@@ -109,7 +108,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
                 final String json = Optional.ofNullable(dict.getStr(jsonField)).orElse("{}");
                 final Dict dbFieldDict = gxCoreModelAttributesService.getModelAttributesDefaultValue(coreModelId, jsonField, json);
                 Dict tmpDict = JSONUtil.toBean(json, Dict.class);
-                GXCommonUtils.publishEvent(new GXMethodArgumentResolverEvent<Dict>(tmpDict, dbFieldDict, "", Dict.create(), ""));
+                GXCommonUtils.publishEvent(new GXMethodArgumentResolverEvent<>(tmpDict, dbFieldDict, "", Dict.create(), ""));
                 final Set<String> tmpDictKey = tmpDict.keySet();
                 if (!tmpDict.isEmpty() && !CollUtil.containsAll(dbFieldDict.keySet(), tmpDictKey)) {
                     throw new GXException(CharSequenceUtil.format("{}字段参数不匹配(系统预置: {} , 实际请求: {})", jsonField, dbFieldDict.keySet(), tmpDictKey), GXResultCode.PARSE_REQUEST_JSON_ERROR.getCode());

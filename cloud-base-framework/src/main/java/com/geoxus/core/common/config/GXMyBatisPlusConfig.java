@@ -59,7 +59,7 @@ public class GXMyBatisPlusConfig {
         // 乐观锁插件
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         // sql性能规范插件
-        interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
+       // interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
         // 多租户插件(请在相应的表中新增tenant_id字段)
         // interceptor.addInnerInterceptor(new TenantLineInnerInterceptor());
         // 动态表名插件

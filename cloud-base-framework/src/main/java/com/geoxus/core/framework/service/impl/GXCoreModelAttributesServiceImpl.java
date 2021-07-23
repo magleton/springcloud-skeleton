@@ -16,14 +16,16 @@ import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
 import com.geoxus.core.framework.entity.GXCoreModelAttributesEntity;
 import com.geoxus.core.framework.mapper.GXCoreModelAttributesMapper;
+import com.geoxus.core.framework.service.GXCoreAttributesService;
 import com.geoxus.core.framework.service.GXCoreModelAttributesService;
+import com.geoxus.core.framework.service.GXCoreModelDbFieldService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
@@ -42,8 +44,14 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
         LIST_DICT_CACHE = CacheBuilder.newBuilder().expireAfterWrite(Duration.ofHours(24)).maximumSize(100000).build();
     }
 
-    @Autowired
+    @Resource
     private GXCacheKeysUtils gxCacheKeysUtils;
+
+    @Resource
+    private GXCoreModelDbFieldService gxCoreModelDbFieldService;
+
+    @Resource
+    private GXCoreAttributesService gxCoreAttributesService;
 
     @Override
     @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #p0.getStr('core_model_id') + #p0.getStr('model_attribute_field')")
@@ -107,13 +115,15 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
         }
         final Dict sourceDict = JSONUtil.toBean(jsonStr, Dict.class);
         final String cacheKey = gxCacheKeysUtils.getCacheKey("", CharSequenceUtil.format("{}.{}", coreModelId, modelAttributeField));
-        final Dict condition = Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId).set("db_field_name", modelAttributeField);
+        final Dict condition = Dict.create()
+                .set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId)
+                .set("db_field_name", modelAttributeField);
         try {
             final Dict retDict = Dict.create();
             final List<Dict> list = LIST_DICT_CACHE.get(cacheKey, () -> baseMapper.listOrSearch(condition));
             Dict errorsDict = Dict.create();
             for (Dict dict : list) {
-                final String attributeName = dict.getStr("attribute_name");
+                final String attributeName = CharSequenceUtil.toCamelCase(dict.getStr("attribute_name"));
                 final String cmExt = dict.getStr("cm_ext");
                 final String cExt = dict.getStr("c_ext");
                 // 特定模型中的属性的元数据
@@ -145,12 +155,12 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
                     if (StrUtil.isBlankIfStr(value) || GXCommonUtils.getClassDefaultValue(sourceDict.getObj(attributeName).getClass()).equals(value)) {
                         value = dict.getObj("default_value");
                         if (StrUtil.isBlankIfStr(value) || GXCommonUtils.getClassDefaultValue(sourceDict.getObj(attributeName).getClass()).equals(value)) {
-                           if(null != dict.getObj("is_auto_generation") && dict.getInt("is_auto_generation") == 1) {
-                               value = RandomUtil.randomString(5);
-                           }else{
-                               errorsDict.set(attributeName, errorTips);
-                               continue;
-                           }
+                            if (null != dict.getObj("is_auto_generation") && dict.getInt("is_auto_generation") == 1) {
+                                value = RandomUtil.randomString(5);
+                            } else {
+                                errorsDict.set(attributeName, errorTips);
+                                continue;
+                            }
                         }
                     }
                 }

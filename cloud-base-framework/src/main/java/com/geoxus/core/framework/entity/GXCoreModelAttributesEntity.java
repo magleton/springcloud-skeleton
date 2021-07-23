@@ -19,8 +19,6 @@ public class GXCoreModelAttributesEntity extends GXBaseEntity implements Seriali
 
     private String dbFieldName;
 
-    private int parentId;
-
     private int coreModelId;
 
     @GXValidateDBExistsAnnotation(service = GXCoreAttributesService.class, fieldName = "attribute_id")
