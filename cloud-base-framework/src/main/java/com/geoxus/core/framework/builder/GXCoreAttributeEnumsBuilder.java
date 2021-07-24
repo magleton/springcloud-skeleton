@@ -1,6 +1,7 @@
 package com.geoxus.core.framework.builder;
 
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.builder.GXBaseBuilder;
 import com.geoxus.core.common.constant.GXBaseBuilderConstants;
@@ -40,6 +41,20 @@ public class GXCoreAttributeEnumsBuilder implements GXBaseBuilder {
     public String exists(Dict param) {
         final SQL sql = new SQL().SELECT("count(*) as cnt").FROM("core_attributes_enums");
         sql.WHERE(StrUtil.format("attribute_id = {attribute_id} and core_model_id = {core_model_id}", param));
+        return sql.toString();
+    }
+
+    /**
+     * 根据属性ID和核心模型ID获取数据
+     *
+     * @param attributeId 属性ID
+     * @param coreModelId 核心模型ID
+     * @return String
+     */
+    public String getAttributeEnumsByAttributeIdAndCoreModelId(Integer attributeId, Integer coreModelId) {
+        final SQL sql = new SQL().SELECT("cae.*").FROM("core_attributes_enums as cae");
+        sql.INNER_JOIN("core_attributes ca on cae.attribute_id = ca.attribute_id");
+        sql.WHERE(CharSequenceUtil.format("cae.attribute_id = {} AND cae.core_model_id = {}", attributeId, coreModelId));
         return sql.toString();
     }
 }

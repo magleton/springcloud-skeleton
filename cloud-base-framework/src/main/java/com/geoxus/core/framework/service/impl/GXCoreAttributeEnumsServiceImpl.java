@@ -32,10 +32,7 @@ public class GXCoreAttributeEnumsServiceImpl extends ServiceImpl<GXCoreAttribute
     @Override
     @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #coreModelId + #attributeId + #value")
     public boolean isExistsAttributeValue(int attributeId, Object value, int coreModelId) {
-        final Dict condition = Dict.create()
-                .set("cae.attribute_id", attributeId)
-                .set("cae." + GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
-        final List<Dict> list = baseMapper.listOrSearch(condition);
+        final List<Dict> list = baseMapper.getAttributeEnumsByAttributeIdAndCoreModelId(attributeId, coreModelId);
         if (list.isEmpty()) {
             return true;
         }

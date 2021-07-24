@@ -87,6 +87,9 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
                 continue;
             }
             String dbJSONFieldName = annotation.dbJSONFieldName();
+            if (CharSequenceUtil.isBlank(dbJSONFieldName)) {
+                dbJSONFieldName = field.getName();
+            }
             String dbFieldName = annotation.dbFieldName();
             jsonFields.add(dbJSONFieldName);
             String currentFieldName = field.getName();
