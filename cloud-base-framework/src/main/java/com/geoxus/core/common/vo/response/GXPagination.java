@@ -16,13 +16,13 @@ public class GXPagination<T> implements Serializable {
     private long total;
 
     @GXFieldCommentAnnotation(zhDesc = "每页记录数")
-    private long size;
+    private long pageSize;
 
     @GXFieldCommentAnnotation(zhDesc = "总页数")
     private long pages;
 
     @GXFieldCommentAnnotation(zhDesc = "当前页数")
-    private long current;
+    private long page;
 
     @GXFieldCommentAnnotation(zhDesc = "列表数据")
     private transient List<T> records;
@@ -38,8 +38,8 @@ public class GXPagination<T> implements Serializable {
     public GXPagination(List<T> list, long totalCount, long pageSize, long currPage) {
         this.records = list;
         this.total = totalCount;
-        this.size = pageSize;
-        this.current = currPage;
+        this.pageSize = pageSize;
+        this.page = currPage;
         this.pages = (int) Math.ceil((double) totalCount / pageSize);
     }
 
@@ -49,8 +49,8 @@ public class GXPagination<T> implements Serializable {
     public GXPagination(Page<T> page) {
         this.records = page.getRecords();
         this.total = page.getTotal();
-        this.size = page.getSize();
-        this.current = page.getCurrent();
+        this.pageSize = page.getSize();
+        this.page = page.getCurrent();
         this.pages = page.getPages();
     }
 
@@ -60,8 +60,8 @@ public class GXPagination<T> implements Serializable {
     public GXPagination(IPage<T> page) {
         this.records = page.getRecords();
         this.total = (int) page.getTotal();
-        this.size = (int) page.getSize();
-        this.current = (int) page.getCurrent();
+        this.pageSize = (int) page.getSize();
+        this.page = (int) page.getCurrent();
         this.pages = (int) page.getPages();
     }
 

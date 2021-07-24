@@ -182,7 +182,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      */
     default IPage<Dict> constructPageObjectFromParam(Dict param) {
         final Dict pageInfo = getPageInfoFromParam(param);
-        return new Page<>(pageInfo.getInt("current"), pageInfo.getInt("size"));
+        return new Page<>(pageInfo.getInt("page"), pageInfo.getInt("pageSize"));
     }
 
     /**
@@ -196,14 +196,14 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
         int pageSize = GXCommonConstants.DEFAULT_PAGE_SIZE;
         final Dict pagingInfo = Convert.convert(Dict.class, param.getObj("paging_info"));
         if (null != pagingInfo) {
-            if (null != pagingInfo.getInt("current")) {
-                currentPage = pagingInfo.getInt("current");
+            if (null != pagingInfo.getInt("page")) {
+                currentPage = pagingInfo.getInt("page");
             }
-            if (null != pagingInfo.getInt("size")) {
-                pageSize = pagingInfo.getInt("size");
+            if (null != pagingInfo.getInt("pageSize")) {
+                pageSize = pagingInfo.getInt("pageSize");
             }
         }
-        return Dict.create().set("current", currentPage).set("size", pageSize);
+        return Dict.create().set("page", currentPage).set("pageSize", pageSize);
     }
 
     /**
@@ -234,7 +234,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
             String[] split = CharSequenceUtil.splitToArray(removeStr, ",");
             for (final String s : split) {
                 if (CharSequenceUtil.contains(s, "::")) {
-                    final String[] strings = CharSequenceUtil.split(s, "::");
+                    final String[] strings = CharSequenceUtil.splitToArray(s, "::");
                     String mainKey = strings[0];
                     String subKey = strings[1];
                     final Object o = removeField.get(mainKey);
