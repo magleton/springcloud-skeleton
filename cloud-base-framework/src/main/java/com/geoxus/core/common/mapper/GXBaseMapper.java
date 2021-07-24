@@ -15,7 +15,7 @@ public interface GXBaseMapper<T> extends BaseMapper<T> {
     @UpdateProvider(type = GXBaseBuilder.class, method = "updateFieldByCondition")
     boolean updateFieldByCondition(String tableName, Dict data, Dict whereData);
 
-    @SelectProvider(type = GXBaseBuilder.class, method = "listOrSearch")
+    @SelectProvider(type = GXBaseBuilder.class, method = "listOrSearchPage")
     @Results(value = {
             @Result(column = "ext", property = "ext", typeHandler = GXJsonToMapTypeHandler.class)
     })

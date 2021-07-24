@@ -231,7 +231,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
         String removeStr = Optional.ofNullable(param.getStr("remove_field")).orElse("");
         Map<String, Object> removeField = CollUtil.newHashMap();
         if (CharSequenceUtil.isNotBlank(removeStr)) {
-            String[] split = CharSequenceUtil.split(removeStr, ",");
+            String[] split = CharSequenceUtil.splitToArray(removeStr, ",");
             for (final String s : split) {
                 if (CharSequenceUtil.contains(s, "::")) {
                     final String[] strings = CharSequenceUtil.split(s, "::");
