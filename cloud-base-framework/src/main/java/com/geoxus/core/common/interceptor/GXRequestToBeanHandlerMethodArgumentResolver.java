@@ -66,7 +66,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         try {
             final Field coreModelIdField = parameterType.getDeclaredField("CORE_MODEL_ID");
             coreModelIdField.setAccessible(true);
-            coreModelId = coreModelIdField.getInt(null);
+            coreModelId = Convert.toInt(coreModelIdField.get(null));
         } catch (NoSuchFieldException e) {
             throw new GXException(CharSequenceUtil.format("{}类中请添加CORE_MODEL_ID静态常量字段", parameterType.getSimpleName()));
         }
