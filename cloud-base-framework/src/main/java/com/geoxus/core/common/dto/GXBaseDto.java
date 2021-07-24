@@ -5,5 +5,5 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class GXBaseDTO implements Serializable {
+public class GXBaseDto implements Serializable {
 }

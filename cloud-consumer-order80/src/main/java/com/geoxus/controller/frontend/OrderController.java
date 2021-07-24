@@ -5,7 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import com.geoxus.core.common.annotation.GXRequestBodyToTargetAnnotation;
 import com.geoxus.core.common.controller.GXControllerDTO;
 import com.geoxus.core.common.util.GXResultUtils;
-import com.geoxus.dto.OrdersDTO;
+import com.geoxus.dto.OrdersDto;
 import com.geoxus.entities.OrdersEntity;
 import com.geoxus.mapstruct.OrdersMapStruct;
 import com.geoxus.service.OrderService;
@@ -26,7 +26,7 @@ import javax.validation.Valid;
 @Slf4j
 @RestController("orderFrontend")
 @RequestMapping("/order/frontend")
-public class OrderController implements GXControllerDTO<OrdersDTO> {
+public class OrderController implements GXControllerDTO<OrdersDto> {
     @Autowired
     private OrderService orderService;
 
@@ -36,7 +36,7 @@ public class OrderController implements GXControllerDTO<OrdersDTO> {
     @Override
     @PostMapping("/create")
     //@GXLoginAnnotation
-    public GXResultUtils<Long> create(@Valid @GXRequestBodyToTargetAnnotation(mapstructClazz = OrdersMapStruct.class, jsonFields = {"ext", "other"}) OrdersDTO ordersDTO) {
+    public GXResultUtils<Long> create(@Valid @GXRequestBodyToTargetAnnotation(mapstructClazz = OrdersMapStruct.class, jsonFields = {"ext", "other"}) OrdersDto ordersDTO) {
         long orderNo = IdUtil.getSnowflake(1, 1).nextId();
         ordersDTO.setOrderNo(orderNo);
         OrdersEntity ordersEntity = ordersMapStruct.dtoToEntity(ordersDTO);

@@ -4,7 +4,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.constant.OrdersConstant;
 import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
-import com.geoxus.dto.TestDTO;
+import com.geoxus.dto.TestDto;
 import com.geoxus.entities.TestEntity;
 import com.geoxus.mapper.TestMapper;
 import com.geoxus.mapstruct.TestMapStruct;
@@ -22,7 +22,7 @@ public class TestServiceImpl extends ServiceImpl<TestMapper, TestEntity> impleme
     private TestMapStruct testMapStruct;
 
     @Override
-    public Integer create(TestDTO testDTO) {
+    public Integer create(TestDto testDTO) {
         log.info("业务请求参数为 : {}", testDTO);
         TestEntity testEntity = testMapStruct.dtoToEntity(testDTO);
         save(testEntity);

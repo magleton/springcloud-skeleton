@@ -1,6 +1,6 @@
 package com.geoxus.dto;
 
-import com.geoxus.core.common.dto.GXBaseDTO;
+import com.geoxus.core.common.dto.GXBaseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class TestDTO extends GXBaseDTO {
+public class TestDto extends GXBaseDto {
     private String content;
 
     private String test;

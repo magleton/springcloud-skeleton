@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.geoxus.core.common.util.GXAuthCodeUtils;
 import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.util.GXSpELToolUtils;
-import com.geoxus.dto.TestDTO;
+import com.geoxus.dto.TestDto;
 import com.geoxus.entities.TestEntity;
 import com.geoxus.mapstruct.TestMapStruct;
 import com.geoxus.service.HelloService;
@@ -50,7 +50,7 @@ public class HelloController {
     }
 
     @PostMapping("/create")
-    public GXResultUtils<Integer> index(@RequestBody TestDTO testDTO) {
+    public GXResultUtils<Integer> index(@RequestBody TestDto testDTO) {
         log.info("AAAAA");
         Integer id = testService.create(testDTO);
         return GXResultUtils.ok(id);
@@ -67,7 +67,7 @@ public class HelloController {
         System.out.println(s);
         //  final String s = GXSpELToolUtils.callTargetObjectMethodSpELExpression(GXSpringContextUtils.getBean(HelloService.class), "hello", String.class, new Class[]{String.class, int.class}, "枫叶思源", 98);
         // System.out.println(s);
-        final TestDTO testDTO = new TestDTO();
+        final TestDto testDTO = new TestDto();
         testDTO.setTest("ceshi");
         testDTO.setContent("content");
         testDTO.setRoster(Arrays.asList("hello", "jack", "jerry"));

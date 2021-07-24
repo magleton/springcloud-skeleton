@@ -1,6 +1,6 @@
 package com.geoxus.core.common.mapstruct;
 
-import com.geoxus.core.common.dto.GXBaseDTO;
+import com.geoxus.core.common.dto.GXBaseDto;
 import com.geoxus.core.common.entity.GXBaseEntity;
 
 /**
@@ -8,7 +8,7 @@ import com.geoxus.core.common.entity.GXBaseEntity;
  * @version 1.0
  * @since 2020-09-26
  */
-public interface GXBaseMapStruct<D extends GXBaseDTO, E extends GXBaseEntity> {
+public interface GXBaseMapStruct<D extends GXBaseDto, E extends GXBaseEntity> {
     E dtoToEntity(D dto);
 
     D entityToDto(E entity);

@@ -10,7 +10,7 @@ import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.annotation.GXMergeSingleFieldToJSONFieldAnnotation;
 import com.geoxus.core.common.annotation.GXRequestBodyToTargetAnnotation;
-import com.geoxus.core.common.dto.GXBaseDTO;
+import com.geoxus.core.common.dto.GXBaseDto;
 import com.geoxus.core.common.entity.GXBaseEntity;
 import com.geoxus.core.common.event.GXMethodArgumentResolverEvent;
 import com.geoxus.core.common.exception.GXException;
@@ -142,7 +142,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         Class<?> mapstructClazz = gxRequestBodyToTargetAnnotation.mapstructClazz();
         boolean isConvertToEntity = gxRequestBodyToTargetAnnotation.isConvertToEntity();
         if (mapstructClazz != Void.class && isConvertToEntity) {
-            GXBaseMapStruct<GXBaseDTO, GXBaseEntity> convert = Convert.convert(new TypeReference<GXBaseMapStruct<GXBaseDTO, GXBaseEntity>>() {
+            GXBaseMapStruct<GXBaseDto, GXBaseEntity> convert = Convert.convert(new TypeReference<GXBaseMapStruct<GXBaseDto, GXBaseEntity>>() {
             }, GXSpringContextUtils.getBean(mapstructClazz));
             if (null == convert) {
                 LOGGER.error("DTO转换为Entity失败!请提供正确的MapStruct转换Class");

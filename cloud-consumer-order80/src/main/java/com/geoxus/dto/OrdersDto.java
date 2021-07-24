@@ -1,7 +1,7 @@
 package com.geoxus.dto;
 
 import com.geoxus.core.common.annotation.GXMergeSingleFieldToJSONFieldAnnotation;
-import com.geoxus.core.common.dto.GXBaseDTO;
+import com.geoxus.core.common.dto.GXBaseDto;
 import lombok.Data;
 
 /**
@@ -11,7 +11,7 @@ import lombok.Data;
  * @since 1.0
  */
 @Data
-public class OrdersDTO extends GXBaseDTO {
+public class OrdersDto extends GXBaseDto {
     private Integer orderId;
 
     private Long orderNo;
