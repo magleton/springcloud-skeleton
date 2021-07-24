@@ -29,8 +29,6 @@ public class GXCoreModelEntity extends Model implements Serializable {
 
     private String searchCondition;
 
-    private String modelType;
-
     @TableField(fill = FieldFill.INSERT)
     private int createdAt;
 

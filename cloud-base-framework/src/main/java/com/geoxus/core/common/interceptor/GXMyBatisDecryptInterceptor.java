@@ -38,7 +38,7 @@ public class GXMyBatisDecryptInterceptor implements Interceptor {
         if ("ArrayList".equalsIgnoreCase(GXTypeOfUtils.typeof(resultObject).getSimpleName())) {
             List<?> resultList = Convert.convert(new TypeReference<List<?>>() {
             }, resultObject);
-            if (!CollectionUtils.isEmpty(resultList) && needToDecrypt(resultList.get(0))) {
+            if (!CollectionUtils.isEmpty(resultList) && Objects.nonNull(resultList.get(0)) && needToDecrypt(resultList.get(0))) {
                 for (Object result : resultList) {
                     gxSensitiveDataDecryptService.decrypt(result);
                 }

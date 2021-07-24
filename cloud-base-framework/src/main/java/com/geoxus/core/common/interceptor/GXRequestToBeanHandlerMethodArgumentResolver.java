@@ -63,15 +63,23 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         final String body = getRequestBody(webRequest);
         final Dict dict = Convert.convert(Dict.class, JSONUtil.toBean(body, Dict.class));
         final Class<?> parameterType = parameter.getParameterType();
+        Integer coreModelId = null;
+        try {
+            final Field coreModelIdField = parameterType.getDeclaredField("coreModelId");
+            coreModelIdField.setAccessible(true);
+            coreModelId = coreModelIdField.getInt(null);
+        } catch (NoSuchFieldException e) {
+            throw new GXException(CharSequenceUtil.format("{}类中请添加coreModelId静态常量字段", parameterType.getSimpleName()));
+        }
         final GXRequestBodyToTargetAnnotation gxRequestBodyToTargetAnnotation = parameter.getParameterAnnotation(GXRequestBodyToTargetAnnotation.class);
         final String value = Objects.requireNonNull(gxRequestBodyToTargetAnnotation).value();
         List<String> jsonFields = new ArrayList<>(16);
         boolean fillJSONField = gxRequestBodyToTargetAnnotation.fillJSONField();
         boolean validateTarget = gxRequestBodyToTargetAnnotation.validateTarget();
         boolean validateCoreModelId = gxRequestBodyToTargetAnnotation.validateCoreModelId();
-        if (null == dict.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME) && validateCoreModelId) {
+     /*   if (null == dict.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME) && validateCoreModelId) {
             throw new GXException(CharSequenceUtil.format("请传递{}参数", GXCommonConstants.CORE_MODEL_PRIMARY_NAME));
-        }
+        }*/
 
         Map<String, Map<String, Object>> jsonMergeFieldMap = new HashMap<>();
         for (Field field : parameterType.getDeclaredFields()) {
@@ -102,7 +110,7 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
             dict.set(jsonField, JSONUtil.toJsonStr(jsonMergeFieldMap.get(jsonField)));
         }
 
-        final Integer coreModelId = dict.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME);
+        //final Integer coreModelId = dict.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME);
         if (validateCoreModelId && null != coreModelId) {
             for (String jsonField : jsonFields) {
                 final String json = Optional.ofNullable(dict.getStr(jsonField)).orElse("{}");
