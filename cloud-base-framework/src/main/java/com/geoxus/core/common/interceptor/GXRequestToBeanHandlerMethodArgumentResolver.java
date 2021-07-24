@@ -10,7 +10,6 @@ import cn.hutool.json.JSONUtil;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.annotation.GXMergeSingleFieldToJSONFieldAnnotation;
 import com.geoxus.core.common.annotation.GXRequestBodyToTargetAnnotation;
-import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.dto.GXBaseDTO;
 import com.geoxus.core.common.entity.GXBaseEntity;
 import com.geoxus.core.common.event.GXMethodArgumentResolverEvent;
@@ -65,11 +64,11 @@ public class GXRequestToBeanHandlerMethodArgumentResolver implements HandlerMeth
         final Class<?> parameterType = parameter.getParameterType();
         Integer coreModelId = null;
         try {
-            final Field coreModelIdField = parameterType.getDeclaredField("coreModelId");
+            final Field coreModelIdField = parameterType.getDeclaredField("CORE_MODEL_ID");
             coreModelIdField.setAccessible(true);
             coreModelId = coreModelIdField.getInt(null);
         } catch (NoSuchFieldException e) {
-            throw new GXException(CharSequenceUtil.format("{}类中请添加coreModelId静态常量字段", parameterType.getSimpleName()));
+            throw new GXException(CharSequenceUtil.format("{}类中请添加CORE_MODEL_ID静态常量字段", parameterType.getSimpleName()));
         }
         final GXRequestBodyToTargetAnnotation gxRequestBodyToTargetAnnotation = parameter.getParameterAnnotation(GXRequestBodyToTargetAnnotation.class);
         final String value = Objects.requireNonNull(gxRequestBodyToTargetAnnotation).value();
