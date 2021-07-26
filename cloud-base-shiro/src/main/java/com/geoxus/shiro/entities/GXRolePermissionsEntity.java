@@ -9,16 +9,19 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-@TableName("permissions")
+@TableName("role_permissions")
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class GXPermissionsEntity extends GXBaseEntity implements Serializable {
+public class GXRolePermissionsEntity extends GXBaseEntity implements Serializable {
     @GXFieldCommentAnnotation(zhDesc = "主键ID")
     private Integer id;
 
-    @GXFieldCommentAnnotation(zhDesc = "权限码")
-    private String code;
+    @GXFieldCommentAnnotation(zhDesc = "角色ID")
+    private Integer roleId;
+
+    @GXFieldCommentAnnotation(zhDesc = "权限ID")
+    private Integer permissionId;
 
     @GXFieldCommentAnnotation(zhDesc = "扩展数据")
     private String ext;

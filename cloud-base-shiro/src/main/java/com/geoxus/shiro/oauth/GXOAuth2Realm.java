@@ -15,9 +15,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -41,7 +41,7 @@ public class GXOAuth2Realm extends AuthorizingRealm {
         // 获取用户权限列表
         Set<String> permsSet = gxShiroService.getAdminAllPermissions(adminId);
         // 获取用户角色列表
-        Set<String> rolesSet = gxShiroService.getAdminRoles(adminId).values().stream().map(Object::toString).collect(Collectors.toSet());
+        Set<String> rolesSet = gxShiroService.getAdminRoles(adminId);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setStringPermissions(permsSet);
         info.addRoles(rolesSet);
@@ -69,9 +69,9 @@ public class GXOAuth2Realm extends AuthorizingRealm {
         // 根据用户ID查询用户信息
         Dict admin = gxShiroService.getAdminById(adminId);
         // 判断账号状态
-        int userStatus = admin.getInt("status");
+        Integer userStatus = admin.getInt("status");
         // 用户账户为锁定状态
-        if (userStatus == GXBusinessStatusCode.LOCKED.getCode()) {
+        if (Objects.isNull(userStatus) || userStatus == GXBusinessStatusCode.LOCKED.getCode()) {
             throw new LockedAccountException(GXBusinessStatusCode.LOCKED.getMsg());
         }
         return new SimpleAuthenticationInfo(admin, accessToken, getName());

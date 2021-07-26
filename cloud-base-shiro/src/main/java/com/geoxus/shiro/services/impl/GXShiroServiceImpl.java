@@ -3,7 +3,7 @@ package com.geoxus.shiro.services.impl;
 import cn.hutool.core.lang.Dict;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXSpringContextUtils;
-import com.geoxus.shiro.services.GXAdminHasRolesService;
+import com.geoxus.shiro.services.GXAdminRoleService;
 import com.geoxus.shiro.services.GXAdminService;
 import com.geoxus.shiro.services.GXPermissionsService;
 import com.geoxus.shiro.services.GXShiroService;
@@ -29,10 +29,10 @@ public class GXShiroServiceImpl implements GXShiroService {
     /**
      * 获取用户角色列表
      *
-     * @return
+     * @return Dict
      */
-    public Dict getAdminRoles(long adminId) {
-        return Objects.requireNonNull(GXSpringContextUtils.getBean(GXAdminHasRolesService.class)).getAdminRoles(adminId);
+    public Set<String> getAdminRoles(Long adminId) {
+        return Objects.requireNonNull(GXSpringContextUtils.getBean(GXAdminRoleService.class)).getAdminRoles(adminId);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class GXShiroServiceImpl implements GXShiroService {
         if (null != adminData.getLong(primaryKey)) {
             return adminData.getLong(primaryKey).equals(GXCommonUtils.getEnvironmentValue("super.admin.id", Long.class));
         }
-        return adminData.getLong("is_super_admin") == 1;
+        return adminData.getLong("super_admin") == 1;
     }
 
     @Override
     public Long currentSessionUserId() {
-        return 0L;
+        return 100L;
     }
 
     @Override

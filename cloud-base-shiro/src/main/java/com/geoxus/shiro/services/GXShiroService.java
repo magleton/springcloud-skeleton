@@ -24,7 +24,7 @@ public interface GXShiroService extends GXSessionService {
      * @param adminId 用户ID
      * @return Set
      */
-    Dict getAdminRoles(long adminId);
+    Set<String> getAdminRoles(Long adminId);
 
     /**
      * 查询Admin的详细信息
