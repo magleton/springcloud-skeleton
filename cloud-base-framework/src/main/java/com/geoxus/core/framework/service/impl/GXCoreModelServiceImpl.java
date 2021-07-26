@@ -5,7 +5,6 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -38,7 +37,7 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
         if (null == entity) {
             return null;
         }
-        if (StrUtil.isBlank(modelAttributeField)) {
+        if (CharSequenceUtil.isBlank(modelAttributeField)) {
             modelAttributeField = "";
         }
         final List<Dict> attributes = coreModelAttributeService.getModelAttributesByModelId(Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, modelId).set("db_field_name", modelAttributeField));
@@ -78,13 +77,13 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
     @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #coreModelId")
     public String getModelTypeByModelId(long coreModelId, String defaultValue) {
         Dict condition = Dict.create().set("model_id", coreModelId);
-        HashSet<String> field = CollUtil.newHashSet("model_type");
+        HashSet<String> field = CollUtil.newHashSet("model_identification");
         Dict dict = getFieldValueBySQL(GXCoreModelEntity.class, field, condition, false);
-        String modelType = dict.getStr("model_type");
+        String modelType = dict.getStr("model_identification");
         if (CharSequenceUtil.isBlank(modelType)) {
-            return defaultValue + "Type";
+            return defaultValue;
         }
-        return modelType;
+        return CharSequenceUtil.upperFirst(CharSequenceUtil.toCamelCase(modelType)) + "Type";
     }
 
     @Override

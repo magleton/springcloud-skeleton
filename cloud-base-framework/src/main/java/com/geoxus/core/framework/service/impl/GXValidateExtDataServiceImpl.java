@@ -90,7 +90,7 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
      * 数据验证
      *
      * @param modelIdentification         模型标识
-     * @param coreModelId                     模型ID
+     * @param coreModelId                 模型ID
      * @param parentAttributeValidateRule attribute原始的验证规则
      * @param validateDataMap             需要验证的数据
      * @param context                     验证组件上下文对象
@@ -98,18 +98,18 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
      */
     private boolean dataValidation(String modelIdentification, int coreModelId, Dict parentAttributeValidateRule, Map<String, Object> validateDataMap, ConstraintValidatorContext context, int currentIndex) {
         final Set<String> keySet = validateDataMap.keySet();
-        for (String field : keySet) {
-            final boolean b = coreModelService.checkModelHasAttribute(coreModelId, field);
-            final String errorInfo = currentIndex > -1 ? currentIndex + "." + field : field;
+        for (String attributeName : keySet) {
+            final boolean b = coreModelService.checkModelHasAttribute(coreModelId, CharSequenceUtil.toUnderlineCase(attributeName));
+            final String errorInfo = currentIndex > -1 ? currentIndex + "." + attributeName : attributeName;
             if (!b) {
-                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_EXISTS, modelIdentification, field)).addPropertyNode(errorInfo).addConstraintViolation();
+                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_EXISTS, modelIdentification, attributeName)).addPropertyNode(errorInfo).addConstraintViolation();
                 return true;
             }
-            final GXCoreAttributesEntity attribute = coreAttributesService.getAttributeByAttributeName(field);
+            final GXCoreAttributesEntity attribute = coreAttributesService.getAttributeByAttributeName(attributeName);
             Dict modelAttributesData = coreModelAttributeService.getModelAttributeByModelIdAndAttributeId(coreModelId, attribute.getAttributeId());
             String currentRule = modelAttributesData.getStr("validation_expression");
             if (CharSequenceUtil.isBlank(currentRule)) {
-                currentRule = Convert.toStr(parentAttributeValidateRule.get(field));
+                currentRule = Convert.toStr(parentAttributeValidateRule.get(attributeName));
             }
             if (CharSequenceUtil.isBlank(currentRule) && modelAttributesData.getInt("force_validation") == 0) {
                 // 不验证当前数据
@@ -118,14 +118,14 @@ public class GXValidateExtDataServiceImpl implements GXValidateExtDataService {
             if (CharSequenceUtil.isBlank(currentRule)) {
                 return true;
             }
-            final String value = Convert.toStr(validateDataMap.get(field));
+            final String value = Convert.toStr(validateDataMap.get(attributeName));
             final boolean isMatch = Pattern.matches(currentRule, value);
             if (!isMatch && modelAttributesData.getInt("required") == VERIFY_VALUE) {
-                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_MATCH, modelIdentification, field, currentRule)).addPropertyNode(errorInfo).addConstraintViolation();
+                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_NOT_MATCH, modelIdentification, attributeName, currentRule)).addPropertyNode(errorInfo).addConstraintViolation();
                 return true;
             }
             if (!coreAttributeEnumsService.isExistsAttributeValue(attribute.getAttributeId(), value, coreModelId)) {
-                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_VALUE_NOT_EXISTS, modelIdentification, field, value)).addPropertyNode(field).addConstraintViolation();
+                context.buildConstraintViolationWithTemplate(CharSequenceUtil.format(FIELD_VALUE_NOT_EXISTS, modelIdentification, attributeName, value)).addPropertyNode(attributeName).addConstraintViolation();
                 return true;
             }
         }

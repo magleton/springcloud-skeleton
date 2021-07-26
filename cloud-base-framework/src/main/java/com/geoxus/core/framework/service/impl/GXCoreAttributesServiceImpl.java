@@ -1,6 +1,7 @@
 package com.geoxus.core.framework.service.impl;
 
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -32,11 +33,13 @@ public class GXCoreAttributesServiceImpl extends ServiceImpl<GXCoreAttributesMap
     @Override
     @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #attributeName")
     public GXCoreAttributesEntity getAttributeByAttributeName(String attributeName) {
+        attributeName = CharSequenceUtil.toUnderlineCase(attributeName);
         return getOne(new QueryWrapper<GXCoreAttributesEntity>().eq("attribute_name", attributeName));
     }
 
     @Override
     public boolean checkFieldIsExists(String attributeName) {
+        attributeName = CharSequenceUtil.toUnderlineCase(attributeName);
         Dict condition = Dict.create().set("attribute_name", attributeName);
         return 1 == checkRecordIsExists(GXCoreAttributesEntity.class, condition);
     }

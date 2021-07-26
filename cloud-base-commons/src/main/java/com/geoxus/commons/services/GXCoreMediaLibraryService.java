@@ -53,12 +53,12 @@ public interface GXCoreMediaLibraryService extends GXBaseService<GXCoreMediaLibr
      *  }
      * </pre>
      *
-     * @param objectId    对象记录ID
+     * @param targetId    对象记录ID
      * @param coreModelId 　核心模型ID
      * @param param       　参数
      * @param condition   条件
      */
-    void updateOwner(long objectId, long coreModelId, List<JSONObject> param, Dict condition);
+    void updateOwner(long targetId, long coreModelId, List<JSONObject> param, Dict condition);
 
     /**
      * 保存文件

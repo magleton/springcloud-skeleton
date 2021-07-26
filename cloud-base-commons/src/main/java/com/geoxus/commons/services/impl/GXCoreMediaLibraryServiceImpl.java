@@ -47,29 +47,29 @@ public class GXCoreMediaLibraryServiceImpl extends ServiceImpl<GXCoreMediaLibrar
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateOwner(long objectId, long coreModelId, List<JSONObject> param, Dict condition) {
-        if (param.isEmpty()) {
+    public void updateOwner(long targetId, long coreModelId, List<JSONObject> mediaList, Dict condition) {
+        if (mediaList.isEmpty()) {
             return;
         }
         final ArrayList<GXCoreMediaLibraryEntity> newMediaList = new ArrayList<>();
         QueryWrapper<GXCoreMediaLibraryEntity> oldConditionQuery = new QueryWrapper<>();
-        Dict oldCondition = Dict.create().set("object_id", objectId).set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
+        Dict oldCondition = Dict.create().set("target_id", targetId).set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
         if (null != condition.getObj("resource_type")) {
             oldCondition.set("resource_type", condition.getStr("resource_type"));
         }
         final List<GXCoreMediaLibraryEntity> oldMediaList = list(oldConditionQuery.allEq(oldCondition));
         Set<Integer> saveOldData = CollUtil.newHashSet();
-        for (JSONObject dict : param) {
-            Integer mediaId = dict.getInt("id");
+        for (JSONObject media : mediaList) {
+            Integer mediaId = media.getInt("id");
             if (null != mediaId) {
-                if (null != dict.getLong("object_id")) {
-                    objectId = dict.getLong("object_id");
+                if (null != media.getLong("target_id")) {
+                    targetId = media.getLong("target_id");
                 }
-                final long itemCoreModelId = dict.getLong(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
-                final String resourceType = dict.getStr("resource_type", "");
+                final long itemCoreModelId = media.getLong(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
+                final String resourceType = media.getStr("resource_type", "");
                 final GXCoreMediaLibraryEntity entity = getOne(new QueryWrapper<GXCoreMediaLibraryEntity>().eq("id", mediaId));
-                String customProperties = dict.getStr("custom_properties", "{}");
-                Integer updateOld = dict.getInt("update_old");
+                String customProperties = media.getStr("custom_properties", "{}");
+                Integer updateOld = media.getInt("update_old");
                 if (null != updateOld) {
                     saveOldData.add(mediaId);
                     if (JSONUtil.isJson(customProperties)) {
@@ -79,7 +79,7 @@ public class GXCoreMediaLibraryServiceImpl extends ServiceImpl<GXCoreMediaLibrar
                     }
                 }
                 if (null != entity) {
-                    entity.setObjectId(objectId);
+                    entity.setObjectId(targetId);
                     entity.setModelType(coreModelService.getModelTypeByModelId(itemCoreModelId, "defaultModelType"));
                     entity.setCoreModelId(itemCoreModelId);
                     entity.setCustomProperties(JSONUtil.toJsonStr(customProperties));

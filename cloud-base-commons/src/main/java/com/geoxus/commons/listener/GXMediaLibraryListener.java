@@ -29,13 +29,13 @@ public class GXMediaLibraryListener<T> implements ApplicationListener<GXMediaLib
     public void dealData(GXMediaLibraryEvent<T> event) {
         final Dict param = event.getParam();
         final long coreModelId = param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME);
-        final long objectId = param.getLong("object_id");
-        if (objectId > 0) {
+        final long targetId = param.getLong("target_id");
+        if (targetId > 0) {
             Dict condition = Dict.create();
             if (null != param.getObj("condition")) {
                 condition = Convert.convert(Dict.class, param.getObj("condition"));
             }
-            coreMediaLibraryService.updateOwner(objectId, coreModelId, Convert.convert(new TypeReference<List<JSONObject>>() {
+            coreMediaLibraryService.updateOwner(targetId, coreModelId, Convert.convert(new TypeReference<List<JSONObject>>() {
             }, param.getObj("media")), condition);
         }
     }
