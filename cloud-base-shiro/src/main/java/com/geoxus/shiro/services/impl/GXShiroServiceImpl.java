@@ -3,9 +3,9 @@ package com.geoxus.shiro.services.impl;
 import cn.hutool.core.lang.Dict;
 import com.geoxus.core.common.util.GXCommonUtils;
 import com.geoxus.core.common.util.GXSpringContextUtils;
-import com.geoxus.shiro.services.GXSAdminHasRolesService;
-import com.geoxus.shiro.services.GXSAdminService;
-import com.geoxus.shiro.services.GXSPermissionsService;
+import com.geoxus.shiro.services.GXAdminHasRolesService;
+import com.geoxus.shiro.services.GXAdminService;
+import com.geoxus.shiro.services.GXPermissionsService;
 import com.geoxus.shiro.services.GXShiroService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class GXShiroServiceImpl implements GXShiroService {
      */
     @SuppressWarnings(value = {"unchecked"})
     public Set<String> getAdminAllPermissions(Long adminId) {
-        return Objects.requireNonNull(GXSpringContextUtils.getBean(GXSPermissionsService.class)).getAdminAllPermissions(adminId);
+        return Objects.requireNonNull(GXSpringContextUtils.getBean(GXPermissionsService.class)).getAdminAllPermissions(adminId);
     }
 
     /**
@@ -32,12 +32,12 @@ public class GXShiroServiceImpl implements GXShiroService {
      * @return
      */
     public Dict getAdminRoles(long adminId) {
-        return Objects.requireNonNull(GXSpringContextUtils.getBean(GXSAdminHasRolesService.class)).getAdminRoles(adminId);
+        return Objects.requireNonNull(GXSpringContextUtils.getBean(GXAdminHasRolesService.class)).getAdminRoles(adminId);
     }
 
     @Override
     public Dict getAdminById(Long adminId) {
-        final Dict dict = Objects.requireNonNull(GXSpringContextUtils.getBean(GXSAdminService.class)).getStatus(adminId);
+        final Dict dict = Objects.requireNonNull(GXSpringContextUtils.getBean(GXAdminService.class)).getStatus(adminId);
         if (null == dict) {
             return Dict.create();
         }
@@ -46,7 +46,7 @@ public class GXShiroServiceImpl implements GXShiroService {
 
     @Override
     public boolean isSuperAdmin(Dict adminData) {
-        final String primaryKey = Objects.requireNonNull(GXSpringContextUtils.getBean(GXSAdminService.class)).getPrimaryKey();
+        final String primaryKey = Objects.requireNonNull(GXSpringContextUtils.getBean(GXAdminService.class)).getPrimaryKey();
         if (null != adminData.getLong(primaryKey)) {
             return adminData.getLong(primaryKey).equals(GXCommonUtils.getEnvironmentValue("super.admin.id", Long.class));
         }

@@ -1,14 +1,14 @@
 package com.geoxus.shiro.services;
 
 import com.geoxus.core.common.service.GXBusinessService;
-import com.geoxus.shiro.entities.GXSPermissionsEntity;
+import com.geoxus.shiro.entities.GXPermissionsEntity;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public interface GXSPermissionsService<T extends GXSPermissionsEntity> extends GXBusinessService<T> {
+public interface GXPermissionsService<T extends GXPermissionsEntity> extends GXBusinessService<T> {
     /**
      * 获取管理员的所有权限列表
      * 权限包括:

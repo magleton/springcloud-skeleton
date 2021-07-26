@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class GXSAdminEntity extends GXBaseEntity implements Serializable {
+public class GXAdminEntity extends GXBaseEntity implements Serializable {
     @GXFieldCommentAnnotation(zhDesc = "状态")
     private int status;
 
