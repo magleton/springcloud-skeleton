@@ -14,4 +14,21 @@ public interface GXUUserService<T extends GXUUserEntity> extends GXBusinessServi
     default Dict verifyUserToken(String token) {
         return Dict.create();
     }
+
+    /**
+     * 账号登录
+     *
+     * @param loginParam 登录参数
+     * @return 登录token
+     */
+    default String login(Dict loginParam) {
+        return "";
+    }
+
+    /**
+     * 用户登出
+     */
+    default void loginOut() {
+
+    }
 }
