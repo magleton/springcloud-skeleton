@@ -1,5 +1,6 @@
 package com.geoxus.core.common.interceptor;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import com.geoxus.core.common.annotation.GXLoginUserAnnotation;
 import com.geoxus.core.common.constant.GXTokenConstants;
@@ -46,6 +47,6 @@ public class GXLoginUserHandlerMethodArgumentResolver implements HandlerMethodAr
             }
         }
         // 获取用户信息
-        return Objects.requireNonNull(GXSpringContextUtils.getBean(GXUUserService.class)).getById((Long) object);
+        return Objects.requireNonNull(GXSpringContextUtils.getBean(GXUUserService.class)).getById(Convert.toLong(object));
     }
 }
