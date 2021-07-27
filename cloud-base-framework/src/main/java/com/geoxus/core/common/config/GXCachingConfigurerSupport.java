@@ -1,12 +1,12 @@
 package com.geoxus.core.common.config;
 
 import org.jetbrains.annotations.NotNull;
+import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.cache.interceptor.SimpleCacheErrorHandler;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import javax.annotation.Resource;
 @Configuration
 public class GXCachingConfigurerSupport extends CachingConfigurerSupport {
     @Resource
-    private CaffeineCacheManager caffeineCacheManager;
+    private RedissonSpringCacheManager redissonSpringCacheManager;
 
     /**
      * 重写这个方法，目的是用以提供默认的cacheManager
@@ -32,7 +32,7 @@ public class GXCachingConfigurerSupport extends CachingConfigurerSupport {
      */
     @Override
     public CacheManager cacheManager() {
-        return caffeineCacheManager;
+        return redissonSpringCacheManager;
     }
 
     /**

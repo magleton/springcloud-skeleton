@@ -93,7 +93,6 @@ public class GXCoreCommonConfig {
     }
 
     @Bean("ehCacheCacheManager")
-    @ConditionalOnExpression("'${spring.cache.type}'.equals('ehcache')")
     @ConditionalOnClass(name = {
             "net.sf.ehcache.CacheManager"
     })

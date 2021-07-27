@@ -54,7 +54,7 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
     private GXCoreAttributesService gxCoreAttributesService;
 
     @Override
-    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #p0.getStr('core_model_id') + #p0.getStr('model_attribute_field')")
+    @Cacheable(cacheManager = "caffeineCache", value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #p0.getStr('core_model_id') + #p0.getStr('model_attribute_field')")
     public List<Dict> getModelAttributesByModelId(Dict param) {
         if (null == param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME)) {
             param.set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, 0);
@@ -63,7 +63,7 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
     }
 
     @Override
-    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #modelId + #attributeId")
+    @Cacheable(cacheManager = "caffeineCache", value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #modelId + #attributeId")
     public Dict getModelAttributeByModelIdAndAttributeId(int modelId, int attributeId) {
         final Dict condition = Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, modelId).set("attribute_id", attributeId);
         final HashSet<String> fieldSet = CollUtil.newHashSet("validation_expression", "force_validation", "required");
@@ -71,7 +71,7 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
     }
 
     @Override
-    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #coreModelId + #attributeName")
+    @Cacheable(cacheManager = "caffeineCache", value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #coreModelId + #attributeName")
     public Integer checkCoreModelHasAttribute(Integer coreModelId, String attributeName) {
         final Dict condition = Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId).set("attribute_name", attributeName);
         return baseMapper.checkCoreModelHasAttribute(condition);

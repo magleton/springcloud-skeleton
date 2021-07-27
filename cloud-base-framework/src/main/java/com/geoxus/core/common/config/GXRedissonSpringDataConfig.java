@@ -7,9 +7,7 @@ import org.redisson.config.Config;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,9 +30,8 @@ public class GXRedissonSpringDataConfig {
         return Redisson.create(config);
     }
 
-    @Bean
-    @ConditionalOnExpression("'${spring.cache.type}'.equals('redis')")
-    public CacheManager cacheManager(RedissonClient redission) {
+    @Bean("redissonSpringCacheManager")
+    public RedissonSpringCacheManager cacheManager(RedissonClient redission) {
         final Map<String, CacheConfig> config = gxRedissionCacheManagerConfig.getConfig();
         if (config.isEmpty()) {
             return new RedissonSpringCacheManager(redission);
