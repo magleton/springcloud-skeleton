@@ -2,7 +2,7 @@ package com.geoxus.shiro.services;
 
 import cn.hutool.core.lang.Dict;
 import com.geoxus.core.common.service.GXBusinessService;
-import com.geoxus.shiro.dto.req.AdminLoginReqDto;
+import com.geoxus.shiro.dto.req.GXAdminLoginReqDto;
 import com.geoxus.shiro.entities.GXAdminEntity;
 
 public interface GXAdminService<T extends GXAdminEntity> extends GXBusinessService<T> {
@@ -20,5 +20,5 @@ public interface GXAdminService<T extends GXAdminEntity> extends GXBusinessServi
      * @param loginReqDto 登录信息
      * @return 管理员token
      */
-    String login(AdminLoginReqDto loginReqDto);
+    String login(GXAdminLoginReqDto loginReqDto);
 }

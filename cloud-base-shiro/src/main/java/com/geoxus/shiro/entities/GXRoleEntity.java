@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class RoleEntity {
+public class GXRoleEntity {
     @GXFieldCommentAnnotation(zhDesc = "主键ID")
     private Integer id;
 

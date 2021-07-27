@@ -6,5 +6,5 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AdminReqDto extends GXBaseDto {
+public class GXAdminReqDto extends GXBaseDto {
 }

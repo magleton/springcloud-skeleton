@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.core.common.constant.GXTokenConstants;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.oauth.GXTokenManager;
-import com.geoxus.shiro.dto.req.AdminLoginReqDto;
+import com.geoxus.shiro.dto.req.GXAdminLoginReqDto;
 import com.geoxus.shiro.entities.GXAdminEntity;
 import com.geoxus.shiro.mapper.GXAdminMapper;
 import com.geoxus.shiro.services.GXAdminService;
@@ -43,7 +43,7 @@ public class GXAdminServiceImpl extends ServiceImpl<GXAdminMapper, GXAdminEntity
      * @return 管理员token
      */
     @Override
-    public String login(AdminLoginReqDto loginReqDto) {
+    public String login(GXAdminLoginReqDto loginReqDto) {
         final String username = loginReqDto.getUsername();
         final String password = loginReqDto.getPassword();
         String secretPassword = SecureUtil.md5(password);

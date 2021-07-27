@@ -3,8 +3,8 @@ package com.geoxus.shiro.controller.backend;
 import cn.hutool.core.lang.Dict;
 import com.geoxus.core.common.controller.GXControllerDTO;
 import com.geoxus.core.common.util.GXResultUtils;
-import com.geoxus.shiro.dto.req.AdminLoginReqDto;
-import com.geoxus.shiro.dto.req.AdminReqDto;
+import com.geoxus.shiro.dto.req.GXAdminLoginReqDto;
+import com.geoxus.shiro.dto.req.GXAdminReqDto;
 import com.geoxus.shiro.entities.GXAdminEntity;
 import com.geoxus.shiro.services.GXAdminService;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/admin/backend")
-public class AdminController implements GXControllerDTO<AdminReqDto> {
+public class GXAdminController implements GXControllerDTO<GXAdminReqDto> {
     @Resource
     private GXAdminService<GXAdminEntity> adminService;
 
@@ -28,7 +28,7 @@ public class AdminController implements GXControllerDTO<AdminReqDto> {
      * @return GXResultUtils
      */
     @PostMapping("login")
-    public GXResultUtils<Dict> login(@RequestBody @Validated AdminLoginReqDto loginReqDto) {
+    public GXResultUtils<Dict> login(@RequestBody @Validated GXAdminLoginReqDto loginReqDto) {
         final String token = adminService.login(loginReqDto);
         return GXResultUtils.ok(Dict.create().set("admin-token", token));
     }

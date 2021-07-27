@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AdminLoginReqDto extends GXBaseDto {
+public class GXAdminLoginReqDto extends GXBaseDto {
     /**
      * 用户名
      */
