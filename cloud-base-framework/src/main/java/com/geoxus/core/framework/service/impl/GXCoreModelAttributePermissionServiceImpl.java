@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @GXDataSourceAnnotation("framework")
 public class GXCoreModelAttributePermissionServiceImpl extends ServiceImpl<GXCoreModelAttributesPermissionMapper, GXCoreModelAttributesPermissionEntity> implements GXCoreModelAttributePermissionService {
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #coreModelId")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #coreModelId")
     public Dict getModelAttributePermissionByCoreModelId(int coreModelId, Dict param) {
         GXSessionService sessionService = GXSpringContextUtils.getBean(GXSessionService.class);
         final List<Dict> attributes = baseMapper.getModelAttributePermissionByModelId(Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId));

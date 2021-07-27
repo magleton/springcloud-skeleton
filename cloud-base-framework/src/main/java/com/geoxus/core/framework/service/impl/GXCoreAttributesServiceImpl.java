@@ -25,13 +25,13 @@ import java.util.Optional;
 @GXDataSourceAnnotation("framework")
 public class GXCoreAttributesServiceImpl extends ServiceImpl<GXCoreAttributesMapper, GXCoreAttributesEntity> implements GXCoreAttributesService {
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #p0")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #p0")
     public List<GXCoreAttributesEntity> getAttributesByCategory(String category) {
         return Optional.ofNullable(list(new QueryWrapper<GXCoreAttributesEntity>().eq("category", category))).orElse(new ArrayList<>());
     }
 
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #attributeName")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #attributeName")
     public GXCoreAttributesEntity getAttributeByAttributeName(String attributeName) {
         attributeName = CharSequenceUtil.toUnderlineCase(attributeName);
         return getOne(new QueryWrapper<GXCoreAttributesEntity>().eq("attribute_name", attributeName));

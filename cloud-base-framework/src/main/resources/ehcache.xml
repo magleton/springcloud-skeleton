@@ -42,6 +42,16 @@
         <persistence strategy="localTempSwap"/>
     </cache>
 
+    <cache name="FRAMEWORK-CACHE"
+           maxEntriesLocalHeap="5000"
+           maxEntriesLocalDisk="1000"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="200"
+           timeToLiveSeconds="500"
+           memoryStoreEvictionPolicy="LFU">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
     <cache name="__DEFAULT__"
            maxEntriesLocalHeap="5000"
            maxEntriesLocalDisk="1000"

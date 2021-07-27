@@ -31,7 +31,7 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
     private GXCoreModelAttributesService coreModelAttributeService;
 
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #modelId + #modelAttributeField")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #modelId + #modelAttributeField")
     public GXCoreModelEntity getCoreModelByModelId(int modelId, String modelAttributeField) {
         final GXCoreModelEntity entity = getById(modelId);
         if (null == entity) {
@@ -65,7 +65,7 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
     }
 
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #p0")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #p0")
     public Integer getModelIdByModelIdentification(String modelName) {
         final Dict condition = Dict.create().set(GXBaseBuilderConstants.MODEL_IDENTIFICATION_NAME, modelName);
         HashSet<String> field = CollUtil.newHashSet("model_id");
@@ -74,7 +74,7 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
     }
 
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #coreModelId")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #coreModelId")
     public String getModelTypeByModelId(long coreModelId, String defaultValue) {
         Dict condition = Dict.create().set("model_id", coreModelId);
         HashSet<String> field = CollUtil.newHashSet("model_identification");
@@ -116,7 +116,7 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
     }
 
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #tableName")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #tableName")
     public int getCoreModelIdByTableName(String tableName) {
         final Dict condition = Dict.create().set("table_name", tableName);
         final QueryWrapper<GXCoreModelEntity> queryWrapper = new QueryWrapper<GXCoreModelEntity>().select("model_id").allEq(condition);
@@ -128,7 +128,7 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
     }
 
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #value + #field")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #value + #field")
     public boolean validateExists(Object value, String field, ConstraintValidatorContext constraintValidatorContext, Dict param) throws UnsupportedOperationException {
         log.info("validateExists : {} , field : {}", value, field);
         final Integer coreModelId = Convert.toInt(value, 0);

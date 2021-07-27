@@ -30,7 +30,7 @@ public class GXCoreAttributeEnumsServiceImpl extends ServiceImpl<GXCoreAttribute
     private GXCoreAttributesService coreAttributesService;
 
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #coreModelId + #attributeId + #value")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #coreModelId + #attributeId + #value")
     public boolean isExistsAttributeValue(int attributeId, Object value, int coreModelId) {
         final List<Dict> list = baseMapper.getAttributeEnumsByAttributeIdAndCoreModelId(attributeId, coreModelId);
         if (list.isEmpty()) {
@@ -45,7 +45,7 @@ public class GXCoreAttributeEnumsServiceImpl extends ServiceImpl<GXCoreAttribute
     }
 
     @Override
-    @Cacheable(value = "__DEFAULT__", key = "targetClass + methodName + #p0.getStr('attribute_name')")
+    @Cacheable(value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #p0.getStr('attribute_name')")
     public List<Dict> getAttributeEnumsByCondition(Dict condition) {
         final Page<Dict> page = new Page<>(1, 500);
         return baseMapper.listOrSearchPage(page, condition);

@@ -69,6 +69,7 @@ spring:
     redis:
       key-prefix: redisCache
     cache-names:
+      - FRAMEWORK-CACHE
       - __DEFAULT__
       - common
   rabbitmq:
