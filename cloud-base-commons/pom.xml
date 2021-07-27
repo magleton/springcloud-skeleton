@@ -17,7 +17,7 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.geoxus</groupId>
+            <groupId>com.geoxus.springcloud</groupId>
             <artifactId>cloud-base-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
