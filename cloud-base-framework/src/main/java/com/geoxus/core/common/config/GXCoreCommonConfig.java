@@ -11,17 +11,13 @@ import com.geoxus.core.common.validator.impl.GXValidateDBUniqueValidator;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.unit.DataSize;
 
@@ -90,19 +86,6 @@ public class GXCoreCommonConfig {
             }
         });
         return objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-    }
-
-    @Bean("ehCacheCacheManager")
-    @ConditionalOnClass(name = {
-            "net.sf.ehcache.CacheManager"
-    })
-    public EhCacheCacheManager ehCacheCacheManager() {
-        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));
-        ehCacheManagerFactoryBean.setShared(true);
-        final net.sf.ehcache.CacheManager cacheManager = ehCacheManagerFactoryBean.getObject();
-        assert cacheManager != null;
-        return new EhCacheCacheManager(cacheManager);
     }
 
     /**
