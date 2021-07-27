@@ -16,4 +16,10 @@ public class GXAdminRoleServiceImpl extends ServiceImpl<GXAdminRoleMapper, GXAdm
         final Dict condition = Dict.create().set("admin_id", adminId);
         return baseMapper.getAdminRoles(condition);
     }
+
+    @Override
+    public long create(GXAdminRoleEntity target, Dict param) {
+        save(target);
+        return target.getId();
+    }
 }

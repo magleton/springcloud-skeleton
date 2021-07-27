@@ -49,7 +49,7 @@ public class GXAdminRoleBuilder implements GXBaseBuilder {
      * @return SQL语句
      */
     public String getAdminRoles(Dict condition) {
-        final SQL sql = new SQL().SELECT("role.role_name").FROM("admin_role")
+        final SQL sql = new SQL().SELECT("role.code").FROM("admin_role")
                 .INNER_JOIN("role ON role.id = admin_role.role_id");
         condition.forEach((column, value1) -> {
             final String value = Convert.toStr(value1);

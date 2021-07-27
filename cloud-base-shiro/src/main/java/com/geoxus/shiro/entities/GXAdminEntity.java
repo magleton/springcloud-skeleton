@@ -3,13 +3,14 @@ package com.geoxus.shiro.entities;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 import com.geoxus.core.common.entity.GXBaseEntity;
+import com.geoxus.shiro.constant.GXAdminConstant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-@TableName("admin")
+@TableName(GXAdminConstant.TABLE_NAME)
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
