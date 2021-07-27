@@ -316,7 +316,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      * @return Dict
      */
     default Dict handleDict(Dict dict, Dict removeField) {
-        final HashSet<String> phoneNumberFields = CollUtil.newHashSet("phone", "moile");
+        final HashSet<String> phoneNumberFields = CollUtil.newHashSet("phone", "mobile");
         final Set<Map.Entry<String, Object>> entries = dict.entrySet();
         final Dict retDict = Dict.create();
         for (Map.Entry<String, Object> entry : entries) {

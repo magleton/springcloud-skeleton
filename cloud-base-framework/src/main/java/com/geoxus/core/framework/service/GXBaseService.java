@@ -8,7 +8,6 @@ import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSON;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.geoxus.core.common.constant.GXCommonConstants;
@@ -22,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -87,10 +85,7 @@ public interface GXBaseService<T> extends IService<T> {
      */
     default <R> R getSingleFieldValueByDB(Class<T> clazz, String path, Class<R> type, Dict condition, R defaultValue) {
         Object removeObject = condition.remove("remove");
-        boolean remove = false;
-        if (null != removeObject) {
-            remove = true;
-        }
+        boolean remove = null != removeObject;
         if (StrUtil.contains(path, "::")) {
             String[] fields = StrUtil.split(path, "::");
             path = StrUtil.format("{}::{}", fields[0].replace("'", ""), fields[1].replace("'", ""));
@@ -474,10 +469,11 @@ public interface GXBaseService<T> extends IService<T> {
             final String key = entry.getKey();
             final Object object = entry.getValue();
             if (null == object) {
+                retDict.set(key, null);
                 continue;
             }
             if (object instanceof byte[]) {
-                String[] keys = CharSequenceUtil.split(key, "::");
+                String[] keys = CharSequenceUtil.splitToArray(key, "::");
                 Dict data = Convert.convert(Dict.class, Optional.ofNullable(retDict.getObj(keys[0])).orElse(Dict.create()));
                 String str = new String((byte[]) object, StandardCharsets.UTF_8);
                 retDict.set(keys[0], data.set(keys[1], str));
@@ -538,7 +534,7 @@ public interface GXBaseService<T> extends IService<T> {
                         }
                         value = JSONUtil.toJsonStr(toBean);
                     } else {
-                        value = value.concat("::" + dataObj.toString());
+                        value = value.concat("::" + dataObj);
                     }
                 }
                 tableValues.set(key, value);
