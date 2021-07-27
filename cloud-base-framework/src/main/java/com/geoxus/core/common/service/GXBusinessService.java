@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.geoxus.core.common.constant.GXBaseBuilderConstants;
 import com.geoxus.core.common.constant.GXCommonConstants;
+import com.geoxus.core.common.dto.GXBaseSearchReqDto;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.mapper.GXBaseMapper;
 import com.geoxus.core.common.util.GXCommonUtils;
@@ -60,11 +61,45 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
     /**
      * 列表或者搜索(分页)
      *
+     * @param searchReqDto 参数
+     * @return GXPagination
+     */
+    default GXPagination<Dict> listOrSearchPage(GXBaseSearchReqDto searchReqDto) {
+        final Dict param = Dict.create();
+        if (Objects.nonNull(searchReqDto.getPagingInfo())) {
+            param.set("paging_info", searchReqDto.getPagingInfo());
+        }
+        if (Objects.nonNull(searchReqDto.getSearchCondition())) {
+            param.set(GXBaseBuilderConstants.SEARCH_CONDITION_NAME, searchReqDto.getSearchCondition());
+        }
+        if (Objects.nonNull(searchReqDto.getRemoveField())) {
+            param.set("remove_field", searchReqDto.getRemoveField());
+        }
+        return generatePage(param);
+    }
+
+    /**
+     * 列表或者搜索(分页)
+     *
      * @param param 参数
      * @return GXPagination
      */
     default GXPagination<Dict> listOrSearchPage(Dict param) {
         return generatePage(param);
+    }
+
+    /**
+     * 列表或者搜索 (不分页)
+     *
+     * @param searchReqDto 参数
+     * @return List
+     */
+    default List<Dict> listOrSearch(GXBaseSearchReqDto searchReqDto) {
+        final String profile = GXCommonUtils.getActiveProfile();
+        if ("prod".equals(profile)) {
+            return Collections.emptyList();
+        }
+        throw new GXException("请实现自定义的listOrSearch方法");
     }
 
     /**

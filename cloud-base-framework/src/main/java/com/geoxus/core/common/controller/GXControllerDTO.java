@@ -4,15 +4,16 @@ import cn.hutool.core.lang.Dict;
 import com.geoxus.core.common.annotation.GXRequestBodyToTargetAnnotation;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.dto.GXBaseDto;
-import com.geoxus.core.common.util.GXResultUtils;
+import com.geoxus.core.common.dto.GXBaseSearchReqDto;
 import com.geoxus.core.common.util.GXHttpContextUtils;
+import com.geoxus.core.common.util.GXResultUtils;
 import com.geoxus.core.common.validator.group.GXCreateGroup;
 import com.geoxus.core.common.validator.group.GXUpdateGroup;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
-public interface GXControllerDTO<T extends GXBaseDto> {
+public interface GXControllerDTO<T extends GXBaseDto , U extends GXBaseSearchReqDto> {
     /**
      * 创建数据
      */
@@ -40,7 +41,7 @@ public interface GXControllerDTO<T extends GXBaseDto> {
     /**
      * 列表或者搜索
      */
-    default GXResultUtils<?> listOrSearch(@RequestBody Dict param) {
+    default GXResultUtils<?> listOrSearch(U searchReqDto) {
         return GXResultUtils.ok(GXCommonConstants.DEFAULT_DATA);
     }
 
