@@ -1,5 +1,6 @@
 package com.geoxus.core.common.config;
 
+import cn.hutool.core.collection.CollUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,12 +8,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.geoxus.core.common.factory.GXYamlPropertySourceFactory;
 import com.geoxus.core.common.validator.impl.GXValidateDBUniqueValidator;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +30,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 通用配置类
@@ -100,5 +104,22 @@ public class GXCoreCommonConfig {
         final net.sf.ehcache.CacheManager cacheManager = ehCacheManagerFactoryBean.getObject();
         assert cacheManager != null;
         return new EhCacheCacheManager(cacheManager);
+    }
+
+    /**
+     * 配置缓存管理器
+     *
+     * @return 缓存管理器
+     */
+    @Bean("caffeineCache")
+    public CaffeineCacheManager cacheManager() {
+        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+        caffeineCacheManager.setCacheNames(CollUtil.newArrayList("FRAMEWORK-CACHE", "__DEFAULT__"));
+        caffeineCacheManager.setAllowNullValues(false);
+        caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
+                .expireAfterAccess(365, TimeUnit.DAYS)
+                .initialCapacity(100)
+                .maximumSize(100000));
+        return caffeineCacheManager;
     }
 }

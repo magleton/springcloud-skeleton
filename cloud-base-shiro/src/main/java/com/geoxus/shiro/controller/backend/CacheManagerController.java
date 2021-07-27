@@ -16,7 +16,7 @@ import java.util.Objects;
 @RequestMapping("/cache/backend")
 public class CacheManagerController {
     @Resource
-    private CacheManager cacheManager;
+    private CacheManager caffeineCache;
 
     /**
      * 清除框架缓存
@@ -26,7 +26,7 @@ public class CacheManagerController {
     @RequiresRoles("super_admin")
     @GetMapping("clear")
     public String clearCache() {
-        final Cache managerCache = cacheManager.getCache("FRAMEWORK-CACHE");
+        final Cache managerCache = caffeineCache.getCache("FRAMEWORK-CACHE");
         if (Objects.nonNull(managerCache)) {
             log.info("框架缓存清除成功！！");
             managerCache.clear();
