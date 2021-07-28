@@ -991,4 +991,25 @@ public class GXCommonUtils {
     public static String toSymbolCase(CharSequence str, char symbol) {
         return CharSequenceUtil.toSymbolCase(str, symbol);
     }
+
+    /**
+     * 将字符串转化为一个Dict
+     * eg:
+     * strToDict("type='news',phone='13800138000'")
+     * OR
+     * strToDict("{\"type\":\"news\" , \"phone\":\"13800138000\"}")
+     *
+     * @param str 字符串
+     * @return
+     */
+    public static Dict strToDict(String str) {
+        if (CharSequenceUtil.isBlank(str)) {
+            return Dict.create();
+        }
+        if (JSONUtil.isJson(str)) {
+            return JSONUtil.toBean(str, Dict.class);
+        }
+        return Convert.convert(new cn.hutool.core.lang.TypeReference<Dict>() {
+        }, convertStrToMap(str));
+    }
 }

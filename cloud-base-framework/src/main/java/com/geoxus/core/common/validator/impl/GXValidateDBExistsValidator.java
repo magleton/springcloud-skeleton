@@ -2,7 +2,6 @@ package com.geoxus.core.common.validator.impl;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.annotation.GXValidateDBExistsAnnotation;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.util.GXSpringContextUtils;
@@ -28,6 +27,10 @@ public class GXValidateDBExistsValidator implements ConstraintValidator<GXValida
 
     private String tableName;
 
+    private String condition;
+
+    private String spEL;
+
     @Override
     public void initialize(GXValidateDBExistsAnnotation annotation) {
         Class<? extends GXValidateDBExists> clazz = annotation.service();
@@ -35,6 +38,8 @@ public class GXValidateDBExistsValidator implements ConstraintValidator<GXValida
         groups = annotation.groups();
         service = GXSpringContextUtils.getBean(clazz);
         tableName = annotation.tableName();
+        condition = annotation.condition();
+        spEL = annotation.spEL();
     }
 
     @Override
@@ -45,6 +50,10 @@ public class GXValidateDBExistsValidator implements ConstraintValidator<GXValida
         if (null == service) {
             throw new GXException(CharSequenceUtil.format("字段<{}>的值<{}>需要指定相应的Service进行验证...", fieldName, o));
         }
-        return service.validateExists(o, fieldName, constraintValidatorContext, Dict.create().set("table_name", tableName));
+        Dict param = Dict.create()
+                .set("table_name", tableName)
+                .set("condition", condition)
+                .set("spEL", spEL);
+        return service.validateExists(o, fieldName, constraintValidatorContext, param);
     }
 }

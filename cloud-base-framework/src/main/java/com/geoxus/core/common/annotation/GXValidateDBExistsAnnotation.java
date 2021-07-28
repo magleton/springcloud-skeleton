@@ -21,15 +21,62 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = GXValidateDBExistsValidator.class)
 @Documented
 public @interface GXValidateDBExistsAnnotation {
+    /**
+     * 错误消息
+     *
+     * @return String
+     */
     String message() default "{fieldName}对应的数据不存在或是参数不存在";
 
+    /**
+     * 分组验证
+     *
+     * @return Class
+     */
     Class<?>[] groups() default {};
 
+    /**
+     * 数据
+     *
+     * @return Class
+     */
     Class<? extends Payload>[] payload() default {};
 
+    /**
+     * 目标服务
+     *
+     * @return Class
+     */
     Class<? extends GXValidateDBExists> service() default GXCoreModelService.class;
 
+    /**
+     * 目标字段名字
+     *
+     * @return String
+     */
     String fieldName() default "model_id";
 
+    /**
+     * 表名
+     *
+     * @return String
+     */
     String tableName() default "";
+
+    /**
+     * 附加的查询条件
+     * eg:
+     * type=news,phone=13800138000
+     *
+     * @return String
+     */
+    String condition() default "";
+
+    /**
+     * 附加条件 SpEL表达式
+     * 用于计算结果是否满足预期
+     *
+     * @return String
+     */
+    String spEL() default "";
 }

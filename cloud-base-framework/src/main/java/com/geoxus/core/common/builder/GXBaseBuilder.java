@@ -7,6 +7,7 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.PhoneUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -158,7 +159,7 @@ public interface GXBaseBuilder {
         for (String conditionKey : conditionKeys) {
             String template = "{} " + GXBaseBuilderConstants.STR_EQ;
             final String value = condition.getStr(conditionKey);
-            if (ReUtil.isMatch(GXCommonConstants.DIGITAL_REGULAR_EXPRESSION, value)) {
+            if (!(PhoneUtil.isMobile(value) || PhoneUtil.isPhone(value) || PhoneUtil.isTel(value)) && ReUtil.isMatch(GXCommonConstants.DIGITAL_REGULAR_EXPRESSION, value)) {
                 template = "{} " + GXBaseBuilderConstants.NUMBER_EQ;
             }
             sql.WHERE(CharSequenceUtil.format(template, conditionKey, value));

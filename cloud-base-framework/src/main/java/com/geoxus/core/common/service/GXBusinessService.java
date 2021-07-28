@@ -94,12 +94,15 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      * @param searchReqDto 参数
      * @return List
      */
-    default List<Dict> listOrSearch(GXBaseSearchReqDto searchReqDto) {
-        final String profile = GXCommonUtils.getActiveProfile();
-        if ("prod".equals(profile)) {
-            return Collections.emptyList();
+    default <U extends GXBaseSearchReqDto> List<Dict> listOrSearch(U searchReqDto) {
+        final Dict param = Dict.create();
+        if (Objects.nonNull(searchReqDto.getSearchCondition())) {
+            param.set(GXBaseBuilderConstants.SEARCH_CONDITION_NAME, searchReqDto.getSearchCondition());
         }
-        throw new GXException("请实现自定义的listOrSearch方法");
+        if (Objects.nonNull(searchReqDto.getRemoveField())) {
+            param.set("remove_field", searchReqDto.getRemoveField());
+        }
+        return listOrSearch(param);
     }
 
     /**
