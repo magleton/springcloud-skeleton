@@ -6,7 +6,7 @@ import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
-import com.geoxus.commons.entities.GXCoreMediaLibraryEntity;
+import com.geoxus.commons.entities.GXMediaLibraryEntity;
 import com.geoxus.commons.events.GXMediaLibraryEvent;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.exception.GXException;
@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
-public interface GXCoreMediaLibraryService extends GXBaseService<GXCoreMediaLibraryEntity> {
+public interface GXMediaLibraryService extends GXBaseService<GXMediaLibraryEntity> {
     /**
      * 保存数据
      *
@@ -67,7 +67,7 @@ public interface GXCoreMediaLibraryService extends GXBaseService<GXCoreMediaLibr
      * @param param 参数
      * @return GXCoreMediaLibraryEntity
      */
-    GXCoreMediaLibraryEntity saveFileInfo(MultipartFile file, Dict param);
+    GXMediaLibraryEntity saveFileInfo(MultipartFile file, Dict param);
 
     /**
      * 通过条件删除media
@@ -128,8 +128,8 @@ public interface GXCoreMediaLibraryService extends GXBaseService<GXCoreMediaLibr
      * @param param       其他参数
      * @return Collection
      */
-    default Collection<GXCoreMediaLibraryEntity> getMedia(int objectId, int coreModelId, Dict param) {
-        final GXCoreMediaLibraryService mediaLibraryService = GXSpringContextUtils.getBean(GXCoreMediaLibraryService.class);
+    default Collection<GXMediaLibraryEntity> getMedia(int objectId, int coreModelId, Dict param) {
+        final GXMediaLibraryService mediaLibraryService = GXSpringContextUtils.getBean(GXMediaLibraryService.class);
         assert mediaLibraryService != null;
         return mediaLibraryService.listByMap(param.set("object_id", objectId).set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId));
     }
@@ -151,7 +151,7 @@ public interface GXCoreMediaLibraryService extends GXBaseService<GXCoreMediaLibr
      * @param objectId 模型ID
      * @param param    参数
      */
-    default void handleMedia(GXCoreMediaLibraryEntity target, @NotNull long objectId, @NotNull Dict param) {
+    default void handleMedia(GXMediaLibraryEntity target, @NotNull long objectId, @NotNull Dict param) {
         if (param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME) == null) {
             throw new GXException(StrUtil.format("请在param参数中传递{}字段", GXCommonConstants.CORE_MODEL_PRIMARY_NAME));
         }
@@ -169,7 +169,7 @@ public interface GXCoreMediaLibraryService extends GXBaseService<GXCoreMediaLibr
                     .set("media", media)
                     .set("object_id", objectId)
                     .set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME));
-            final GXMediaLibraryEvent<GXCoreMediaLibraryEntity> event = new GXMediaLibraryEvent<>(target, data);
+            final GXMediaLibraryEvent<GXMediaLibraryEntity> event = new GXMediaLibraryEvent<>(target, data);
             publishEvent(event);
         }
     }
@@ -188,7 +188,7 @@ public interface GXCoreMediaLibraryService extends GXBaseService<GXCoreMediaLibr
      * @return GXPagination
      */
     default GXPagination<Dict> mergePaginationCoreMediaLibrary(GXPagination<Dict> pagination, String modelIdKey) {
-        final GXCoreMediaLibraryService coreMediaLibraryService = GXSpringContextUtils.getBean(GXCoreMediaLibraryService.class);
+        final GXMediaLibraryService coreMediaLibraryService = GXSpringContextUtils.getBean(GXMediaLibraryService.class);
         final List<?> records = pagination.getRecords();
         for (Object record : records) {
             final Dict o = (Dict) record;
@@ -211,7 +211,7 @@ public interface GXCoreMediaLibraryService extends GXBaseService<GXCoreMediaLibr
      */
     default GXPagination<Dict> mergePaginationCoreMediaLibrary(GXPagination<Dict> pagination) {
         String modelIdKey = getPrimaryKey();
-        final GXCoreMediaLibraryService coreMediaLibraryService = GXSpringContextUtils.getBean(GXCoreMediaLibraryService.class);
+        final GXMediaLibraryService coreMediaLibraryService = GXSpringContextUtils.getBean(GXMediaLibraryService.class);
         final List<?> records = pagination.getRecords();
         for (Object record : records) {
             final Dict o = (Dict) record;

@@ -9,13 +9,13 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.commons.config.GXUploadConfig;
-import com.geoxus.commons.entities.GXCoreMediaLibraryEntity;
-import com.geoxus.commons.services.GXCoreMediaLibraryService;
+import com.geoxus.commons.entities.GXMediaLibraryEntity;
+import com.geoxus.commons.services.GXMediaLibraryService;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.util.GXUploadUtils;
 import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
-import com.geoxus.commons.mappers.GXCoreMediaLibraryMapper;
+import com.geoxus.commons.mappers.GXMediaLibraryMapper;
 import com.geoxus.core.framework.service.GXCoreModelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service(value = "coreMediaLibraryService")
+@Service(value = "mediaLibraryService")
 @GXDataSourceAnnotation("framework")
-public class GXCoreMediaLibraryServiceImpl extends ServiceImpl<GXCoreMediaLibraryMapper, GXCoreMediaLibraryEntity> implements GXCoreMediaLibraryService {
+public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper, GXMediaLibraryEntity> implements GXMediaLibraryService {
     @Autowired
     private GXUploadConfig gxUploadConfig;
 
@@ -40,7 +40,7 @@ public class GXCoreMediaLibraryServiceImpl extends ServiceImpl<GXCoreMediaLibrar
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int save(Dict dict) {
-        final GXCoreMediaLibraryEntity entity = dict.toBean(GXCoreMediaLibraryEntity.class);
+        final GXMediaLibraryEntity entity = dict.toBean(GXMediaLibraryEntity.class);
         save(entity);
         return entity.getId();
     }
@@ -51,13 +51,13 @@ public class GXCoreMediaLibraryServiceImpl extends ServiceImpl<GXCoreMediaLibrar
         if (mediaList.isEmpty()) {
             return;
         }
-        final ArrayList<GXCoreMediaLibraryEntity> newMediaList = new ArrayList<>();
-        QueryWrapper<GXCoreMediaLibraryEntity> oldConditionQuery = new QueryWrapper<>();
+        final ArrayList<GXMediaLibraryEntity> newMediaList = new ArrayList<>();
+        QueryWrapper<GXMediaLibraryEntity> oldConditionQuery = new QueryWrapper<>();
         Dict oldCondition = Dict.create().set("target_id", targetId).set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
         if (null != condition.getObj("resource_type")) {
             oldCondition.set("resource_type", condition.getStr("resource_type"));
         }
-        final List<GXCoreMediaLibraryEntity> oldMediaList = list(oldConditionQuery.allEq(oldCondition));
+        final List<GXMediaLibraryEntity> oldMediaList = list(oldConditionQuery.allEq(oldCondition));
         Set<Integer> saveOldData = CollUtil.newHashSet();
         for (JSONObject media : mediaList) {
             Integer mediaId = media.getInt("id");
@@ -67,7 +67,7 @@ public class GXCoreMediaLibraryServiceImpl extends ServiceImpl<GXCoreMediaLibrar
                 }
                 final long itemCoreModelId = media.getLong(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
                 final String resourceType = media.getStr("resource_type", "");
-                final GXCoreMediaLibraryEntity entity = getOne(new QueryWrapper<GXCoreMediaLibraryEntity>().eq("id", mediaId));
+                final GXMediaLibraryEntity entity = getOne(new QueryWrapper<GXMediaLibraryEntity>().eq("id", mediaId));
                 String customProperties = media.getStr("custom_properties", "{}");
                 Integer updateOld = media.getInt("update_old");
                 if (null != updateOld) {
@@ -88,12 +88,12 @@ public class GXCoreMediaLibraryServiceImpl extends ServiceImpl<GXCoreMediaLibrar
                 }
             }
         }
-        List<GXCoreMediaLibraryEntity> deleteMedia = CollUtil.filter(oldMediaList,
-                (GXCoreMediaLibraryEntity t) -> !saveOldData.contains(t.getId()) && !newMediaList.contains(t));
+        List<GXMediaLibraryEntity> deleteMedia = CollUtil.filter(oldMediaList,
+                (GXMediaLibraryEntity t) -> !saveOldData.contains(t.getId()) && !newMediaList.contains(t));
         if (!deleteMedia.isEmpty()) {
             // TODO : 此处可以加入删除策略
             // TODO : 例如 : 软删除  硬删除等...
-            removeByIds(deleteMedia.stream().map(GXCoreMediaLibraryEntity::getId).collect(Collectors.toList()));
+            removeByIds(deleteMedia.stream().map(GXMediaLibraryEntity::getId).collect(Collectors.toList()));
         }
         if (!newMediaList.isEmpty()) {
             updateBatchById(newMediaList);
@@ -102,11 +102,11 @@ public class GXCoreMediaLibraryServiceImpl extends ServiceImpl<GXCoreMediaLibrar
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GXCoreMediaLibraryEntity saveFileInfo(MultipartFile file, Dict param) {
+    public GXMediaLibraryEntity saveFileInfo(MultipartFile file, Dict param) {
         String filePath = gxUploadConfig.getDepositPath().trim();
         try {
             String fileName = GXUploadUtils.singleUpload(file, filePath);
-            GXCoreMediaLibraryEntity entity = new GXCoreMediaLibraryEntity();
+            GXMediaLibraryEntity entity = new GXMediaLibraryEntity();
             entity.setSize(file.getSize());
             entity.setFileName(fileName);
             entity.setDisk(filePath);

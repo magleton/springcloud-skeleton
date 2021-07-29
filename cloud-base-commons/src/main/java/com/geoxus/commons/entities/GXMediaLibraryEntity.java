@@ -11,9 +11,9 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 @Data
-@TableName("core_media_library")
+@TableName("media_library")
 @EqualsAndHashCode(callSuper = false)
-public class GXCoreMediaLibraryEntity extends GXBaseEntity implements Serializable {
+public class GXMediaLibraryEntity extends GXBaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId
