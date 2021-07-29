@@ -10,12 +10,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.geoxus.commons.config.GXUploadConfig;
 import com.geoxus.commons.entities.GXMediaLibraryEntity;
+import com.geoxus.commons.mappers.GXMediaLibraryMapper;
 import com.geoxus.commons.services.GXMediaLibraryService;
 import com.geoxus.core.common.constant.GXCommonConstants;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.util.GXUploadUtils;
 import com.geoxus.core.datasource.annotation.GXDataSourceAnnotation;
-import com.geoxus.commons.mappers.GXMediaLibraryMapper;
 import com.geoxus.core.framework.service.GXCoreModelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service(value = "mediaLibraryService")
+@Service(value = "coreMediaLibraryService")
 @GXDataSourceAnnotation("framework")
 public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper, GXMediaLibraryEntity> implements GXMediaLibraryService {
     @Autowired
@@ -62,11 +62,9 @@ public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper,
         for (JSONObject media : mediaList) {
             Integer mediaId = media.getInt("id");
             if (null != mediaId) {
-                if (null != media.getLong("target_id")) {
-                    targetId = media.getLong("target_id");
-                }
+                targetId = media.getLong("target_id", targetId);
                 final long itemCoreModelId = media.getLong(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
-                final String resourceType = media.getStr("resource_type", "");
+                final String resourceType = media.getStr("resource_type", "defaultResourceType");
                 final GXMediaLibraryEntity entity = getOne(new QueryWrapper<GXMediaLibraryEntity>().eq("id", mediaId));
                 String customProperties = media.getStr("custom_properties", "{}");
                 Integer updateOld = media.getInt("update_old");
@@ -79,10 +77,10 @@ public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper,
                     }
                 }
                 if (null != entity) {
-                    entity.setObjectId(targetId);
+                    entity.setTargetId(targetId);
                     entity.setModelType(coreModelService.getModelTypeByModelId(itemCoreModelId, "defaultModelType"));
                     entity.setCoreModelId(itemCoreModelId);
-                    entity.setCustomProperties(JSONUtil.toJsonStr(customProperties));
+                    entity.setCustomProperties(customProperties);
                     entity.setResourceType(resourceType);
                     newMediaList.add(entity);
                 }
@@ -116,7 +114,7 @@ public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper,
             entity.setCollectionName((String) param.getOrDefault("collection_name", "default"));
             entity.setResourceType((String) param.getOrDefault("resource_type", "defaultResourceType"));
             entity.setModelType((String) param.getOrDefault("model_type", "defaultModelType"));
-            entity.setObjectId((Long) param.getOrDefault("object_id", 0L));
+            entity.setTargetId((Long) param.getOrDefault("object_id", 0L));
             entity.setCoreModelId((Long) param.getOrDefault(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, 0L));
             entity.setCustomProperties((String) param.getOrDefault("custom_properties", "{}"));
             save(entity);

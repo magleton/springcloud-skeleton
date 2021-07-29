@@ -26,8 +26,8 @@ public class GXMediaLibraryEntity extends GXBaseEntity implements Serializable {
     @GXFieldCommentAnnotation(zhDesc = "系统模型ID")
     private long coreModelId;
 
-    @GXFieldCommentAnnotation(zhDesc = "模型ID")
-    private long objectId;
+    @GXFieldCommentAnnotation(zhDesc = "目标记录ID(根据coreModelId进行确定)")
+    private long targetId;
 
     @GXFieldCommentAnnotation(zhDesc = "集合名字")
     private String collectionName;
