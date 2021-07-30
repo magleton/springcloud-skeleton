@@ -28,7 +28,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service(value = "coreMediaLibraryService")
+@Service(value = "mediaLibraryService")
 @GXDataSourceAnnotation("framework")
 public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper, GXMediaLibraryEntity> implements GXMediaLibraryService {
     @Autowired

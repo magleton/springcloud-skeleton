@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Objects;
 
+/**
+ * 清除框架缓存
+ */
 @Slf4j
 @RestController
 @RequestMapping("/cache/backend")

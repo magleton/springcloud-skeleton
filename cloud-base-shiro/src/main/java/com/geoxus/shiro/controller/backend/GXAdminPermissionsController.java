@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * 管理员权限管理
+ */
 @RestController
 @RequestMapping("/admin-permissions/backend")
 public class GXAdminPermissionsController implements GXControllerDTO<GXAdminPermissionsReqDto, GXBaseSearchReqDto> {

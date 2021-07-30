@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * 管理员管理
+ */
 @RestController
 @RequestMapping("/admin/backend")
 public class GXAdminController implements GXControllerDTO<GXAdminReqDto, GXBaseSearchReqDto> {
