@@ -2,7 +2,6 @@ package com.geoxus.core.common.validator.impl;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.annotation.GXValidateDBUniqueAnnotation;
 import com.geoxus.core.common.exception.GXException;
 import com.geoxus.core.common.util.GXSpringContextUtils;
@@ -42,6 +41,6 @@ public class GXValidateDBUniqueValidator implements ConstraintValidator<GXValida
         if (null == service) {
             throw new GXException(CharSequenceUtil.format("字段<{}>的值<{}>需要指定相应的Service进行验证...", fieldName, o));
         }
-        return !service.validateUnique(o, fieldName, constraintValidatorContext, Dict.create().set("table_name", tableName));
+        return !service.validateUnique(o, fieldName, constraintValidatorContext, Dict.create().set("tableName", tableName));
     }
 }

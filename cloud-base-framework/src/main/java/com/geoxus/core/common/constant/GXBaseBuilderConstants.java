@@ -4,7 +4,7 @@ import com.geoxus.core.common.annotation.GXFieldCommentAnnotation;
 
 public class GXBaseBuilderConstants {
     @GXFieldCommentAnnotation(zhDesc = "搜索条件的名字")
-    public static final String SEARCH_CONDITION_NAME = "search_condition";
+    public static final String SEARCH_CONDITION_NAME = "searchCondition";
 
     @GXFieldCommentAnnotation(zhDesc = "模型标识的名字")
     public static final String MODEL_IDENTIFICATION_NAME = "model_identification";

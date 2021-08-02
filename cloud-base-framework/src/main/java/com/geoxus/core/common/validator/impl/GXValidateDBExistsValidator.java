@@ -51,7 +51,7 @@ public class GXValidateDBExistsValidator implements ConstraintValidator<GXValida
             throw new GXException(CharSequenceUtil.format("字段<{}>的值<{}>需要指定相应的Service进行验证...", fieldName, o));
         }
         Dict param = Dict.create()
-                .set("table_name", tableName)
+                .set("tableName", tableName)
                 .set("condition", condition)
                 .set("spEL", spEL);
         return service.validateExists(o, fieldName, constraintValidatorContext, param);

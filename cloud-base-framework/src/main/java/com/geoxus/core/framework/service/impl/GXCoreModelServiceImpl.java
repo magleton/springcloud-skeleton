@@ -92,8 +92,9 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
         if (null == searchCondition) {
             return Dict.create();
         }
+        final String searchConditionName = CharSequenceUtil.toUnderlineCase(GXBaseBuilderConstants.SEARCH_CONDITION_NAME);
         return Convert.convert(new TypeReference<Dict>() {
-        }, JSONUtil.parse(Optional.ofNullable(searchCondition.getObj(GXBaseBuilderConstants.SEARCH_CONDITION_NAME)).orElse("{}")));
+        }, JSONUtil.parse(Optional.ofNullable(searchCondition.getObj(searchConditionName)).orElse("{}")));
     }
 
     @Override

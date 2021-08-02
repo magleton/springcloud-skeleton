@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/generate/region")
 public class GXRegionController {
     @Resource
-    private GXRegionService GXRegionService;
+    private GXRegionService regionService;
 
     /**
      * 获取所有区域树
@@ -22,7 +22,7 @@ public class GXRegionController {
      */
     @GetMapping("/get-region-tree")
     public GXResultUtils<List<GXRegionEntity>> getRegionTree() {
-        List<GXRegionEntity> list = GXRegionService.getRegionTree();
+        List<GXRegionEntity> list = regionService.getRegionTree();
         return GXResultUtils.ok(list);
     }
 
@@ -34,7 +34,7 @@ public class GXRegionController {
      */
     @PostMapping("/get-region")
     public GXResultUtils<List<GXRegionEntity>> getRegion(@RequestBody Dict param) {
-        List<GXRegionEntity> list = GXRegionService.getRegion(param);
+        List<GXRegionEntity> list = regionService.getRegion(param);
         return GXResultUtils.ok(list);
     }
 }

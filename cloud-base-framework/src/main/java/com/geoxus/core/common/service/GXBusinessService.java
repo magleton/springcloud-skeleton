@@ -68,13 +68,13 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
     default GXPagination<Dict> listOrSearchPage(GXBaseSearchReqDto searchReqDto) {
         final Dict param = Dict.create();
         if (Objects.nonNull(searchReqDto.getPagingInfo())) {
-            param.set("paging_info", searchReqDto.getPagingInfo());
+            param.set("pagingInfo", searchReqDto.getPagingInfo());
         }
         if (Objects.nonNull(searchReqDto.getSearchCondition())) {
             param.set(GXBaseBuilderConstants.SEARCH_CONDITION_NAME, searchReqDto.getSearchCondition());
         }
         if (Objects.nonNull(searchReqDto.getRemoveField())) {
-            param.set("remove_field", searchReqDto.getRemoveField());
+            param.set("removeField", searchReqDto.getRemoveField());
         }
         return generatePage(param);
     }
@@ -101,7 +101,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
             param.set(GXBaseBuilderConstants.SEARCH_CONDITION_NAME, searchReqDto.getSearchCondition());
         }
         if (Objects.nonNull(searchReqDto.getRemoveField())) {
-            param.set("remove_field", searchReqDto.getRemoveField());
+            param.set("removeField", searchReqDto.getRemoveField());
         }
         return listOrSearch(param);
     }
@@ -127,7 +127,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      * @return Dict
      */
     default Dict detail(Dict param) {
-        final String tableName = (String) param.remove("table_name");
+        final String tableName = (String) param.remove("tableName");
         if (CharSequenceUtil.isBlank(tableName)) {
             throw new GXException("请提供表名!");
         }
@@ -200,7 +200,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      */
     @Override
     default boolean validateExists(Object value, String fieldName, ConstraintValidatorContext constraintValidatorContext, Dict param) throws UnsupportedOperationException {
-        String tableName = param.getStr("table_name");
+        String tableName = param.getStr("tableName");
         if (CharSequenceUtil.isBlank(tableName)) {
             throw new GXException(CharSequenceUtil.format("请指定数据库表的名字 , 验证的字段 {} , 验证的值 : {}", fieldName, value));
         }
@@ -218,7 +218,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      */
     @Override
     default boolean validateUnique(Object value, String fieldName, ConstraintValidatorContext constraintValidatorContext, Dict param) {
-        String tableName = param.getStr("table_name");
+        String tableName = param.getStr("tableName");
         if (CharSequenceUtil.isBlank(tableName)) {
             throw new GXException(CharSequenceUtil.format("请指定数据库表的名字 , 验证的字段 {} , 验证的值 : {}", fieldName, value));
         }
@@ -245,7 +245,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
     default Dict getPageInfoFromParam(Dict param) {
         int currentPage = GXCommonConstants.DEFAULT_CURRENT_PAGE;
         int pageSize = GXCommonConstants.DEFAULT_PAGE_SIZE;
-        final Dict pagingInfo = Convert.convert(Dict.class, param.getObj("paging_info"));
+        final Dict pagingInfo = Convert.convert(Dict.class, param.getObj("pagingInfo"));
         if (null != pagingInfo) {
             if (null != pagingInfo.getInt("page")) {
                 currentPage = pagingInfo.getInt("page");
@@ -279,7 +279,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      * @return GXPagination
      */
     default GXPagination<Dict> generatePage(Dict param) {
-        String removeStr = Optional.ofNullable(param.getStr("remove_field")).orElse("");
+        String removeStr = Optional.ofNullable(param.getStr("removeField")).orElse("");
         Map<String, Object> removeField = CollUtil.newHashMap();
         if (CharSequenceUtil.isNotBlank(removeStr)) {
             String[] split = CharSequenceUtil.splitToArray(removeStr, ",");
@@ -411,7 +411,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      */
     default GXPagination<Dict> generatePage(Dict param, String mapperMethodName, Dict removeField) {
         final Dict pageParam = getPageInfoFromParam(param);
-        final IPage<Dict> iPage = new Page<>(pageParam.getInt("current"), pageParam.getInt("size"));
+        final IPage<Dict> iPage = new Page<>(pageParam.getInt("page"), pageParam.getInt("pageSize"));
         final List<Dict> list = ReflectUtil.invoke(getBaseMapper(), mapperMethodName, iPage, param);
         iPage.setRecords(processingListData(list, removeField));
         return new GXPagination<>(iPage.getRecords(), iPage.getTotal(), iPage.getSize(), iPage.getCurrent());
