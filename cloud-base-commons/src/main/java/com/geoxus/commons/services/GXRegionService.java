@@ -1,18 +1,18 @@
 package com.geoxus.commons.services;
 
 import cn.hutool.core.lang.Dict;
-import com.geoxus.commons.entities.RegionEntity;
+import com.geoxus.commons.entities.GXRegionEntity;
 import com.geoxus.core.framework.service.GXBaseService;
 
 import java.util.List;
 
-public interface RegionService extends GXBaseService<RegionEntity> {
+public interface GXRegionService extends GXBaseService<GXRegionEntity> {
     /**
      * 获取所有区域树
      *
      * @return
      */
-    List<RegionEntity> getRegionTree();
+    List<GXRegionEntity> getRegionTree();
 
     /**
      * 通过条件获取区域
@@ -20,7 +20,7 @@ public interface RegionService extends GXBaseService<RegionEntity> {
      * @param param
      * @return
      */
-    List<RegionEntity> getRegion(Dict param);
+    List<GXRegionEntity> getRegion(Dict param);
 
     /**
      * 转换名字到拼音

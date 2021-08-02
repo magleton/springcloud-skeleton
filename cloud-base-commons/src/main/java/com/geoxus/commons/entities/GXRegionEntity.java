@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @TableName("region")
 @EqualsAndHashCode(callSuper = false)
-public class RegionEntity {
+public class GXRegionEntity {
     /**
      * 序列化ID
      */
@@ -49,5 +49,5 @@ public class RegionEntity {
     private String firstLetter;
 
     @TableField(exist = false)
-    private List<RegionEntity> children = null;
+    private List<GXRegionEntity> children = null;
 }

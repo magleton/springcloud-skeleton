@@ -1,8 +1,8 @@
 package com.geoxus.commons.controller;
 
 import cn.hutool.core.lang.Dict;
-import com.geoxus.commons.entities.RegionEntity;
-import com.geoxus.commons.services.RegionService;
+import com.geoxus.commons.entities.GXRegionEntity;
+import com.geoxus.commons.services.GXRegionService;
 import com.geoxus.core.common.util.GXResultUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +11,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/generate/region")
-public class RegionController {
+public class GXRegionController {
     @Resource
-    private RegionService regionService;
+    private GXRegionService GXRegionService;
 
     /**
      * 获取所有区域树
@@ -21,8 +21,8 @@ public class RegionController {
      * @return GXResultUtils
      */
     @GetMapping("/get-region-tree")
-    public GXResultUtils<List<RegionEntity>> getRegionTree() {
-        List<RegionEntity> list = regionService.getRegionTree();
+    public GXResultUtils<List<GXRegionEntity>> getRegionTree() {
+        List<GXRegionEntity> list = GXRegionService.getRegionTree();
         return GXResultUtils.ok(list);
     }
 
@@ -33,8 +33,8 @@ public class RegionController {
      * @return GXResultUtils
      */
     @PostMapping("/get-region")
-    public GXResultUtils<List<RegionEntity>> getRegion(@RequestBody Dict param) {
-        List<RegionEntity> list = regionService.getRegion(param);
+    public GXResultUtils<List<GXRegionEntity>> getRegion(@RequestBody Dict param) {
+        List<GXRegionEntity> list = GXRegionService.getRegion(param);
         return GXResultUtils.ok(list);
     }
 }

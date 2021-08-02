@@ -5,9 +5,9 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.geoxus.commons.entities.RegionEntity;
-import com.geoxus.commons.mappers.RegionMapper;
-import com.geoxus.commons.services.RegionService;
+import com.geoxus.commons.entities.GXRegionEntity;
+import com.geoxus.commons.mappers.GXRegionMapper;
+import com.geoxus.commons.services.GXRegionService;
 import com.geoxus.core.common.util.GXChineseToPinYinUtils;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> implements RegionService {
+public class GXRegionServiceImpl extends ServiceImpl<GXRegionMapper, GXRegionEntity> implements GXRegionService {
     private static final String NAME_TAG = "name";
 
     private static final String PARENT_TAG = "parent_id";
@@ -23,12 +23,12 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     private static final String TYPE_TAG = "type";
 
     @Override
-    public List<RegionEntity> getRegionTree() {
-        List<RegionEntity> list = list(new QueryWrapper<>());
+    public List<GXRegionEntity> getRegionTree() {
+        List<GXRegionEntity> list = list(new QueryWrapper<>());
         //把根分类区分出来
-        List<RegionEntity> rootList = list.stream().filter(root -> root.getParentId() == 100000).collect(Collectors.toList());
+        List<GXRegionEntity> rootList = list.stream().filter(root -> root.getParentId() == 100000).collect(Collectors.toList());
         //把非根分类区分出来
-        List<RegionEntity> subList = list.stream().filter(sub -> sub.getParentId() != 100000).collect(Collectors.toList());
+        List<GXRegionEntity> subList = list.stream().filter(sub -> sub.getParentId() != 100000).collect(Collectors.toList());
         //递归构建结构化的分类信息
         rootList.forEach(root -> buildSubs(root, subList));
         return rootList;
@@ -40,8 +40,8 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
      * @param parent 父级ID
      * @param subs   子集数据
      */
-    private void buildSubs(RegionEntity parent, List<RegionEntity> subs) {
-        List<RegionEntity> children = subs.stream().filter(sub -> sub.getParentId() == parent.getId()).collect(Collectors.toList());
+    private void buildSubs(GXRegionEntity parent, List<GXRegionEntity> subs) {
+        List<GXRegionEntity> children = subs.stream().filter(sub -> sub.getParentId() == parent.getId()).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(children)) {
             parent.setChildren(children);
             //有子分类的情况 再次递归构建
@@ -52,8 +52,8 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
     }
 
     @Override
-    public List<RegionEntity> getRegion(Dict param) {
-        QueryWrapper<RegionEntity> queryWrapper = new QueryWrapper<>();
+    public List<GXRegionEntity> getRegion(Dict param) {
+        QueryWrapper<GXRegionEntity> queryWrapper = new QueryWrapper<>();
         final String name = param.getStr(NAME_TAG);
         final Integer parentId = param.getInt(PARENT_TAG);
         final Short type = param.getShort(TYPE_TAG);
@@ -70,8 +70,8 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, RegionEntity> i
 
     @Override
     public boolean convertNameToPinYin() {
-        final List<RegionEntity> list = list(new QueryWrapper<>());
-        for (RegionEntity entity : list) {
+        final List<GXRegionEntity> list = list(new QueryWrapper<>());
+        for (GXRegionEntity entity : list) {
             final String firstLetter = GXChineseToPinYinUtils.getFirstLetter(entity.getName());
             final String fullLetter = GXChineseToPinYinUtils.getFullLetter(entity.getName());
             entity.setFirstLetter(firstLetter);
