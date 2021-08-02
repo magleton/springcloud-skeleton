@@ -13,14 +13,14 @@ public class GXAdminLoginReqDto extends GXBaseDto {
     /**
      * 用户名
      */
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "用户名不能为空")
+    @NotEmpty(message = "用户名不能为空")
     private String username;
 
     /**
      * 密码
      */
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "密码必填")
+    @NotEmpty(message = "密码必填")
     private String password;
 }

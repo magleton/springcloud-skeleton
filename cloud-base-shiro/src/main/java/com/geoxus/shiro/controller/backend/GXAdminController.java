@@ -34,6 +34,6 @@ public class GXAdminController implements GXControllerDTO<GXAdminReqDto, GXBaseS
     @PostMapping("login")
     public GXResultUtils<Dict> login(@RequestBody @Validated GXAdminLoginReqDto loginReqDto) {
         final String token = adminService.login(loginReqDto);
-        return GXResultUtils.ok(Dict.create().set("admin-token", token));
+        return GXResultUtils.ok(Dict.create().set("admin-token", token).set("username", loginReqDto.getUsername()));
     }
 }

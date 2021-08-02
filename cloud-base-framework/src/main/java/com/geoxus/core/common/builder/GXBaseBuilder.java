@@ -291,14 +291,18 @@ public interface GXBaseBuilder {
         final Dict timeFields = getTimeFields();
         Set<String> keySet = requestSearchCondition.keySet();
         for (String key : keySet) {
+            key = CharSequenceUtil.toUnderlineCase(key);
             Object value = requestSearchCondition.getObj(key);
+            if (Objects.isNull(value)) {
+                value = requestSearchCondition.getObj(CharSequenceUtil.toCamelCase(key));
+            }
             if (key.equals(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION)
                     && searchField.getStr(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION) != null) {
                 sql.WHERE(CharSequenceUtil.indexedFormat(searchField.getStr(GXCommonConstants.CUSTOMER_SEARCH_MIXED_FIELD_CONDITION), "'" + value + "%'"));
                 continue;
             }
             String lastKey = ReUtil.replaceAll(key, "[!<>*^$@#%&]", "");
-            if (null == value) {
+            if (null == value || (value.getClass().getName().equalsIgnoreCase("java.lang.String") && CharSequenceUtil.isBlank(value.toString()))) {
                 continue;
             }
             String operator = searchField.getStr(key);

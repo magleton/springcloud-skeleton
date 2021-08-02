@@ -54,7 +54,7 @@ public class GXCoreModelAttributesServiceImpl extends ServiceImpl<GXCoreModelAtt
     private GXCoreAttributesService gxCoreAttributesService;
 
     @Override
-    @Cacheable(cacheManager = "caffeineCache", value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #p0.getStr('core_model_id') + #p0.getStr('model_attribute_field')")
+    @Cacheable(cacheManager = "caffeineCache", value = "FRAMEWORK-CACHE", key = "targetClass + methodName + #p0.getStr('core_model_id') + #p0.getStr('table_field_name')")
     public List<Dict> getModelAttributesByModelId(Dict param) {
         if (null == param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_NAME)) {
             param.set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, 0);

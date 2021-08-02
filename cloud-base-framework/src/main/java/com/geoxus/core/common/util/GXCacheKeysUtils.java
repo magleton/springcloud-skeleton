@@ -1,5 +1,6 @@
 package com.geoxus.core.common.util;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.geoxus.core.common.factory.GXYamlPropertySourceFactory;
 import lombok.Data;
@@ -75,8 +76,8 @@ public class GXCacheKeysUtils {
                 return s + ":" + key;
             }
         }
-        if (StrUtil.isNotBlank(key)) {
-            return StrUtil.format("geoxus:default:{}", key);
+        if (CharSequenceUtil.isNotBlank(key)) {
+            return CharSequenceUtil.format("geoxus:default:{}", key);
         }
         return "geoxus:default:key";
     }

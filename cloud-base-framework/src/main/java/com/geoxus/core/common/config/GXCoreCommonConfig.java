@@ -70,8 +70,10 @@ public class GXCoreCommonConfig {
                         return;
                     } else if (Collection.class.isAssignableFrom(field.getType())) {
                         // 列表型空值返回[]
-                        jsonGenerator.writeStartArray();
-                        jsonGenerator.writeEndArray();
+                        // jsonGenerator.writeStartArray();
+                        // jsonGenerator.writeEndArray();
+                        // 返回一个null值
+                        jsonGenerator.writeNull();
                         return;
                     } else if (Map.class.isAssignableFrom(field.getType())) {
                         // map型空值或者bean对象返回"{}"

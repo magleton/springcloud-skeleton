@@ -6,6 +6,7 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -133,7 +134,7 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
         final String fields = (String) Optional.ofNullable(param.remove("fields")).orElse("*");
         final boolean remove = (boolean) Optional.ofNullable(param.remove("remove")).orElse(false);
         Set<String> lastFields = Arrays.stream(CharSequenceUtil.replace(fields, " ", "").split(",")).collect(Collectors.toSet());
-        Dict condition = Convert.convert(Dict.class, Optional.ofNullable(param.getObj(GXBaseBuilderConstants.SEARCH_CONDITION_NAME)).orElse(Dict.create()));
+        Dict condition = Convert.convert(Dict.class, Optional.ofNullable(param.getObj(CharSequenceUtil.toCamelCase(GXBaseBuilderConstants.SEARCH_CONDITION_NAME))).orElse(Dict.create()));
         return getFieldValueBySQL(tableName, lastFields, condition, remove);
     }
 
@@ -172,8 +173,20 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      * @return Dict
      */
     default Dict getDataByCondition(Dict condition, String... fields) {
+        Dict retData = Dict.create();
         final T entity = getOne(new QueryWrapper<T>().select(fields).allEq(condition));
-        return (null != entity) ? Dict.parse(entity) : Dict.create();
+        if (Objects.isNull(entity)) {
+            return retData;
+        }
+        Dict dict = Dict.parse(entity);
+        Arrays.stream(fields).forEach(key -> {
+            Object value = dict.getObj(key);
+            if (Objects.nonNull(value) && JSONUtil.isJson(value.toString())) {
+                value = JSONUtil.toBean(value.toString(), Dict.class);
+            }
+            retData.set(key, value);
+        });
+        return retData;
     }
 
     /**

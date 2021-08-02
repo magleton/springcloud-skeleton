@@ -180,7 +180,7 @@ public class GXDBSchemaServiceImpl implements GXDBSchemaService {
                 if ((remove && targetSet.contains(columnName))) {
                     continue;
                 }
-                Dict attributeCondition = Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId).set("db_field_name", columnName);
+                Dict attributeCondition = Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId).set("table_field_name", columnName);
                 List<Dict> attributes = gxCoreModelAttributesService.getModelAttributesByModelId(attributeCondition);
                 String attributeFlag = "attribute_name";
                 if (attributes.isEmpty()) {
@@ -189,6 +189,7 @@ public class GXDBSchemaServiceImpl implements GXDBSchemaService {
                 }
                 for (Dict dict : attributes) {
                     String attributeValue = dict.getStr(attributeFlag);
+                    attributeValue = CharSequenceUtil.toCamelCase(attributeValue);
                     String extFieldKey = CharSequenceUtil.format("{}::{}", columnName, attributeValue);
                     String lastAttributeName = CharSequenceUtil.format("{}->>'$.{}' as '{}'", columnName, attributeValue, extFieldKey);
                     if (allFieldFlag) {

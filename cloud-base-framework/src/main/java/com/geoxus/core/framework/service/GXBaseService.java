@@ -468,15 +468,10 @@ public interface GXBaseService<T> extends IService<T> {
         for (Map.Entry<String, Object> entry : entries) {
             final String key = entry.getKey();
             final Object object = entry.getValue();
-            if (null == object) {
-                retDict.set(key, null);
-                continue;
-            }
-            if (object instanceof byte[]) {
+            if (CharSequenceUtil.contains(key, "::")) {
                 String[] keys = CharSequenceUtil.splitToArray(key, "::");
                 Dict data = Convert.convert(Dict.class, Optional.ofNullable(retDict.getObj(keys[0])).orElse(Dict.create()));
-                String str = new String((byte[]) object, StandardCharsets.UTF_8);
-                retDict.set(keys[0], data.set(keys[1], str));
+                retDict.set(keys[0], data.set(keys[1], object));
             } else {
                 retDict.set(key, object);
             }
