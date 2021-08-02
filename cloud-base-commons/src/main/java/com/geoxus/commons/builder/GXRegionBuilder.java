@@ -8,7 +8,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 import java.util.ArrayList;
 
-public class RegionBuilder implements GXBaseBuilder {
+public class GXRegionBuilder implements GXBaseBuilder {
     @Override
     public String listOrSearch(Dict param) {
         return null;
