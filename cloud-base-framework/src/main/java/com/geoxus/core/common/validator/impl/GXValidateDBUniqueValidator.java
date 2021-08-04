@@ -25,12 +25,18 @@ public class GXValidateDBUniqueValidator implements ConstraintValidator<GXValida
 
     private String tableName;
 
+    private String condition;
+
+    private String spEL;
+
     @Override
     public void initialize(GXValidateDBUniqueAnnotation annotation) {
         Class<? extends GXValidateDBUnique> clazz = annotation.service();
         fieldName = annotation.fieldName();
         service = GXSpringContextUtils.getBean(clazz);
         tableName = annotation.tableName();
+        condition = annotation.condition();
+        spEL = annotation.spEL();
     }
 
     @Override
@@ -41,6 +47,10 @@ public class GXValidateDBUniqueValidator implements ConstraintValidator<GXValida
         if (null == service) {
             throw new GXException(CharSequenceUtil.format("字段<{}>的值<{}>需要指定相应的Service进行验证...", fieldName, o));
         }
-        return !service.validateUnique(o, fieldName, constraintValidatorContext, Dict.create().set("tableName", tableName));
+        Dict param = Dict.create()
+                .set("tableName", tableName)
+                .set("condition", condition)
+                .set("spEL", spEL);
+        return !service.validateUnique(o, fieldName, constraintValidatorContext, param);
     }
 }
