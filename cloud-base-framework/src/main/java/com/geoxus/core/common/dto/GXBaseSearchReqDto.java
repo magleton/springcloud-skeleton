@@ -1,5 +1,6 @@
 package com.geoxus.core.common.dto;
 
+import cn.hutool.core.lang.Dict;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,13 +9,23 @@ import lombok.EqualsAndHashCode;
 public class GXBaseSearchReqDto extends GXBaseDto {
     /**
      * 分页信息
+     * eg:
+     * "pagingInfo":{
+     * "page":1,
+     * "pageSize":20
+     * }
      */
-    protected GXBasePagingInfoReqDto pagingInfo;
+    protected Dict pagingInfo;
 
     /**
      * 搜索条件
+     * eg:
+     * "searchCondition":{
+     * "username":"jack",
+     * "openId":"XXXXX"
+     * }
      */
-    protected GXBaseSearchConditionReqDto searchCondition;
+    protected Dict searchCondition;
 
     /**
      * 需要移除的字段

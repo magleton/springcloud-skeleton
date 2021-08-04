@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
-public interface GXControllerDTO<T extends GXBaseDto , U extends GXBaseSearchReqDto> {
+public interface GXControllerDTO<T extends GXBaseDto> {
     /**
      * 创建数据
      */
@@ -41,7 +41,7 @@ public interface GXControllerDTO<T extends GXBaseDto , U extends GXBaseSearchReq
     /**
      * 列表或者搜索
      */
-    default GXResultUtils<?> listOrSearch(U searchReqDto) {
+    default GXResultUtils<?> listOrSearch(GXBaseSearchReqDto searchReqDto) {
         return GXResultUtils.ok(GXCommonConstants.DEFAULT_DATA);
     }
 
