@@ -279,27 +279,26 @@ public interface GXBusinessService<T> extends GXBaseService<T>, GXValidateDBExis
      * @return GXPagination
      */
     default GXPagination<Dict> generatePage(Dict param) {
-        String removeStr = Optional.ofNullable(param.getStr("removeField")).orElse("");
+        final Set<String> removeFields = Convert.convert(new TypeReference<Set<String>>() {
+        }, Optional.ofNullable(param.getObj("removeField")).orElse(CollUtil.newHashSet()));
         Map<String, Object> removeField = CollUtil.newHashMap();
-        if (CharSequenceUtil.isNotBlank(removeStr)) {
-            String[] split = CharSequenceUtil.splitToArray(removeStr, ",");
-            for (final String s : split) {
-                if (CharSequenceUtil.contains(s, "::")) {
-                    final String[] strings = CharSequenceUtil.splitToArray(s, "::");
-                    String mainKey = strings[0];
-                    String subKey = strings[1];
-                    final Object o = removeField.get(mainKey);
-                    if (null != o) {
-                        final Dict dict = Convert.convert(Dict.class, o).set(subKey, subKey);
-                        removeField.put(mainKey, dict);
-                    } else {
-                        removeField.put(mainKey, Dict.create().set(subKey, subKey));
-                    }
+        for (final String s : removeFields) {
+            if (CharSequenceUtil.contains(s, "::")) {
+                final String[] strings = CharSequenceUtil.splitToArray(s, "::");
+                String mainKey = strings[0];
+                String subKey = strings[1];
+                final Object o = removeField.get(mainKey);
+                if (null != o) {
+                    final Dict dict = Convert.convert(Dict.class, o).set(subKey, subKey);
+                    removeField.put(mainKey, dict);
                 } else {
-                    removeField.put(s, s);
+                    removeField.put(mainKey, Dict.create().set(subKey, subKey));
                 }
+            } else {
+                removeField.put(s, s);
             }
         }
+
         return generatePage(param, Convert.convert(Dict.class, removeField));
     }
 

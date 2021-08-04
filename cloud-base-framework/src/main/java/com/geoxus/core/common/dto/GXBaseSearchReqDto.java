@@ -4,6 +4,8 @@ import cn.hutool.core.lang.Dict;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Set;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class GXBaseSearchReqDto extends GXBaseDto {
@@ -30,6 +32,8 @@ public class GXBaseSearchReqDto extends GXBaseDto {
     /**
      * 需要移除的字段
      * ext::username,ext::password
+     * eg:
+     * "removeField":["password" , "ext::username" , "info::password"]
      */
-    protected String removeField;
+    protected Set<String> removeField;
 }
