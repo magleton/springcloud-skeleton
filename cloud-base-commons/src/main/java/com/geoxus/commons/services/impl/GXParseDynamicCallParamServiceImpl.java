@@ -25,8 +25,7 @@ public class GXParseDynamicCallParamServiceImpl implements GXParseDynamicCallPar
      * @param callParamDto 参数信息配置
      * @return Object
      */
-    @Override
-    public Object getValueFromCallback(GXDynamicCallParamAttributeDto callParamDto) {
+    private Object getValueFromCallback(GXDynamicCallParamAttributeDto callParamDto) {
         try {
             final String callBackClassName = callParamDto.getCallBackClassName();
             final Class<?> aClass = Class.forName(callBackClassName);
@@ -54,8 +53,7 @@ public class GXParseDynamicCallParamServiceImpl implements GXParseDynamicCallPar
      * @param callParamDto 参数信息配置
      * @return Object
      */
-    @Override
-    public Object getValueFromAssign(GXDynamicCallParamAttributeDto callParamDto) {
+    private Object getValueFromAssign(GXDynamicCallParamAttributeDto callParamDto) {
         return callParamDto.getFixedAssignedValue();
     }
 
@@ -145,8 +143,7 @@ public class GXParseDynamicCallParamServiceImpl implements GXParseDynamicCallPar
      * @param callParamDto 参数信息配置
      * @return Object
      */
-    @Override
-    public Object getValueFromToken(GXDynamicCallParamAttributeDto callParamDto) {
+    private Object getValueFromToken(GXDynamicCallParamAttributeDto callParamDto) {
         final Dict data = Dict.create();
         final String sourceFieldName = callParamDto.getSourceFieldName();
         return data.getObj(sourceFieldName);
