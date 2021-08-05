@@ -4,7 +4,6 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.geoxus.commons.entities.GXMediaLibraryEntity;
 import com.geoxus.commons.events.GXMediaLibraryEvent;
@@ -18,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public interface GXMediaLibraryService extends GXBaseService<GXMediaLibraryEntity> {
     /**
@@ -123,15 +123,15 @@ public interface GXMediaLibraryService extends GXBaseService<GXMediaLibraryEntit
     /**
      * 获取实体对象的媒体文件
      *
-     * @param objectId    实体对象模型ID
+     * @param targetId    实体对象模型ID
      * @param coreModelId 实体模型ID
      * @param param       其他参数
      * @return Collection
      */
-    default Collection<GXMediaLibraryEntity> getMedia(int objectId, int coreModelId, Dict param) {
+    default Collection<GXMediaLibraryEntity> getMedia(int targetId, int coreModelId, Dict param) {
         final GXMediaLibraryService mediaLibraryService = GXSpringContextUtils.getBean(GXMediaLibraryService.class);
         assert mediaLibraryService != null;
-        return mediaLibraryService.listByMap(param.set("object_id", objectId).set(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, coreModelId));
+        return mediaLibraryService.listByMap(param.set("target_id", targetId).set(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, coreModelId));
     }
 
     /**
@@ -147,33 +147,32 @@ public interface GXMediaLibraryService extends GXBaseService<GXMediaLibraryEntit
      * ]
      * }
      *
-     * @param target   目标对象
-     * @param objectId 模型ID
+     * @param target   mediaLibrary对象
+     * @param targetId 目标模型ID
      * @param param    参数
      */
-    default void handleMedia(GXMediaLibraryEntity target, @NotNull long objectId, @NotNull Dict param) {
+    default void handleMedia(GXMediaLibraryEntity target, @NotNull long targetId, @NotNull Dict param) {
         if (param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME) == null) {
-            throw new GXException(StrUtil.format("请在param参数中传递{}字段", GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME));
+            throw new GXException(CharSequenceUtil.format("请在param参数中传递{}字段", GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME));
         }
-        final String mediaFieldName = "media_info";
+        final String mediaFieldName = "media";
         Object mediaObj = param.getObj(mediaFieldName);
-        if (null == mediaObj) {
-            //throw new GXException(StrUtil.format("请求参数param中不存在{}字段", mediaFieldName));
-            logger.error(CharSequenceUtil.format("请求参数param中不存在{}字段", mediaFieldName));
+        if (Objects.isNull(mediaObj)) {
+            final String format = CharSequenceUtil.format("请求参数param中不存在{}字段", mediaFieldName);
+            logger.error(format);
             return;
         }
         final List<JSONObject> media = Convert.convert(new TypeReference<List<JSONObject>>() {
         }, mediaObj);
-        if (null != media) {
+        if (Objects.nonNull(media)) {
             Dict data = Dict.create()
                     .set("media", media)
-                    .set("object_id", objectId)
+                    .set("target_id", targetId)
                     .set(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, param.getInt(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME));
             final GXMediaLibraryEvent<GXMediaLibraryEntity> event = new GXMediaLibraryEvent<>(target, data);
             publishEvent(event);
         }
     }
-
 
     /**
      * 合并分页数据中的每条数据的资源文件
@@ -189,12 +188,16 @@ public interface GXMediaLibraryService extends GXBaseService<GXMediaLibraryEntit
      */
     default GXPagination<Dict> mergePaginationCoreMediaLibrary(GXPagination<Dict> pagination, String modelIdKey) {
         final GXMediaLibraryService coreMediaLibraryService = GXSpringContextUtils.getBean(GXMediaLibraryService.class);
-        final List<?> records = pagination.getRecords();
-        for (Object record : records) {
-            final Dict o = (Dict) record;
+        pagination.getRecords().forEach(o -> {
+            final Long targetId = o.getLong(modelIdKey);
+            final Long coreModelId = o.getLong("coreModelId");
+            final Dict condition = Dict.create()
+                    .set("target_id", targetId)
+                    .set(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, coreModelId);
             assert coreMediaLibraryService != null;
-            o.set("media", coreMediaLibraryService.getMediaByCondition(Dict.create().set("object_id", o.getLong(modelIdKey)).set(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, o.getLong("coreModelId"))));
-        }
+            final List<Dict> mediaList = coreMediaLibraryService.getMediaByCondition(condition);
+            o.set("media", mediaList);
+        });
         return pagination;
     }
 
@@ -212,12 +215,16 @@ public interface GXMediaLibraryService extends GXBaseService<GXMediaLibraryEntit
     default GXPagination<Dict> mergePaginationCoreMediaLibrary(GXPagination<Dict> pagination) {
         String modelIdKey = getPrimaryKey();
         final GXMediaLibraryService coreMediaLibraryService = GXSpringContextUtils.getBean(GXMediaLibraryService.class);
-        final List<?> records = pagination.getRecords();
-        for (Object record : records) {
-            final Dict o = (Dict) record;
+        pagination.getRecords().forEach(o -> {
+            final Long targetId = o.getLong(modelIdKey);
+            final Long coreModelId = o.getLong("coreModelId");
+            final Dict condition = Dict.create()
+                    .set("target_id", targetId)
+                    .set(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, coreModelId);
             assert coreMediaLibraryService != null;
-            o.set("media", coreMediaLibraryService.getMediaByCondition(Dict.create().set("object_id", o.getLong(modelIdKey)).set(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, o.getLong("coreModelId"))));
-        }
+            final List<Dict> mediaList = coreMediaLibraryService.getMediaByCondition(condition);
+            o.set("media", mediaList);
+        });
         return pagination;
     }
 }
