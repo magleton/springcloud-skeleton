@@ -53,7 +53,7 @@ public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper,
         }
         final ArrayList<GXMediaLibraryEntity> newMediaList = new ArrayList<>();
         QueryWrapper<GXMediaLibraryEntity> oldConditionQuery = new QueryWrapper<>();
-        Dict oldCondition = Dict.create().set("target_id", targetId).set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
+        Dict oldCondition = Dict.create().set("target_id", targetId).set(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, coreModelId);
         if (null != condition.getObj("resource_type")) {
             oldCondition.set("resource_type", condition.getStr("resource_type"));
         }
@@ -63,7 +63,7 @@ public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper,
             Integer mediaId = media.getInt("id");
             if (null != mediaId) {
                 targetId = media.getLong("target_id", targetId);
-                final long itemCoreModelId = media.getLong(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, coreModelId);
+                final long itemCoreModelId = media.getLong(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, coreModelId);
                 final String resourceType = media.getStr("resource_type", "defaultResourceType");
                 final GXMediaLibraryEntity entity = getOne(new QueryWrapper<GXMediaLibraryEntity>().eq("id", mediaId));
                 String customProperties = media.getStr("custom_properties", "{}");
@@ -115,7 +115,7 @@ public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper,
             entity.setResourceType((String) param.getOrDefault("resource_type", "defaultResourceType"));
             entity.setModelType((String) param.getOrDefault("model_type", "defaultModelType"));
             entity.setTargetId((Long) param.getOrDefault("object_id", 0L));
-            entity.setCoreModelId((Long) param.getOrDefault(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, 0L));
+            entity.setCoreModelId((Long) param.getOrDefault(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, 0L));
             entity.setCustomProperties((String) param.getOrDefault("custom_properties", "{}"));
             save(entity);
             return entity;
@@ -140,7 +140,7 @@ public class GXMediaLibraryServiceImpl extends ServiceImpl<GXMediaLibraryMapper,
     @Transactional(rollbackFor = Exception.class)
     public void updateOldFile(Dict param) {
         Long objectId = Optional.ofNullable(param.getLong("object_id")).orElse(0L);
-        Long coreModelId = Optional.ofNullable(param.getLong(GXCommonConstants.CORE_MODEL_PRIMARY_NAME)).orElse(0L);
+        Long coreModelId = Optional.ofNullable(param.getLong(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME)).orElse(0L);
         Dict condition = Convert.convert(Dict.class, Optional.ofNullable(param.getObj("condition")).orElse(Dict.create()));
         List<JSONObject> objectList = Convert.convert(new TypeReference<List<JSONObject>>() {
         }, Optional.ofNullable(param.getObj("data")).orElse(Collections.emptyList()));

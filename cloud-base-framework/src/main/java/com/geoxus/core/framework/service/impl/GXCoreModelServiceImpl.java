@@ -40,7 +40,7 @@ public class GXCoreModelServiceImpl extends ServiceImpl<GXCoreModelMapper, GXCor
         if (CharSequenceUtil.isBlank(modelAttributeField)) {
             modelAttributeField = "";
         }
-        final List<Dict> attributes = coreModelAttributeService.getModelAttributesByModelId(Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_NAME, modelId).set("db_field_name", modelAttributeField));
+        final List<Dict> attributes = coreModelAttributeService.getModelAttributesByModelId(Dict.create().set(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME, modelId).set("db_field_name", modelAttributeField));
         entity.setCoreAttributes(attributes);
         return entity;
     }

@@ -133,7 +133,7 @@ public interface GXBaseService<T> extends IService<T> {
             dataKey.set(aliasName, key);
         }
         final Dict dict = baseMapper.getFieldValueBySQL(getTableName(clazz), fieldSet, condition, false);
-        dict.remove(GXCommonConstants.CORE_MODEL_PRIMARY_NAME);
+        dict.remove(GXCommonConstants.CORE_MODEL_PRIMARY_FIELD_NAME);
         return handleSamePrefixDict(dict);
     }
 

@@ -13,7 +13,7 @@ public class GXCommonConstants {
     public static final int EMAIL_VERIFY = 3;
 
     @GXFieldCommentAnnotation(zhDesc = "标识核心模型主键名字")
-    public static final String CORE_MODEL_PRIMARY_NAME = "core_model_id";
+    public static final String CORE_MODEL_PRIMARY_FIELD_NAME = "core_model_id";
 
     @GXFieldCommentAnnotation(zhDesc = "默认当前分页")
     public static final int DEFAULT_CURRENT_PAGE = 1;
