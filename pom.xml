@@ -71,7 +71,7 @@
         <guava.version>30.1.1-jre</guava.version>
         <okhttp.version>4.9.1</okhttp.version>
         <caffeine.version>3.0.2</caffeine.version>
-        <commons.fileupload.version>1.4</commons.fileupload.version>
+        <commons.fileupload.version>1.5</commons.fileupload.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <p6spy.version>3.9.1</p6spy.version>
     </properties>
